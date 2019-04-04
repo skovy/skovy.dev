@@ -1,21 +1,37 @@
 import React from "react";
-import { Link, StaticQuery, graphql } from "gatsby";
+import { StaticQuery, graphql } from "gatsby";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { rhythm } from "../../../utils/typography";
 import { GitHubRepository } from "../repository";
 import { ContentContainer } from "../../content-container";
 import { SectionHeading } from "../../section-heading";
+import { colors } from "../../../config/colors";
 
 const Container = styled.div`
-  padding-top: ${rhythm(3)};
+  padding: ${rhythm(3)} 0;
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: ${rhythm(1)};
-  margin-bottom: ${rhythm(2)};
+  grid-row-gap: ${rhythm(1)};
+`;
+
+const AllProjects = styled.a`
+  display: block;
+  text-align: right;
+  margin-top: ${rhythm(1)};
+  color: ${colors.text};
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 `;
 
 export class GitHubProjects extends React.Component {
@@ -38,6 +54,9 @@ export class GitHubProjects extends React.Component {
                   )
                 )}
               </Grid>
+              <AllProjects href="https://github.com/skovy" target="_blank">
+                See all projects <FontAwesomeIcon icon={faArrowRight} />
+              </AllProjects>
             </ContentContainer>
           </Container>
         )}

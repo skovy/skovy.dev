@@ -15,11 +15,11 @@ const Container = styled(Link)`
   border-radius: ${rhythm(1 / 2)}};
   overflow: hidden;
   box-shadow: 0px ${rhythm(1 / 2)} ${rhythm(1)} -${rhythm(1 / 4)} rgba(0, 0, 0, 0.3);
-  transition: box-shadow 500ms ease;
+  transition: box-shadow 300ms ease;
   background-color: ${colors.white};
 
   &:hover {
-    box-shadow: 0px ${rhythm(1)} ${rhythm(2)} -${rhythm(1 / 2)} rgba(${colors.primaryRgb}, 0.4);
+    box-shadow: 0px ${rhythm(1)} ${rhythm(2)} -${rhythm(1 / 2)} rgba(0, 0, 0, 0.4);
     cursor: pointer;
   }
 `;
@@ -27,9 +27,17 @@ const Container = styled(Link)`
 const Title = styled.h3`
   margin: 0;
   padding: ${rhythm(1)};
+  padding-bottom: 0;
   color: ${colors.text};
   text-align: left;
   ${scale(1 / 6)}
+`;
+
+const Description = styled.p`
+  padding: ${rhythm(1)};
+  padding-top: ${rhythm(1 / 2)};
+  margin: 0;
+  color: ${colors.text};
 `;
 
 interface Props {
@@ -46,6 +54,7 @@ export const BlogPost = (props: Props) => {
         alt={frontmatter.title}
       />
       <Title>{frontmatter.title}</Title>
+      <Description>{frontmatter.description}</Description>
     </Container>
   );
 };

@@ -8,10 +8,10 @@ import { rhythm } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 
 const gradients = [
-  [`6441A5`, `2a0845`],
-  [`333333`, `dd1818`],
-  [`fe8c00`, `c21500`],
-  [`000000`, `0f9b0f`],
+  [`FFF720`, `3CD500`],
+  [`FCCF31`, `F55555`],
+  [`FF96F9`, `C32BAC`],
+  [`ABDCFF`, `0396FF`],
 ];
 
 const gradient = (seed: number) => {
@@ -19,30 +19,39 @@ const gradient = (seed: number) => {
   return `linear-gradient(135deg, #${leftHex} 10%, #${rightHex} 100%) `;
 };
 
-const Container = styled.div<{ index: number }>`
+const Container = styled.a<{ index: number }>`
+  position: relative;
+  overflow: hidden;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   padding: ${rhythm(1)};
   border-radius: ${rhythm(1 / 2)};
-  margin-bottom: ${rhythm(1)};
-  color: ${colors.white};
-  background-image: ${({ index }) => gradient(index)};
+  color: ${colors.text};
+  box-shadow: 0px ${rhythm(1 / 2)} ${rhythm(1)} -${rhythm(1 / 4)} rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  transition: box-shadow 300ms ease;
+  background-color: ${colors.white};
+
+  &:hover,
+  &:focus {
+    box-shadow: 0px ${rhythm(1)} ${rhythm(2)} -${rhythm(1 / 2)} rgba(0, 0, 0, 0.3);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background-image: ${({ index }) => gradient(index)};
+  }
 `;
 
 const Name = styled.h3`
   font-weight: bold;
   font-size: ${rhythm(4 / 5)};
-`;
-
-const RepositoryLink = styled.a`
-  text-decoration: none;
-  color: ${colors.white};
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
 `;
 
 const Description = styled.p`
@@ -76,12 +85,8 @@ export class GitHubRepository extends React.Component<Props> {
     const { repository, index } = this.props;
 
     return (
-      <Container index={index}>
-        <Name>
-          <RepositoryLink href={repository.homepageUrl} target="_blank">
-            {repository.name}
-          </RepositoryLink>
-        </Name>
+      <Container index={index} href={repository.homepageUrl} target="_blank">
+        <Name>{repository.name}</Name>
         <div>
           <Description>{repository.description}</Description>
           <Stars>

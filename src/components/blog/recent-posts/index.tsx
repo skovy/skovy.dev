@@ -1,14 +1,20 @@
 import React from "react";
+import { Link } from "gatsby";
 import styled from "styled-components";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { MarkdownRemarkEdge } from "../../../generated/graphql";
 import { BlogPost } from "../post";
 import { ContentContainer } from "../../content-container";
 import { SectionHeading } from "../../section-heading";
 import { rhythm } from "../../../utils/typography";
+import { colors } from "../../../config/colors";
 
 const Container = styled.div`
-  background-image: linear-gradient(135deg, #e2b0ff 10%, #9f44d3 100%);
+  background-image: linear-gradient(135deg, #FCCF31 10%, #F55555 100%);
+  box-shadow: inset 0px 16px 8px -10px rgba(0, 0, 0, 0.2),
+    inset 0px -16px 8px -10px rgba(0, 0, 0, 0.2);
   padding: ${rhythm(3)};
 `;
 
@@ -16,6 +22,19 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: ${rhythm(1)};
+`;
+
+const AllPosts = styled(Link)`
+  display: block;
+  text-align: right;
+  margin-top: ${rhythm(1)};
+  color: ${colors.text};
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 `;
 
 interface Props {
@@ -35,6 +54,9 @@ export class BlogRecentPosts extends React.Component<Props> {
               <BlogPost post={post} key={post.fields.slug} />
             ))}
           </Grid>
+          <AllPosts to="/posts">
+            See all posts <FontAwesomeIcon icon={faArrowRight} />
+          </AllPosts>
         </ContentContainer>
       </Container>
     );

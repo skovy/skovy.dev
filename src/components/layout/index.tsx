@@ -5,6 +5,7 @@ import { createGlobalStyle } from "styled-components";
 import { rhythm, scale } from "../../utils/typography";
 import { colors } from "../../config/colors";
 import { ContentContainer } from "../content-container";
+import { Footer } from "../footer";
 
 declare const __PATH_PREFIX__: string;
 
@@ -74,24 +75,12 @@ class Layout extends React.Component<Props> {
     }
 
     return (
-      <div
-        style={{
-          marginLeft: `auto`,
-          marginRight: `auto`,
-          padding: `${rhythm(1.5)} 0`,
-        }}
-      >
+      <>
         <GlobalStyle />
         <header>{header}</header>
         <main>{children}</main>
-        <ContentContainer>
-          <footer>
-            © {new Date().getFullYear()}, Built with
-            {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
-          </footer>
-        </ContentContainer>
-      </div>
+        <Footer />
+      </>
     );
   }
 }

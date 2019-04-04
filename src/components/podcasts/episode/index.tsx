@@ -1,8 +1,5 @@
 import React from "react";
-import { Link, StaticQuery } from "gatsby";
 import styled from "styled-components";
-import { faCodeBranch, faStar } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
@@ -12,14 +9,14 @@ const Container = styled.a`
   width: 100%;
   padding: 0;
   text-decoration: none;
-  margin-bottom: ${rhythm(2)};
   border-radius: ${rhythm(1 / 2)}};
   overflow: hidden;
   box-shadow: 0px ${rhythm(1 / 2)} ${rhythm(1)} -${rhythm(1 / 4)} rgba(0, 0, 0, 0.3);
-  transition: box-shadow 500ms ease;
+  transition: box-shadow 300ms ease;
+  background-color: ${colors.white};
 
   &:hover {
-    box-shadow: 0px ${rhythm(1)} ${rhythm(2)} -${rhythm(1 / 2)} rgba(${colors.primaryRgb}, 0.4);
+    box-shadow: 0px ${rhythm(1)} ${rhythm(2)} -${rhythm(1 / 2)} rgba(0, 0, 0, 0.4);
     cursor: pointer;
   }
 `;

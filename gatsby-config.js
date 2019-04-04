@@ -4,12 +4,13 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Spencer Miskoviak`,
+    title: `skovy.dev`,
     author: `Spencer Miskoviak`,
     description: `Ramblings on React, TypeScript, Design Systems, other frontend tech, and occassionally other things by Spencer Miskoviak`,
     siteUrl: `https://skovy.dev`,
     social: {
       twitter: `spencerskovy`,
+      github: `skovy`,
     },
   },
   plugins: [
