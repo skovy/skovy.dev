@@ -4,10 +4,10 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `skovy.dev`,
+    title: `Spencer Miskoviak`,
     author: `Spencer Miskoviak`,
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsby-starter-blog-demo.netlify.com/`,
+    description: `Ramblings on React, TypeScript, Design Systems, other frontend tech, and occassionally other things by Spencer Miskoviak`,
+    siteUrl: `https://skovy.dev`,
     social: {
       twitter: `spencerskovy`,
     },

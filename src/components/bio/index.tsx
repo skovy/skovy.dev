@@ -44,11 +44,11 @@ function Bio() {
                 }}
               />
               <p>
-                Ramblings by{" "}
+                Ramblings on React, TypeScript, Design Systems, other
+                frontend tech, and occassionally other things by{" "}
                 <Twitter href={`https://twitter.com/${social.twitter}`}>
                   {author}
-                </Twitter>{" "}
-                on React, TypeScript, Design Systems and other frontend tech.
+                </Twitter>
               </p>
             </div>
           </ContentContainer>
