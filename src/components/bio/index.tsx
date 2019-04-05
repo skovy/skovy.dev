@@ -10,9 +10,10 @@ import { ContentContainer } from "../content-container";
 const Twitter = styled.a`
   color: ${colors.primary};
   text-decoration: none;
+  transition: color 200ms ease;
 
   &:hover {
-    text-decoration: underline;
+    color: ${colors.secondary};
   }
 `;
 

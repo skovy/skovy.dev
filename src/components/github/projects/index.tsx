@@ -19,6 +19,10 @@ const Grid = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-column-gap: ${rhythm(1)};
   grid-row-gap: ${rhythm(1)};
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const AllProjects = styled.a`

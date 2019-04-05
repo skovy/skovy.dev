@@ -17,7 +17,7 @@ const Container = styled.div`
   background-image: linear-gradient(135deg, #3b2667 10%, #bc78ec 100%);
   box-shadow: inset 0px 16px 8px -10px rgba(0, 0, 0, 0.2),
     inset 0px -16px 8px -10px rgba(0, 0, 0, 0.2);
-  padding: ${rhythm(3)};
+  padding: ${rhythm(3)} 0;
 `;
 
 const Grid = styled.div`
@@ -25,6 +25,10 @@ const Grid = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-column-gap: ${rhythm(1)};
   grid-row-gap: ${rhythm(1)};
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const AllPodcasts = styled.a`

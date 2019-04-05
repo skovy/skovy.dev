@@ -1,13 +1,10 @@
 import React from "react";
-import { Link, PageRendererProps } from "gatsby";
+import { PageRendererProps } from "gatsby";
 import { createGlobalStyle } from "styled-components";
 
-import { rhythm, scale } from "../../utils/typography";
 import { colors } from "../../config/colors";
-import { ContentContainer } from "../content-container";
 import { Footer } from "../footer";
-
-declare const __PATH_PREFIX__: string;
+import { Header } from "../header";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -23,61 +20,12 @@ interface Props extends PageRendererProps {
 
 class Layout extends React.Component<Props> {
   render() {
-    const { location, title, children } = this.props;
-    const rootPath = `${__PATH_PREFIX__}/`;
-    let header;
-
-    if (location.pathname === rootPath) {
-      header = (
-        <ContentContainer>
-          <h1
-            style={{
-              ...scale(1.5),
-              marginBottom: rhythm(1.5),
-              marginTop: 0,
-            }}
-          >
-            <Link
-              style={{
-                boxShadow: `none`,
-                textDecoration: `none`,
-                color: `inherit`,
-              }}
-              to={`/`}
-            >
-              {title}
-            </Link>
-          </h1>
-        </ContentContainer>
-      );
-    } else {
-      header = (
-        <ContentContainer>
-          <h3
-            style={{
-              fontFamily: `Montserrat, sans-serif`,
-              marginTop: 0,
-            }}
-          >
-            <Link
-              style={{
-                boxShadow: `none`,
-                textDecoration: `none`,
-                color: `inherit`,
-              }}
-              to={`/`}
-            >
-              {title}
-            </Link>
-          </h3>
-        </ContentContainer>
-      );
-    }
+    const { title, children } = this.props;
 
     return (
       <>
         <GlobalStyle />
-        <header>{header}</header>
+        <Header title={title} />
         <main>{children}</main>
         <Footer />
       </>
