@@ -65,8 +65,8 @@ For the most part, creating a CLI is the same as a standard npm package with Typ
 
 In order to make the script executable as a node script, the node shebang must be added to the top of the output script file. If it’s not included, the script is started without the node executable and obscure syntax related errors will likely be thrown.
 
-```
-*#!/usr/bin/env node*
+```javascript
+#!/usr/bin/env node
 ```
 
 
