@@ -12,6 +12,16 @@ module.exports = {
       twitter: `spencerskovy`,
       github: `skovy`,
     },
+    otherPodcasts: [
+      {
+        guid: `rru-044-typescript-with-spencer-miskoviak`,
+        title: `RRU 044: TypeScript with Spencer Miskoviak`,
+        link: `https://devchat.tv/react-round-up/rru-044-typescript-with-spencer-miskoviak/`,
+        itunes: {
+          image: `https://devchat.tv/wp-content/uploads/2018/03/reactroundup-itunes.jpg`,
+        },
+      },
+    ],
   },
   plugins: [
     {
@@ -62,13 +72,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `Spencer Miskoviak`,
+        short_name: `skovy.dev`,
         start_url: `/`,
         background_color: `#ffffff`,
-        theme_color: `#663399`,
+        theme_color: `#9448BC`,
         display: `minimal-ui`,
-        icon: `content/assets/gatsby-icon.png`,
+        icon: `content/assets/icon.png`,
       },
     },
     `gatsby-plugin-offline`,

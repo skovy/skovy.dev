@@ -3,6 +3,10 @@ import styled from "styled-components";
 
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
+import {
+  FeedRubberDucking,
+  SiteSiteMetadataOtherPodcasts,
+} from "../../../generated/graphql";
 
 const Container = styled.a`
   display: block;
@@ -33,18 +37,8 @@ const Image = styled.img`
   margin: 0;
 `;
 
-interface Episode {
-  guid: string;
-  title: string;
-  link: string;
-  description: string;
-  itunes: {
-    image: string;
-  };
-}
-
 interface Props {
-  episode: Episode;
+  episode: FeedRubberDucking | SiteSiteMetadataOtherPodcasts;
 }
 
 export class PodcastsEpisode extends React.Component<Props> {

@@ -9,6 +9,9 @@ import { rhythm } from "../../utils/typography";
 import { ContentContainer } from "../content-container";
 import { SectionHeading } from "../section-heading";
 import { colors } from "../../config/colors";
+import { Query } from "../../generated/graphql";
+
+const TOTAL_EPISODES = 4;
 
 const Container = styled.div`
   background-image: linear-gradient(135deg, #3b2667 10%, #bc78ec 100%);
@@ -42,23 +45,29 @@ export class Podcasts extends React.Component {
     return (
       <StaticQuery
         query={query}
-        render={data => (
-          <Container>
-            <ContentContainer>
-              <SectionHeading variant="light">Recent Podcasts</SectionHeading>
-              <Grid>
-                {data.allFeedRubberDucking.edges
-                  .slice(0, 4)
-                  .map(({ node: episode }) => (
+        render={(data: Query) => {
+          const otherEpisodes = data.site.siteMetadata.otherPodcasts;
+          const rubberDuckingEpisodes = data.allFeedRubberDucking.edges
+            .slice(0, TOTAL_EPISODES - otherEpisodes.length)
+            .map(({ node }) => node);
+          const episodes = [...rubberDuckingEpisodes, ...otherEpisodes];
+
+          return (
+            <Container>
+              <ContentContainer>
+                <SectionHeading variant="light">Recent Podcasts</SectionHeading>
+                <Grid>
+                  {episodes.map(episode => (
                     <PodcastsEpisode episode={episode} key={episode.guid} />
                   ))}
-              </Grid>
-              <AllPodcasts href="http://www.rubberducking.fm" target="_blank">
-                See all podcasts <FontAwesomeIcon icon={faArrowRight} />
-              </AllPodcasts>
-            </ContentContainer>
-          </Container>
-        )}
+                </Grid>
+                <AllPodcasts href="http://www.rubberducking.fm" target="_blank">
+                  See all episodes <FontAwesomeIcon icon={faArrowRight} />
+                </AllPodcasts>
+              </ContentContainer>
+            </Container>
+          );
+        }}
       />
     );
   }
@@ -66,13 +75,24 @@ export class Podcasts extends React.Component {
 
 const query = graphql`
   query {
+    site {
+      siteMetadata {
+        otherPodcasts {
+          guid
+          title
+          link
+          itunes {
+            image
+          }
+        }
+      }
+    }
     allFeedRubberDucking {
       edges {
         node {
           guid
           title
           link
-          description
           itunes {
             image
           }
