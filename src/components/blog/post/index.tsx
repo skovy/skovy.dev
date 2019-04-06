@@ -6,10 +6,12 @@ import styled from "styled-components";
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { MarkdownRemark } from "../../../generated/graphql";
+import { AnimatedCard } from "../../animated-card";
 
 const Container = styled(Link)`
   display: block;
   width: 100%;
+  height: 100%;
   padding: 0;
   text-decoration: none;
   border-radius: ${rhythm(1 / 2)}};
@@ -48,13 +50,15 @@ export const BlogPost = (props: Props) => {
   const { frontmatter, fields } = props.post;
 
   return (
-    <Container to={fields.slug}>
-      <Image
-        fluid={frontmatter.featuredImage.childImageSharp.fluid as FluidObject}
-        alt={frontmatter.title}
-      />
-      <Title>{frontmatter.title}</Title>
-      <Description>{frontmatter.description}</Description>
-    </Container>
+    <AnimatedCard>
+      <Container to={fields.slug}>
+        <Image
+          fluid={frontmatter.featuredImage.childImageSharp.fluid as FluidObject}
+          alt={frontmatter.title}
+        />
+        <Title>{frontmatter.title}</Title>
+        <Description>{frontmatter.description}</Description>
+      </Container>
+    </AnimatedCard>
   );
 };

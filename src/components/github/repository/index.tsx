@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { rhythm } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
+import { AnimatedCard } from "../../animated-card";
 
 const gradients = [
   [`FFF720`, `3CD500`],
@@ -22,6 +23,7 @@ const gradient = (seed: number) => {
 const Container = styled.a<{ index: number }>`
   position: relative;
   overflow: hidden;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -85,18 +87,21 @@ export class GitHubRepository extends React.Component<Props> {
     const { repository, index } = this.props;
 
     return (
-      <Container index={index} href={repository.homepageUrl} target="_blank">
-        <Name>{repository.name}</Name>
-        <div>
-          <Description>{repository.description}</Description>
-          <Stars>
-            <FontAwesomeIcon icon={faStar} /> {repository.stargazers.totalCount}
-          </Stars>
-          <Forks>
-            <FontAwesomeIcon icon={faCodeBranch} /> {repository.forkCount}
-          </Forks>
-        </div>
-      </Container>
+      <AnimatedCard>
+        <Container index={index} href={repository.homepageUrl} target="_blank">
+          <Name>{repository.name}</Name>
+          <div>
+            <Description>{repository.description}</Description>
+            <Stars>
+              <FontAwesomeIcon icon={faStar} />{" "}
+              {repository.stargazers.totalCount}
+            </Stars>
+            <Forks>
+              <FontAwesomeIcon icon={faCodeBranch} /> {repository.forkCount}
+            </Forks>
+          </div>
+        </Container>
+      </AnimatedCard>
     );
   }
 }

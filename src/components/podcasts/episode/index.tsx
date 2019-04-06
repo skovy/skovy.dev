@@ -7,10 +7,12 @@ import {
   FeedRubberDucking,
   SiteSiteMetadataOtherPodcasts,
 } from "../../../generated/graphql";
+import { AnimatedCard } from "../../animated-card";
 
 const Container = styled.a`
   display: block;
   width: 100%;
+  height:100%;
   padding: 0;
   text-decoration: none;
   border-radius: ${rhythm(1 / 2)}};
@@ -46,10 +48,12 @@ export class PodcastsEpisode extends React.Component<Props> {
     const { episode } = this.props;
 
     return (
-      <Container href={episode.link} target="_blank">
-        <Image src={episode.itunes.image} alt={episode.title} />
-        <Title>{episode.title}</Title>
-      </Container>
+      <AnimatedCard>
+        <Container href={episode.link} target="_blank">
+          <Image src={episode.itunes.image} alt={episode.title} />
+          <Title>{episode.title}</Title>
+        </Container>
+      </AnimatedCard>
     );
   }
 }
