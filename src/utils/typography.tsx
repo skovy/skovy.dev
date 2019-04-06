@@ -14,11 +14,6 @@ const typography = new Typography({
       styles: ["400", "700", "700i"],
     },
   ],
-  overrideThemeStyles: ({ rhythm }) => ({
-    "h1,h2,h3": {
-      lineHeight: rhythm(1.3),
-    },
-  }),
 });
 
 // Hot reload typography in development.

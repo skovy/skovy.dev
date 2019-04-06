@@ -28,7 +28,7 @@ class BlogIndex extends React.Component<Props> {
         />
         <Bio />
         <BlogFeaturedPost post={posts[0].node} />
-        <BlogRecentPosts posts={posts.slice(1, 3)} />
+        <BlogRecentPosts posts={posts.slice(1, 5)} />
         <GitHubProjects />
         <Podcasts />
       </Layout>

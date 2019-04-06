@@ -1,20 +1,13 @@
 ---
-slug: creating-a-cli-with-typescript
 date: 2019-02-17T00:11:30.743Z
 title: "Creating a CLI with TypeScript"
 description: "The tooling and steps to create a command-line npm package written in TypeScript"
-featuredImage: "./images/featured-image.jpg"
-
+featuredImage: "./images/featured-image.jpeg"
 images:
   - featuredImage.jpeg
   - 1*ZhJL6MpkJg8R1Cy21HtFZA.gif
   - 1*zWQrcEL5jvY72sdsv8PSmw.png
 tags:
-  - javascript
-  - typescript
-  - npm
-  - command-line-interface
-keywords:
   - javascript
   - typescript
   - npm
@@ -65,8 +58,8 @@ For the most part, creating a CLI is the same as a standard npm package with Typ
 
 In order to make the script executable as a node script, the node shebang must be added to the top of the output script file. If it’s not included, the script is started without the node executable and obscure syntax related errors will likely be thrown.
 
-```javascript
-#!/usr/bin/env node
+```
+*#!/usr/bin/env node*
 ```
 
 

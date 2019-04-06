@@ -1,7 +1,7 @@
 ---
 date: 2019-02-10T20:06:52.859Z
-title: Generating TypeScript definitions for CSS Modules using SASS
-description: Tooling and approaches for integrating CSS Modules, SASS, and TypeScript to add additional type-safety when importing the styles.
+title: "Generating TypeScript definitions for CSS Modules using SASS"
+description: "Photo by ariel sion"
 featuredImage: "./images/featured-image.jpg"
 images:
   - 1*ZhJL6MpkJg8R1Cy21HtFZA.gif
@@ -10,12 +10,6 @@ tags:
   - css-modules
   - typescript
   - sass
-keywords:
-  - react
-  - css-modules
-  - typescript
-  - sass
-draft: true
 ---
 
 CSS Modules can be [a great tool for maintaining styles](https://medium.com/@skovy/writing-maintainable-styles-and-components-with-css-modules-308a9216a6c2) in a large codebase. It works much like vanilla CSS with the primary difference being all class names are local* *by default. This works well in modern component-based architectures where a single style module can live alongside the component that relies on those styles.
