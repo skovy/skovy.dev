@@ -4,10 +4,6 @@ title: "Creating a CLI with TypeScript"
 description: "The tooling and steps to create a command-line npm package written in TypeScript"
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Anders Jildén"
-images:
-  - featuredImage.jpeg
-  - 1*ZhJL6MpkJg8R1Cy21HtFZA.gif
-  - 1*zWQrcEL5jvY72sdsv8PSmw.png
 tags:
   - javascript
   - typescript
@@ -33,9 +29,10 @@ Some of this tooling is specific to TypeScript, but the majority of this is usef
 
 * `chalk`: [Chalk](https://github.com/chalk/chalk) provides terminal string styling to display messages in different ways depending on the context. The gif below is an example of using `typed-scss-modules` and the output, which is styled using `chalk`. If looking to create a more complex CLI, consider giving [ink](https://github.com/vadimdemedes/ink/tree/next) a try. It also may be a better fit for `typed-scss-modules` to show the total number of type definitions generated, rather than a full list of every file which could get lengthy in larger projects.
 
-![Example output from typed-scss-modules](./images/1*ZhJL6MpkJg8R1Cy21HtFZA.gif)
-
-*Example output from `typed-scss-modules` using Chalk. See [this post for more details](/generating-typescript-definitions-for-css-modules-using-sass).*
+![Example output from typed-scss-modules](./images/typed-scss-modules-output.gif)
+<span class="image-caption">
+*Example output from `typed-scss-modules` using Chalk. See [here for more details](/generating-typescript-definitions-for-css-modules-using-sass).*
+</span>
 
 ### Additional Tooling
 
@@ -60,12 +57,22 @@ For the most part, creating a CLI is the same as a standard npm package with Typ
 In order to make the script executable as a node script, the node shebang must be added to the top of the output script file. If it’s not included, the script is started without the node executable and obscure syntax related errors will likely be thrown.
 
 ```
-*#!/usr/bin/env node*
+#!/usr/bin/env node
 ```
 
 The next step is to denote that the package has an executable script. This is done by adding the [`bin`](https://docs.npmjs.com/files/package.json#bin) property to the `package.json` file. For example, assuming the compiled output file lives at `dist/cli.js` then the `bin` property can be added with the name of the script as the key.
 
-![](./images/1*zWQrcEL5jvY72sdsv8PSmw.png)
+```json
+{
+  "scripts": { ... },
+  "bin": {
+    "my-script": "./dist/cli.js"
+  },
+  "devDependencies": { ... },
+  "dependencies": { ... }
+}
+```
+<span class="image-caption">Example of `package.json`</span>
 
 Finally, to test the script, run [`npm link`](https://docs.npmjs.com/cli/link.html) in the package directory. Normally to use a package, `npm link [package]` would have to be run in another directory to symlink the local copy. When working with scripts it will also symlink the `bin` globally, so running `my-script` should now work. It’s also still possible to run `npm link [package]` and locally install the `bin`.
 

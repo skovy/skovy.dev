@@ -39,6 +39,11 @@ const Divider = styled.hr`
   margin-bottom: ${rhythm(1)};
 `;
 
+const PostLink = styled(Link)`
+  color: ${colors.primary};
+  text-decoration: none;
+`;
+
 const Content = styled.div`
   a {
     color: ${colors.primary};
@@ -51,9 +56,24 @@ const Content = styled.div`
     }
   }
 
+  // Override the inline code styles
   & *:not(pre) > code[class*="language-"] {
     background: ${colors.code.inlineBackground};
     color: ${colors.code.inlineColor};
+  }
+
+  // Custom class for displaying image captions
+  .image-caption {
+    display: block;
+    text-align: center;
+    font-style: italic;
+    color: ${colors.muted};
+    margin-top: -${rhythm(1)};
+    ${scale(-1 / 5)};
+  }
+
+  .gatsby-highlight {
+    margin-bottom: ${rhythm(1.2)};
   }
 `;
 
@@ -106,16 +126,16 @@ class BlogPostTemplate extends React.Component<Props> {
           >
             <li>
               {previous && (
-                <Link to={previous.fields.slug} rel="prev">
+                <PostLink to={previous.fields.slug} rel="prev">
                   ← {previous.frontmatter.title}
-                </Link>
+                </PostLink>
               )}
             </li>
             <li>
               {next && (
-                <Link to={next.fields.slug} rel="next">
+                <PostLink to={next.fields.slug} rel="next">
                   {next.frontmatter.title} →
-                </Link>
+                </PostLink>
               )}
             </li>
           </ul>
