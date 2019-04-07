@@ -3,6 +3,7 @@ date: 2019-02-17T00:11:30.743Z
 title: "Creating a CLI with TypeScript"
 description: "The tooling and steps to create a command-line npm package written in TypeScript"
 featuredImage: "./images/featured-image.jpeg"
+featuredImageCredit: "Photo by Anders Jildén"
 images:
   - featuredImage.jpeg
   - 1*ZhJL6MpkJg8R1Cy21HtFZA.gif
@@ -14,9 +15,7 @@ tags:
   - command-line-interface
 ---
 
-![*Photo by [Anders Jildén](https://unsplash.com/photos/-N2UXcPBIYI?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)*](1*OX9Mf8glCGLN6H3425xkBg.jpeg)**Photo by [Anders Jildén](https://unsplash.com/photos/-N2UXcPBIYI?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)**
-
-Recently, I shared [typed-scss-modules](https://github.com/skovy/typed-scss-modules), a command-line interface (CLI) for [generating type definitions for CSS Modules using SASS](https://medium.com/rubber-ducking/generating-typescript-definitions-for-css-modules-using-sass-461e33623ec2). I’ve used many npm packages that provide executable commands, such as `tsc` from TypeScript, or `apollo` for [Apollo GraphQL tooling](https://github.com/apollographql/apollo-tooling), but have never created a package with an executable.
+Recently, I shared [typed-scss-modules](https://github.com/skovy/typed-scss-modules), a command-line interface (CLI) for [generating type definitions for CSS Modules using SASS](/generating-typescript-definitions-for-css-modules-using-sass). I’ve used many npm packages that provide executable commands, such as `tsc` from TypeScript, or `apollo` for [Apollo GraphQL tooling](https://github.com/apollographql/apollo-tooling), but have never created a package with an executable.
 
 Considering `typed-scss-modules` is a tool for generating TypeScript type definitions, it seemed fit to also be written in TypeScript. But where to start?
 
@@ -30,11 +29,13 @@ Some of this tooling is specific to TypeScript, but the majority of this is usef
 
 * `ts-node`: [TypeScript Node](https://github.com/TypeStrong/ts-node) is used to execute TypeScript. This is useful in development to run the CLI without needing to build anything. Adding a custom script to `package.json` with the same name will enable executing the script the similarily during development and in the published version. For example, adding `"my-script": "ts-node ./lib/cli.ts"` to the `package.json` `scripts` property will running it with `yarn my-script` or `npm run my-script`.
 
-* `yargs`: [Yargs](http://yargs.js.org/) helps build interactive command line tools, by parsing arguments and generating a user interface. There are also other packages like [commander.js](https://github.com/tj/commander.js) that can be used for this as well. On an unrelated note, the type definitions for yargs (`[@types/yargs`](https://www.npmjs.com/package/@types/yargs)) are impressive. They allow chaining methods that build up a final object with all of the CLI options with the proper types.
+* `yargs`: [Yargs](http://yargs.js.org/) helps build interactive command line tools, by parsing arguments and generating a user interface. There are also other packages like [commander.js](https://github.com/tj/commander.js) that can be used for this as well. On an unrelated note, the type definitions for yargs ([`@types/yargs`](https://www.npmjs.com/package/@types/yargs)) are impressive. They allow chaining methods that build up a final object with all of the CLI options with the proper types.
 
 * `chalk`: [Chalk](https://github.com/chalk/chalk) provides terminal string styling to display messages in different ways depending on the context. The gif below is an example of using `typed-scss-modules` and the output, which is styled using `chalk`. If looking to create a more complex CLI, consider giving [ink](https://github.com/vadimdemedes/ink/tree/next) a try. It also may be a better fit for `typed-scss-modules` to show the total number of type definitions generated, rather than a full list of every file which could get lengthy in larger projects.
 
-![Example output from `***typed-scss-modules`*** using Chalk. See [this post for more details](https://medium.com/rubber-ducking/generating-typescript-definitions-for-css-modules-using-sass-461e33623ec2).](1*ZhJL6MpkJg8R1Cy21HtFZA.gif)*Example output from `***typed-scss-modules`*** using Chalk. See [this post for more details](https://medium.com/rubber-ducking/generating-typescript-definitions-for-css-modules-using-sass-461e33623ec2).*
+![Example output from typed-scss-modules](./images/1*ZhJL6MpkJg8R1Cy21HtFZA.gif)
+
+*Example output from `typed-scss-modules` using Chalk. See [this post for more details](/generating-typescript-definitions-for-css-modules-using-sass).*
 
 ### Additional Tooling
 
@@ -62,17 +63,16 @@ In order to make the script executable as a node script, the node shebang must b
 *#!/usr/bin/env node*
 ```
 
+The next step is to denote that the package has an executable script. This is done by adding the [`bin`](https://docs.npmjs.com/files/package.json#bin) property to the `package.json` file. For example, assuming the compiled output file lives at `dist/cli.js` then the `bin` property can be added with the name of the script as the key.
 
-The next step is to denote that the package has an executable script. This is done by adding the `[bin`](https://docs.npmjs.com/files/package.json#bin) property to the `package.json` file. For example, assuming the compiled output file lives at `dist/cli.js` then the `bin` property can be added with the name of the script as the key.
+![](./images/1*zWQrcEL5jvY72sdsv8PSmw.png)
 
-![](1*zWQrcEL5jvY72sdsv8PSmw.png)
-
-Finally, to test the script, run `[npm link`](https://docs.npmjs.com/cli/link.html) in the package directory. Normally to use a package, `npm link [package]` would have to be run in another directory to symlink the local copy. When working with scripts it will also symlink the `bin` globally, so running `my-script` should now work. It’s also still possible to run `npm link [package]` and locally install the `bin`.
+Finally, to test the script, run [`npm link`](https://docs.npmjs.com/cli/link.html) in the package directory. Normally to use a package, `npm link [package]` would have to be run in another directory to symlink the local copy. When working with scripts it will also symlink the `bin` globally, so running `my-script` should now work. It’s also still possible to run `npm link [package]` and locally install the `bin`.
 
 ## Conclusion
 
 That’s all! Hopefully, these packages and key steps are useful when considering to build a command-line npm package written with TypeScript.
 
-If you’ve created a command-line package with TypeScript or know of other helpful tools when working on a CLI please share in the comments below. 👇
+If you’ve created a command-line package with TypeScript or know of other helpful tools when working on a CLI please share with me on Twitter. 👇
 
-*For more content on topics like this, React, TypeScript, JavaScript, Design Systems and more subscribe to the [Rubber Ducking](http://www.rubberducking.fm/) podcast! *🦆
+*For more content on topics like this, React, TypeScript, JavaScript, Design Systems and more subscribe to the [Rubber Ducking](http://www.rubberducking.fm/) podcast!* 🦆

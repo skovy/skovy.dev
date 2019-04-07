@@ -3,14 +3,14 @@ import Typography from "typography";
 const typography = new Typography({
   baseFontSize: 16,
   headerFontFamily: ["Raleway"],
-  bodyFontFamily: ["Lato"],
+  bodyFontFamily: ["Merriweather"],
   googleFonts: [
     {
       name: "Raleway",
       styles: ["400", "700", "700i"],
     },
     {
-      name: "Lato",
+      name: "Merriweather",
       styles: ["400", "700", "700i"],
     },
   ],
