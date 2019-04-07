@@ -69,6 +69,7 @@ const Content = styled.div`
     font-style: italic;
     color: ${colors.muted};
     margin-top: -${rhythm(1)};
+    margin-bottom: ${rhythm(1)};
     ${scale(-1 / 5)};
   }
 

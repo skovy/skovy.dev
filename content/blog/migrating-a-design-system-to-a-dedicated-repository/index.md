@@ -3,8 +3,7 @@ date: 2018-12-08T19:13:05.729Z
 title: "Migrating a design system to a dedicated repository"
 description: "An overview of the benefits, general patterns, and tooling."
 featuredImage: "./images/featured-image.jpeg"
-images:
-  - featuredImage.jpeg
+featuredImageCredit: "Photo by Ray Hennessy"
 tags:
   - javascript
   - design-systems
@@ -15,8 +14,6 @@ tags:
 
 Over two years ago, we started migrating the Handshake frontend tech stack from CoffeeScript and Knockout to TypeScript and React. One of the first things added was a directory named `common` with a component that was considered “common” and reusable across many features and contexts. The name stuck, and internally we often refer to our design system components as “common components.” Now that we’ve built out dozens of components and our team has grown, we needed to tackle some of the problems and limitations that are stopping us from effectively scaling our design system.
 
-![Photo by Ray Hennessy on Unsplash](1*IsbeNjspnsXuYzvefMeFOg.jpeg)*Photo by Ray Hennessy on Unsplash*
-
 ## 🌱 Growing Pains
 
 This pattern has worked well and scaled with the team over the past few years. However recently, we’ve started to run into several “growing pains” and issues that were primarily symptoms of the design system components living within the same repository as the main application.
@@ -25,7 +22,7 @@ For example, we use [Storybook](https://storybook.js.org/) to document these com
 
 We also faced many limitations. We want to improve the automated accessibility testing, documentation and explore other tooling like CSS-in-JS or alternative testing utilities.
 
-And lastly, it’s easy to “sneak” in a few changes to the design system components within larger feature work or create a component with a dependency on a very specific data model. When a component is coupled to a specific data model it drastically limits the reusability of the component in other contexts and applications. We need a *true *separation of the design system components from the application data model and features.
+And lastly, it’s easy to “sneak” in a few changes to the design system components within larger feature work or create a component with a dependency on a very specific data model. When a component is coupled to a specific data model it drastically limits the reusability of the component in other contexts and applications. We need a *true* separation of the design system components from the application data model and features.
 
 ## 💡 Solution
 
@@ -47,7 +44,7 @@ We didn’t make any big changes to our core tooling and setup to minimize chang
 
 ### 📝 Documentation
 
-As previously mentioned, we were using [Storybook](https://storybook.js.org/) for our design system documentation. At the time we chose it, it was a great fit. It’s since added a lot of features and support for things we don’t need. Instead, [Docz](https://www.docz.site/) seems to be a better fit for our current needs. All of the documentation is written using [MDX](https://github.com/mdx-js/mdx) (essentially Markdown + JSX) which is perfect for component documentation. It also has a `[Playground`](https://www.docz.site/documentation/components-api#playground) component that renders an interactive editor for the component directly in the documentation and a `[PropsTable`](https://www.docz.site/documentation/components-api#propstable) component that can list all props and types for free using the TypeScript props interface.
+As previously mentioned, we were using [Storybook](https://storybook.js.org/) for our design system documentation. At the time we chose it, it was a great fit. It’s since added a lot of features and support for things we don’t need. Instead, [Docz](https://www.docz.site/) seems to be a better fit for our current needs. All of the documentation is written using [MDX](https://github.com/mdx-js/mdx) (essentially Markdown + JSX) which is perfect for component documentation. It also has a [`Playground`](https://www.docz.site/documentation/components-api#playground) component that renders an interactive editor for the component directly in the documentation and a [`PropsTable`](https://www.docz.site/documentation/components-api#propstable) component that can list all props and types for free using the TypeScript props interface.
 
 After every commit to master, the documentation is built and automatically deployed to an internal domain so anyone across the company can reference and explore the design system documentation.
 
@@ -57,7 +54,7 @@ While transitioning the components we decided to switch to [Jest](https://jestjs
 
 ### 💅 Code linting and formatting
 
-We are using [Prettier](https://prettier.io/) to format all code, it’s an invaluable tool in the main application to ensure consistency and avoiding review comments related to code style. Additionally, we’re using [TSLint](https://palantir.github.io/tslint/), [stylelint](https://stylelint.io/) and [commitlint](https://marionebl.github.io/commitlint/#/) (more on the importance of this in the next section) to lint TypeScript, SCSS and git commits, respectively. Prettier ([*using the `list-different` flag](https://prettier.io/docs/en/cli.html#list-different)*), TSLint, stylelint and commitlint are run in CI on every commit to ensure code is always correctly formatted.
+We are using [Prettier](https://prettier.io/) to format all code, it’s an invaluable tool in the main application to ensure consistency and avoiding review comments related to code style. Additionally, we’re using [TSLint](https://palantir.github.io/tslint/), [stylelint](https://stylelint.io/) and [commitlint](https://marionebl.github.io/commitlint/#/) (more on the importance of this in the next section) to lint TypeScript, SCSS and git commits, respectively. Prettier ([using the `list-different` flag](https://prettier.io/docs/en/cli.html#list-different)), TSLint, stylelint and commitlint are run in CI on every commit to ensure code is always correctly formatted.
 
 ## 📦 Releasing and versioning
 
@@ -81,7 +78,7 @@ First, if the components are not stable and there is a lot of churn — from eit
 
 Second, there are now two repositories, two pull requests, two reviews, etc. The change to a component within the design system now blocks the core feature work, whereas before it *could* all be done at once. With a smaller team of engineers and a smaller set of components, having the component within the same repository made it easier to move quickly while still easy to communicate any changes with the whole team. Now, with a larger team of engineers, it’s important we are intentional about distinguishing design system level changes from feature work and having those changes reviewed by engineers and designers who are thinking about the design system as a whole.
 
-Although this true separation is beneficial, it’s still important to minimize the impact on engineers and development speed. Proposed changes in the design system can be easily tested locally in the main application using `[yarn link`](https://yarnpkg.com/lang/en/docs/cli/link/) (or `[npm link`](https://docs.npmjs.com/cli/link.html)). This allows linking the design system components in the main application, so it’s easy to test the proposed changes in the proper context.
+Although this true separation is beneficial, it’s still important to minimize the impact on engineers and development speed. Proposed changes in the design system can be easily tested locally in the main application using [`yarn link`](https://yarnpkg.com/lang/en/docs/cli/link/) (or [`npm link`](https://docs.npmjs.com/cli/link.html)). This allows linking the design system components in the main application, so it’s easy to test the proposed changes in the proper context.
 
 ## 🤔 Final Thoughts
 
