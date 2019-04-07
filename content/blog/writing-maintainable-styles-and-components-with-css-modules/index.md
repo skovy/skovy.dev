@@ -2,9 +2,7 @@
 date: 2018-05-31T02:51:27.805Z
 title: "Writing maintainable styles and components with CSS Modules"
 description: "CSS was one of the first technologies I learned and originally piqued my interest for software. After years of writing CSS I’m still amazed what can be done with it. Like many people, I started writing vanilla CSS and later moved on to SCSS. In today’s ecosystem — particularly with component-based frameworks like React or Vue — the “CSS-in-JS” approach is a popular choice for styling components. In my opinion, CSS Modules is a more favorable solution for writing maintainable styles in the age of components."
-featuredImage: "./images/featured-image.jpeg"
-images:
-  - featuredImage.png
+featuredImage: "./images/featured-image.png"
 tags:
   - css
   - styling
@@ -15,17 +13,21 @@ tags:
 
 As the name suggests, CSS Modules is a way to modularize styles into smaller pieces rather than massive global style sheets. Additionally, all class names are scoped locally by default and can be written in vanilla CSS, SCSS (my preference) or alternatives.
 
-![Example of a button component with CSS Modules.](1*RfUMX47H6zXfrprpKvvoQg.png)*Example of a button component with CSS Modules.*
+![Example of a button component with CSS Modules](./images/featured-image.png)
+
+<span class="image-caption">
+Example of a button component with CSS Modules.
+</span>
 
 It works well with a “pod” folder structure, where the styles and component implementation live within the same folder (pod). As seen in the example above, the component explicitly imports the styles it needs. The names are hashed so the class name `.button` could be used dozens of times in other style sheets without any naming conflicts.
 
 Lastly, class names can be transformed. For example, I prefer to write CSS kebab case (eg: `.my-class-name`) but prefer referencing that class in JavaScript camel case (eg: `styles.myClassName`) both to follow conventions and `styles["my-class-name”]` is more tedious to type.
 
-That’s it, there’s nothing *that *special about CSS Modules, but these attributes encourage and enable maintainable styling with minimal complexity.
+That’s it, there’s nothing *that* special about CSS Modules, but these attributes encourage and enable maintainable styling with minimal complexity.
 
 ### 🥞 Flat styles & succinct names
 
-It’s tedious and repetitive to create nested styles, but in the age of SCSS it’s no longer a concern. Classes can be arbitrarily nested without repeating the parent class name. Additionally, using `&` to reference the parent is quite handy. Although this solves the initial nesting problem, it can encourage deeply nested styles. This isn’t delightful to read but works fine, until just one style attribute needs to be overridden. Now a more* *specific (deeper nested) selector needs to be used, or something unthinkable like using `!important` (😱).
+It’s tedious and repetitive to create nested styles, but in the age of SCSS it’s no longer a concern. Classes can be arbitrarily nested without repeating the parent class name. Additionally, using `&` to reference the parent is quite handy. Although this solves the initial nesting problem, it can encourage deeply nested styles. This isn’t delightful to read but works fine, until just one style attribute needs to be overridden. Now a more specific (deeper nested) selector needs to be used, or something unthinkable like using `!important` (😱).
 
 One solution to this problem is using a methodology like [BEM](http://getbem.com/introduction/) to structure styles, but this is reliant on every individual working on a project to follow the guidelines precisely, and still doesn’t guarantee there won’t be naming collisions. Moreover, this often results in long class names and encourages using overly “creative” class names to avoid naming collisions.
 
@@ -41,7 +43,7 @@ In the example above, there is an explicit dependency between the styles and the
 
 CSS-in-JS solutions (such as [styled-components](https://github.com/styled-components/styled-components) or [emotion](https://github.com/emotion-js/emotion)) are popular and offer many of the same advantages. However, they introduce a steeper learning curve and require more time to understand.
 
-With CSS Modules it’s vanilla CSS or SCSS, technologies people have been using for years. The only difference is many smaller files living where they are used. This makes it even easier to make edits rather than hunting down the applicable styles in a large style sheet several directories away without the concern of breaking the styles of another component. Furthermore, SCSS can still be used to leverage features like shared variables, nesting and others. As with any good tool, there needs to be an opt-out. The `:global` syntax offers the ability to opt-out of namespacing and apply styles globally. I would consider this *almost *equivalent to using `!important`, but is useful on rare occasion.
+With CSS Modules it’s vanilla CSS or SCSS, technologies people have been using for years. The only difference is many smaller files living where they are used. This makes it even easier to make edits rather than hunting down the applicable styles in a large style sheet several directories away without the concern of breaking the styles of another component. Furthermore, SCSS can still be used to leverage features like shared variables, nesting and others. As with any good tool, there needs to be an opt-out. The `:global` syntax offers the ability to opt-out of namespacing and apply styles globally. I would consider this *almost* equivalent to using `!important`, but is useful on rare occasion.
 
 Overall, there’s almost no learning curve for those with any CSS experience and almost no onboarding cost to understand the styling framework because the styles live directly where they are used.
 

@@ -56,6 +56,12 @@ const Content = styled.div`
     }
   }
 
+  blockquote {
+    margin-left: 0;
+    padding: ${rhythm(1 / 2)} 0 ${rhythm(1 / 2)} ${rhythm(1)};
+    border-left: 4px solid ${colors.primary};
+  }
+
   // Override the inline code styles
   & *:not(pre) > code[class*="language-"] {
     background: ${colors.code.inlineBackground};

@@ -3,9 +3,7 @@ date: 2018-09-30T17:59:40.635Z
 title: "Using Code Generators to Share and Document Best Practices"
 description: "Photo by Karsten Würth on Unsplash"
 featuredImage: "./images/featured-image.jpg"
-images:
-  - 1*icpF9YjeviE1kgfzRorkxQ.png
-  - 1*yEG5qznzKm1HrCon3ftzig.png
+featuredImageCredit: "Photo by Karsten Würth"
 tags:
   - react
   - generator
@@ -14,11 +12,9 @@ tags:
   - javascript
 ---
 
-Photo by [Karsten Würth](https://unsplash.com/photos/w_a40DuyPAc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on Unsplash
-
 When working with React, components can be written in a number of ways as [functional](https://reactjs.org/docs/components-and-props.html#functional-and-class-components), [class](https://reactjs.org/docs/components-and-props.html#functional-and-class-components) or [pure](https://reactjs.org/docs/react-api.html#reactpurecomponent) components. In the majority of use cases, they can be used interchangeably. Sprinkle in Redux and decide which file(s) the [presentational and container](https://redux.js.org/basics/usagewithreact#presentational-and-container-components) components live along with the mapping functions. Consider adding TypeScript and choosing between a type or interface. What about file structure, naming conventions and _maybe_ a few more libraries? The result is a growing set of permutations that ultimately produces the same output.
 
-Engineers building new components have to make the same set of decisions repeatedly. Reducing the burden of making those decisions would save time and energy for the important pieces, like building a great interface. Code generators are a great way to automate this. It saves both time and energy, ensures consistency across components, serves as a single source of truth documentation for both new and existing engineers, as well as reduces the necessary communication to get everyone\* _immediately_ \*up to speed on the current conventions.
+Engineers building new components have to make the same set of decisions repeatedly. Reducing the burden of making those decisions would save time and energy for the important pieces, like building a great interface. Code generators are a great way to automate this. It saves both time and energy, ensures consistency across components, serves as a single source of truth documentation for both new and existing engineers, as well as reduces the necessary communication to get everyone _immediately_ up to speed on the current conventions.
 
 ## 📦 What are code generators?
 
@@ -28,7 +24,7 @@ There are several ways code can be generated. Most of my experience with generat
 
 For example, to create a `UsersAvatar` component from scratch, the custom generator would be invoked with the only argument being the path of the component: `rails generate react_component users/avatar`. With this information, the generator can determine where the component should live and the component’s name.
 
-The generator then prompts: does the component need a stylesheet ([using CSS Modules](https://medium.com/@skovy/writing-maintainable-styles-and-components-with-css-modules-308a9216a6c2)) or does it need to be connected to the Redux store? Both default to “yes” to provide as little friction as possible and minimize necessary decisions upfront for engineers, it’s always easier to remove it later if not necessary.
+The generator then prompts: does the component need a stylesheet ([using CSS Modules](/writing-maintainable-styles-and-components-with-css-modules)) or does it need to be connected to the Redux store? Both default to “yes” to provide as little friction as possible and minimize necessary decisions upfront for engineers, it’s always easier to remove it later if not necessary.
 
 This will output three files:
 
@@ -38,9 +34,13 @@ This will output three files:
 
 - `users/avatar/spec/index.spec.tsx`: the component tests
 
-![Don’t copy and paste, code generate!](1*icpF9YjeviE1kgfzRorkxQ.png)_Don’t copy and paste, code generate!_
+![example of generated component-code](./images/component-code.png)
 
-![](1*yEG5qznzKm1HrCon3ftzig.png)
+<span class="image-caption">
+Don’t copy and paste, code generate!
+</span>
+
+![example of generated style-code](./images/style-code.png)
 
 These two examples have worked well for us. Our generators aren’t strictly React community* “*best practices”, but instead what works best for the team. Although, many of the conventions are heavily inspired by the community.
 
@@ -62,7 +62,7 @@ There are several other tools like [Hygen](http://www.hygen.io/), but the specif
 
 ## 🤖 But, why use code generators?
 
-Initially, I imagined generators would follow a similar lifecycle to written documentation. It would start out being 100% accurate, and as time went on it would become outdated as changes or additions were made in the codebase. However, unlike documentation, generators are \*part**\* **of the core development process.
+Initially, I imagined generators would follow a similar lifecycle to written documentation. It would start out being 100% accurate, and as time went on it would become outdated as changes or additions were made in the codebase. However, unlike documentation, generators are part of the core development process.
 
 > There is motivation to keep generators updated and accurate since they are used frequently and save time and energy for both the code author and code reviewer.
 

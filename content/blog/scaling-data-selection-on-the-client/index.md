@@ -3,14 +3,11 @@ date: 2018-02-26T02:13:05.504Z
 title: "Scaling data selection on the client"
 description: "Building a large application with a single source of truth enables powerful features. This allows for logging and debugging, easily persisting data across pages, and encourages data normalization. However, data selection becomes complex once the state contains a vast amount of data. A piece of the UI only needs a tiny slice of the overall state. This is the point where selectors begin to have clear advantages."
 featuredImage: "./images/featured-image.jpeg"
-images:
-  - featuredImage.jpeg
+featuredImageCredit: "Photo by Ander Burdain"
 tags:
   - react
   - redux
 ---
-
-![Photo by [Ander Burdain](https://unsplash.com/@anderburdain) on [Unsplash](https://unsplash.com/photos/1BhDhPBbHLA)](1*eN0DjbmMBMCSPvIlNfesSA.jpeg)*Photo by [Ander Burdain](https://unsplash.com/@anderburdain) on [Unsplash](https://unsplash.com/photos/1BhDhPBbHLA)*
 
 ## What is a Selector?
 
@@ -48,7 +45,7 @@ function getReptiles(state) {
 }
 ```
 
-That’s it, a selector is just a function. However, by moving this logic into a separate function it has several advantages over putting it directly in the component or UI that needs this data. For example, today a popular solution is putting this logic into the `[mapStateToProps`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#arguments) function in a traditional React Redux application.
+That’s it, a selector is just a function. However, by moving this logic into a separate function it has several advantages over putting it directly in the component or UI that needs this data. For example, today a popular solution is putting this logic into the [`mapStateToProps`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#arguments) function in a traditional React Redux application.
 
 ## Why Selectors?
 
@@ -113,10 +110,10 @@ const getAnimalsByType = createSelector(
 
 And would be used like the following:
 
-```
-`getAnimalsByType(state, { name: "Reptiles" });
+```javascript
+getAnimalsByType(state, { name: "Reptiles" });
 getAnimalsByType(state, { name: "Mammals" });
-getAnimalsByType(state, { name: "Fish" });`
+getAnimalsByType(state, { name: "Fish" });
 ```
 
 
