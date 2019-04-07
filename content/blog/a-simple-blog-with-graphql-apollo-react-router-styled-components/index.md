@@ -3,16 +3,13 @@ date: 2017-11-12T22:25:49.627Z
 title: "A Simple Blog with GraphQL, Apollo, React Router & styled-components."
 description: "This was a project to expand my knowledge of the React & GraphQL ecosystems and less of me weighing these technologies against others. I’ve written a fair share of React code and wanted to explore some of the other trending technologies in the ecosystem today."
 featuredImage: "./images/featured-image.jpeg"
-images:
-  - featuredImage.jpeg
+featuredImageCredit: "Photo from Unsplash"
 tags:
   - graphql
   - apollo-client
   - styled-components
   - react-router
 ---
-
-![](1*QvRYqodDx8GGokaH-dg-Vg.jpeg)
 
 ## Why explore theses technologies in the first place?
 
@@ -40,9 +37,9 @@ Exploring React Router was less about solving a pain I’ve experienced, and mor
 
 The majority of my experience styling React components can mostly be put into the following three buckets:
 
-1. Quick n’ dirty using the `[style`](https://reactjs.org/docs/dom-elements.html#style) attribute and passing an object
+1. Quick n’ dirty using the [`style`](https://reactjs.org/docs/dom-elements.html#style) attribute and passing an object
 
-1. Adding a CSS framework like [bootstrap](http://getbootstrap.com/) or [materialize](http://materializecss.com/) and using the `[className`](https://reactjs.org/docs/dom-elements.html#classname) attribute on components
+1. Adding a CSS framework like [bootstrap](http://getbootstrap.com/) or [materialize](http://materializecss.com/) and using the [`className`](https://reactjs.org/docs/dom-elements.html#classname) attribute on components
 
 1. Using [CSS modules](https://github.com/css-modules/css-modules) with the help of a few webpack loaders
 
@@ -94,4 +91,4 @@ I can’t say I loved styled-components off the bat. They were extremely easy to
 
 ## Conclusion
 
-I can see why all of these technologies are gaining popularity. They solve pains I’ve had working on various projects and look forward to exploring the more advanced features of each technology. If you haven’t heard or used any of these packages, check out the respective Github repositories to see some very simplistic examples. And finally, [*see a demo of the final product here](https://graphqlblog.herokuapp.com/)*! *(it may take a while to load the first time, it’s a hobby Heroku app)*
+I can see why all of these technologies are gaining popularity. They solve pains I’ve had working on various projects and look forward to exploring the more advanced features of each technology. If you haven’t heard or used any of these packages, check out the respective Github repositories to see some very simplistic examples. And finally, [*see a demo of the final product here*](https://graphqlblog.herokuapp.com/)! (it may take a while to load the first time, it’s a hobby Heroku app)

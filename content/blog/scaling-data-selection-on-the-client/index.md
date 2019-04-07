@@ -116,7 +116,6 @@ getAnimalsByType(state, { name: "Mammals" });
 getAnimalsByType(state, { name: "Fish" });
 ```
 
-
 **Note**: this specific example would “break” memoization. The default cache size is one, so it would recompute every time the animal type name changes. In this scenario, we would likely want to use a `makeMapStateToProps` function with a `makeGetAnimalsByType` to [retain the memoization](https://redux.js.org/recipes/computing-derived-data#sharing-selectors-across-multiple-components).
 
 ### Bonus: Types
