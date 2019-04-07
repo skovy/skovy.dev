@@ -632,8 +632,8 @@ export type File = Node & {
   birthtime?: Maybe<Scalars["Date"]>;
   /** Copy file to static directory and return public url to it */
   publicURL?: Maybe<Scalars["String"]>;
-  childMarkdownRemark?: Maybe<MarkdownRemark>;
   childImageSharp?: Maybe<ImageSharp>;
+  childMarkdownRemark?: Maybe<MarkdownRemark>;
 };
 
 export type FileModifiedTimeArgs = {
@@ -10994,7 +10994,6 @@ export enum MarkdownRemarkFieldsEnum {
   InternalOwner = "internal___owner",
   InternalType = "internal___type",
   FrontmatterTitle = "frontmatter___title",
-  FrontmatterSlug = "frontmatter___slug",
   FrontmatterDate = "frontmatter___date",
   FrontmatterDescription = "frontmatter___description",
   FrontmatterFeaturedImageId = "frontmatter___featuredImage___id",
@@ -11047,8 +11046,7 @@ export enum MarkdownRemarkFieldsEnum {
   FrontmatterFeaturedImagePublicUrl = "frontmatter___featuredImage___publicURL",
   FrontmatterImages = "frontmatter___images",
   FrontmatterTags = "frontmatter___tags",
-  FrontmatterKeywords = "frontmatter___keywords",
-  FrontmatterDraft = "frontmatter___draft",
+  FrontmatterFeaturedImageCredit = "frontmatter___featuredImageCredit",
   Excerpt = "excerpt",
   RawMarkdownBody = "rawMarkdownBody",
   FileAbsolutePath = "fileAbsolutePath",
@@ -11091,14 +11089,12 @@ export type MarkdownRemarkFilterInput = {
 
 export type MarkdownRemarkFrontmatter = {
   title?: Maybe<Scalars["String"]>;
-  slug?: Maybe<Scalars["String"]>;
   date?: Maybe<Scalars["Date"]>;
   description?: Maybe<Scalars["String"]>;
   featuredImage?: Maybe<File>;
   images?: Maybe<Array<Maybe<Scalars["String"]>>>;
   tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  keywords?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  draft?: Maybe<Scalars["Boolean"]>;
+  featuredImageCredit?: Maybe<Scalars["String"]>;
 };
 
 export type MarkdownRemarkFrontmatterDateArgs = {
@@ -11110,14 +11106,12 @@ export type MarkdownRemarkFrontmatterDateArgs = {
 
 export type MarkdownRemarkFrontmatterFilterInput = {
   title?: Maybe<StringQueryOperatorInput>;
-  slug?: Maybe<StringQueryOperatorInput>;
   date?: Maybe<DateQueryOperatorInput>;
   description?: Maybe<StringQueryOperatorInput>;
   featuredImage?: Maybe<FileFilterInput>;
   images?: Maybe<StringQueryOperatorInput>;
   tags?: Maybe<StringQueryOperatorInput>;
-  keywords?: Maybe<StringQueryOperatorInput>;
-  draft?: Maybe<BooleanQueryOperatorInput>;
+  featuredImageCredit?: Maybe<StringQueryOperatorInput>;
 };
 
 export type MarkdownRemarkGroupConnection = {
@@ -11191,12 +11185,12 @@ export type Query = {
   allDirectory?: Maybe<DirectoryConnection>;
   imageSharp?: Maybe<ImageSharp>;
   allImageSharp?: Maybe<ImageSharpConnection>;
-  markdownRemark?: Maybe<MarkdownRemark>;
-  allMarkdownRemark?: Maybe<MarkdownRemarkConnection>;
   graphQlSource?: Maybe<GraphQlSource>;
   allGraphQlSource?: Maybe<GraphQlSourceConnection>;
   feedRubberDucking?: Maybe<FeedRubberDucking>;
   allFeedRubberDucking?: Maybe<FeedRubberDuckingConnection>;
+  markdownRemark?: Maybe<MarkdownRemark>;
+  allMarkdownRemark?: Maybe<MarkdownRemarkConnection>;
   github?: Maybe<GitHub>;
 };
 
@@ -11382,32 +11376,6 @@ export type QueryAllImageSharpArgs = {
   limit?: Maybe<Scalars["Int"]>;
 };
 
-export type QueryMarkdownRemarkArgs = {
-  id?: Maybe<StringQueryOperatorInput>;
-  parent?: Maybe<NodeFilterInput>;
-  children?: Maybe<NodeFilterListInput>;
-  internal?: Maybe<InternalFilterInput>;
-  frontmatter?: Maybe<MarkdownRemarkFrontmatterFilterInput>;
-  excerpt?: Maybe<StringQueryOperatorInput>;
-  rawMarkdownBody?: Maybe<StringQueryOperatorInput>;
-  fileAbsolutePath?: Maybe<StringQueryOperatorInput>;
-  fields?: Maybe<MarkdownRemarkFieldsFilterInput>;
-  html?: Maybe<StringQueryOperatorInput>;
-  htmlAst?: Maybe<JsonQueryOperatorInput>;
-  excerptAst?: Maybe<JsonQueryOperatorInput>;
-  headings?: Maybe<MarkdownHeadingFilterListInput>;
-  timeToRead?: Maybe<IntQueryOperatorInput>;
-  tableOfContents?: Maybe<StringQueryOperatorInput>;
-  wordCount?: Maybe<WordCountFilterInput>;
-};
-
-export type QueryAllMarkdownRemarkArgs = {
-  filter?: Maybe<MarkdownRemarkFilterInput>;
-  sort?: Maybe<MarkdownRemarkSortInput>;
-  skip?: Maybe<Scalars["Int"]>;
-  limit?: Maybe<Scalars["Int"]>;
-};
-
 export type QueryGraphQlSourceArgs = {
   id?: Maybe<StringQueryOperatorInput>;
   parent?: Maybe<NodeFilterInput>;
@@ -11446,6 +11414,32 @@ export type QueryFeedRubberDuckingArgs = {
 export type QueryAllFeedRubberDuckingArgs = {
   filter?: Maybe<FeedRubberDuckingFilterInput>;
   sort?: Maybe<FeedRubberDuckingSortInput>;
+  skip?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+};
+
+export type QueryMarkdownRemarkArgs = {
+  id?: Maybe<StringQueryOperatorInput>;
+  parent?: Maybe<NodeFilterInput>;
+  children?: Maybe<NodeFilterListInput>;
+  internal?: Maybe<InternalFilterInput>;
+  frontmatter?: Maybe<MarkdownRemarkFrontmatterFilterInput>;
+  excerpt?: Maybe<StringQueryOperatorInput>;
+  rawMarkdownBody?: Maybe<StringQueryOperatorInput>;
+  fileAbsolutePath?: Maybe<StringQueryOperatorInput>;
+  fields?: Maybe<MarkdownRemarkFieldsFilterInput>;
+  html?: Maybe<StringQueryOperatorInput>;
+  htmlAst?: Maybe<JsonQueryOperatorInput>;
+  excerptAst?: Maybe<JsonQueryOperatorInput>;
+  headings?: Maybe<MarkdownHeadingFilterListInput>;
+  timeToRead?: Maybe<IntQueryOperatorInput>;
+  tableOfContents?: Maybe<StringQueryOperatorInput>;
+  wordCount?: Maybe<WordCountFilterInput>;
+};
+
+export type QueryAllMarkdownRemarkArgs = {
+  filter?: Maybe<MarkdownRemarkFilterInput>;
+  sort?: Maybe<MarkdownRemarkSortInput>;
   skip?: Maybe<Scalars["Int"]>;
   limit?: Maybe<Scalars["Int"]>;
 };
