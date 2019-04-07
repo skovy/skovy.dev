@@ -1,6 +1,6 @@
 ---
 date: 2018-11-10T18:01:46.873Z
-title: "Introducing Rubber Ducking&#58; A Podcast about all things “frontend”"
+title: "Introducing Rubber Ducking: A Podcast about all things “frontend”"
 description: "Chris Schmitz and I are excited to share Rubber Ducking, a podcast about React, TypeScript, CSS, Design Systems, GraphQL and anything related."
 featuredImage: "./images/featured-image.png"
 images:

@@ -29,17 +29,9 @@ const Container = styled(Link)`
 const Title = styled.h3`
   margin: 0;
   padding: ${rhythm(1)};
-  padding-bottom: 0;
   color: ${colors.text};
   text-align: left;
   ${scale(1 / 6)}
-`;
-
-const Description = styled.p`
-  padding: ${rhythm(1)};
-  padding-top: ${rhythm(1 / 2)};
-  margin: 0;
-  color: ${colors.text};
 `;
 
 interface Props {
@@ -57,7 +49,6 @@ export const BlogPost = (props: Props) => {
           alt={frontmatter.title}
         />
         <Title>{frontmatter.title}</Title>
-        <Description>{frontmatter.description}</Description>
       </Container>
     </AnimatedCard>
   );
