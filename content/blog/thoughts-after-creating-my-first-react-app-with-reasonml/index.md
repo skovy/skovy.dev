@@ -1,7 +1,7 @@
 ---
 date: 2018-04-15T23:05:33.212Z
 title: "Thoughts after creating my first React app with ReasonML"
-description: "Recently, I’ve been hearing about Reason and ReasonReact in JavaScript community newsletters, surveys, and twittersphere. After hearing some interesting things, I decided to play around with it and try to learn it in the best way I know, make a small web app."
+description: "My initial impressions after making a small web app written in ReasonML."
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Jean Wimmerlin"
 tags:

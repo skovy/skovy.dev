@@ -1,7 +1,7 @@
 ---
 date: 2019-02-17T00:11:30.743Z
 title: "Creating a CLI with TypeScript"
-description: "The tooling and steps to create a command-line npm package written in TypeScript"
+description: "The tooling and steps to create a command-line npm package written in TypeScript."
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Anders Jildén"
 tags:

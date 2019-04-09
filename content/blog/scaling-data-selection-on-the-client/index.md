@@ -1,7 +1,7 @@
 ---
 date: 2018-02-26T02:13:05.504Z
 title: "Scaling data selection on the client"
-description: "Building a large application with a single source of truth enables powerful features. This allows for logging and debugging, easily persisting data across pages, and encourages data normalization. However, data selection becomes complex once the state contains a vast amount of data. A piece of the UI only needs a tiny slice of the overall state. This is the point where selectors begin to have clear advantages."
+description: "What is a selector? How do they help 'scale' querying data on the client?"
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Ander Burdain"
 tags:

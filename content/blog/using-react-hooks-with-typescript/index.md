@@ -1,7 +1,7 @@
 ---
 date: 2018-10-27T14:00:23.477Z
 title: "Using React Hooks with TypeScript"
-description: "useTypeScript();"
+description: "useTypeScript(); A few quick examples of what it will look like to use Hooks with TypeScript."
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by rawpixel on Unsplash"
 tags:

@@ -1,7 +1,7 @@
 ---
 date: 2018-12-08T19:13:05.729Z
 title: "Migrating a design system to a dedicated repository"
-description: "An overview of the benefits, general patterns, and tooling."
+description: "An overview of the benefits, general patterns, and tooling for maintaining a design system in its own repository."
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Ray Hennessy"
 tags:
@@ -22,7 +22,7 @@ For example, we use [Storybook](https://storybook.js.org/) to document these com
 
 We also faced many limitations. We want to improve the automated accessibility testing, documentation and explore other tooling like CSS-in-JS or alternative testing utilities.
 
-And lastly, it’s easy to “sneak” in a few changes to the design system components within larger feature work or create a component with a dependency on a very specific data model. When a component is coupled to a specific data model it drastically limits the reusability of the component in other contexts and applications. We need a *true* separation of the design system components from the application data model and features.
+And lastly, it’s easy to “sneak” in a few changes to the design system components within larger feature work or create a component with a dependency on a very specific data model. When a component is coupled to a specific data model it drastically limits the reusability of the component in other contexts and applications. We need a _true_ separation of the design system components from the application data model and features.
 
 ## 💡 Solution
 
@@ -30,13 +30,13 @@ It might be obvious at this point, but our solution was to create a repository d
 
 Many of the benefits are solutions to the problems and limitations we are facing today.
 
-* The repository has significantly fewer dependencies and takes a few minutes to get running locally, enabling designers and others to easily contribute to documentation or make changes to colors, components, etc.
+- The repository has significantly fewer dependencies and takes a few minutes to get running locally, enabling designers and others to easily contribute to documentation or make changes to colors, components, etc.
 
-* There is now a physical separation, which no longer requires enforcing an arbitrary divide or special case tooling, like our [code generators](https://medium.com/rubber-ducking/using-code-generators-to-share-and-document-best-practices-8b2d6a7b1dce) to do something different when generating a common component. Now, two distinct pull requests must be opened, one focused on the necessary design system changes and one focused on the related feature. Additionally, the data model is no longer available in the new repository which leads to more purely presentational components useful in many more contexts and applications.
+- There is now a physical separation, which no longer requires enforcing an arbitrary divide or special case tooling, like our [code generators](https://medium.com/rubber-ducking/using-code-generators-to-share-and-document-best-practices-8b2d6a7b1dce) to do something different when generating a common component. Now, two distinct pull requests must be opened, one focused on the necessary design system changes and one focused on the related feature. Additionally, the data model is no longer available in the new repository which leads to more purely presentational components useful in many more contexts and applications.
 
-* The design system can now be used in any other repository. This is particularly important as Handshake transitions from a monolithic application to domain-driven services.
+- The design system can now be used in any other repository. This is particularly important as Handshake transitions from a monolithic application to domain-driven services.
 
-* Lastly, we can improve tooling and explore alternatives that are focused around the design system. Examples include better accessibility testing, CSS-in-JS, [react-testing-library](https://github.com/kentcdodds/react-testing-library), [Docz](https://www.docz.site/), and more.
+- Lastly, we can improve tooling and explore alternatives that are focused around the design system. Examples include better accessibility testing, CSS-in-JS, [react-testing-library](https://github.com/kentcdodds/react-testing-library), [Docz](https://www.docz.site/), and more.
 
 ### ⚙️ Core Technologies
 
@@ -62,7 +62,7 @@ Up to this point, there weren’t any major changes to our workflow. However, we
 
 An initial thought was to treat the repository itself as the package. Yarn supports GitHub repositories, so we could easily add a dependency in `package.json` that points to the repository. But there were two main issues with this workflow. First, it would require building the distribution files and committing those to the repository. Every pull request would need to rebuild the distribution files and commit them, which would likely result in changing hundreds or thousands of lines. Second, the repository needs to be private. This works locally since all engineers already have access, but this is significantly more challenging for all of the other tools that our codebase touches today and in the future. CI would need access to run all of the tests. Then the container builder would also need access. It’s possible to work through this, but if we ever switched to a different platform or added more steps we’d need to set up permissions again which is typically non-trivial.
 
-The next choice we explored was a private registry, like [npm](https://docs.npmjs.com/creating-and-publishing-private-packages) or [Gemfury](https://gemfury.com/help/private-yarn). Currently, we’re using Gemfury because it made the most sense for our size and also supports [RubyGems](https://gemfury.com/help/install-gems/) which we’ll likely need in the future. They all provide a similar experience and workflow, so the registry isn’t as important as *how* the package is published. Which leads to the next step, how do we get the source code to the private registry?
+The next choice we explored was a private registry, like [npm](https://docs.npmjs.com/creating-and-publishing-private-packages) or [Gemfury](https://gemfury.com/help/private-yarn). Currently, we’re using Gemfury because it made the most sense for our size and also supports [RubyGems](https://gemfury.com/help/install-gems/) which we’ll likely need in the future. They all provide a similar experience and workflow, so the registry isn’t as important as _how_ the package is published. Which leads to the next step, how do we get the source code to the private registry?
 
 ### 🚀 semantic-release
 
@@ -76,7 +76,7 @@ It seems like everything is great, why not move the design system components ear
 
 First, if the components are not stable and there is a lot of churn — from either an engineering or design perspective— it can be substantially easier to quickly iterate on the components in the context of features. Many of the core components (eg: buttons or cards) have been stable for a long time and handle almost every use case so our components are now relatively stable.
 
-Second, there are now two repositories, two pull requests, two reviews, etc. The change to a component within the design system now blocks the core feature work, whereas before it *could* all be done at once. With a smaller team of engineers and a smaller set of components, having the component within the same repository made it easier to move quickly while still easy to communicate any changes with the whole team. Now, with a larger team of engineers, it’s important we are intentional about distinguishing design system level changes from feature work and having those changes reviewed by engineers and designers who are thinking about the design system as a whole.
+Second, there are now two repositories, two pull requests, two reviews, etc. The change to a component within the design system now blocks the core feature work, whereas before it _could_ all be done at once. With a smaller team of engineers and a smaller set of components, having the component within the same repository made it easier to move quickly while still easy to communicate any changes with the whole team. Now, with a larger team of engineers, it’s important we are intentional about distinguishing design system level changes from feature work and having those changes reviewed by engineers and designers who are thinking about the design system as a whole.
 
 Although this true separation is beneficial, it’s still important to minimize the impact on engineers and development speed. Proposed changes in the design system can be easily tested locally in the main application using [`yarn link`](https://yarnpkg.com/lang/en/docs/cli/link/) (or [`npm link`](https://docs.npmjs.com/cli/link.html)). This allows linking the design system components in the main application, so it’s easy to test the proposed changes in the proper context.
 
@@ -86,14 +86,14 @@ When I originally set out to explore options and opinions on separating a design
 
 After this transition, these are the four things I would recommend keeping in mind when considering separating a design system:
 
-* **Team size**: will adding another repository add additional overhead without a lot of the benefits (eg: reuse)?
+- **Team size**: will adding another repository add additional overhead without a lot of the benefits (eg: reuse)?
 
-* **Component stability**: are the components fairly stable? Would it be significantly easier to quickly iterate on the components within the context of features?
+- **Component stability**: are the components fairly stable? Would it be significantly easier to quickly iterate on the components within the context of features?
 
-* **Use existing tooling**: for us, TypeScript and CSS Modules has worked well. Sticking with the same tooling makes it easier to transition components and requires less context switching between the two repositories. What tools are working well for you that you are already using?
+- **Use existing tooling**: for us, TypeScript and CSS Modules has worked well. Sticking with the same tooling makes it easier to transition components and requires less context switching between the two repositories. What tools are working well for you that you are already using?
 
-* **Automate**: Nobody wants to deal with building and deploying documentation or risk it becoming stale so it’s entirely automated. Nobody wants to remember the exact commands to bump the package version, dig through the changes and determine what the next version should be or deal with inconsistencies when different people release the package. What parts of the process are error-prone or tedious?
+- **Automate**: Nobody wants to deal with building and deploying documentation or risk it becoming stale so it’s entirely automated. Nobody wants to remember the exact commands to bump the package version, dig through the changes and determine what the next version should be or deal with inconsistencies when different people release the package. What parts of the process are error-prone or tedious?
 
 Hopefully, these high-level thoughts are useful if you’re considering moving a design system to a dedicated repository. There are many pieces that can still be improved so if you have already separated a design system, please share your workflow, tooling, and setup!
 
-*Listen to [Episode 7 of Rubber Ducking](http://www.rubberducking.fm/7) on Migrating a Design System to its own Repository for more discussion.*
+_Listen to [Episode 7 of Rubber Ducking](http://www.rubberducking.fm/7) on Migrating a Design System to its own Repository for more discussion._

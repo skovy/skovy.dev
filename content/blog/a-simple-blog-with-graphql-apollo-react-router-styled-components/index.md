@@ -1,7 +1,7 @@
 ---
 date: 2017-11-12T22:25:49.627Z
 title: "A Simple Blog with GraphQL, Apollo, React Router & styled-components."
-description: "This was a project to expand my knowledge of the React & GraphQL ecosystems and less of me weighing these technologies against others. I’ve written a fair share of React code and wanted to explore some of the other trending technologies in the ecosystem today."
+description: "An exploration into some of the other trending technologies in the JavaScript and React ecosystem today through a small web app."
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo from Unsplash"
 tags:

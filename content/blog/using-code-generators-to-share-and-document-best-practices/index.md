@@ -1,7 +1,7 @@
 ---
 date: 2018-09-30T17:59:40.635Z
 title: "Using Code Generators to Share and Document Best Practices"
-description: "Photo by Karsten Würth on Unsplash"
+description: "Code generators are a great way to automate the small repetitive decisions and save time among many other advantages."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Karsten Würth"
 tags:

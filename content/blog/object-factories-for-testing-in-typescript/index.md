@@ -1,7 +1,7 @@
 ---
 date: 2018-07-14T01:05:09.147Z
 title: "Object factories for testing in TypeScript"
-description: "When writing frontend tests I always find factories useful for stubbing the data layer. At the simplest level, a factory is responsible for “manufacturing” data — hence the term. Similar to a real-world physical factory, it’s responsible for repeatedly outputting a “unit” following a specification, in this case, an object. For example, a JavaScript factory for a basic user entity with only a name and age property may look something like the following."
+description: "Introducing cooky-cutter, an object factory package written to be type-safe with TypeScript."
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo from Unsplash"
 tags:

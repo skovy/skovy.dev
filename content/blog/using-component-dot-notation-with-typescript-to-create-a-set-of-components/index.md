@@ -1,6 +1,7 @@
 ---
 date: 2018-09-08T21:04:54.387Z
 title: "Using component dot notation with TypeScript to create a set of components"
+description: "The advantages of using component dot notation (accessing sub-components from a top-level component), a few gotchas and some examples."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by The Creative Exchange on Unsplash"
 tags:
