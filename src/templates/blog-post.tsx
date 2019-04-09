@@ -112,7 +112,7 @@ class BlogPostTemplate extends React.Component<Props> {
           title={title}
           description={description || post.excerpt}
           keywords={tags}
-          image={featuredImage.childImageSharp.fixed.src}
+          image={`https://skovy.dev${featuredImage.childImageSharp.fixed.src}`}
         />
         <ContentContainer>
           <Title>{title}</Title>
