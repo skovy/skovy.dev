@@ -6,16 +6,28 @@ import styled from "styled-components";
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { MarkdownRemark } from "../../../generated/graphql";
-import { AnimatedCard } from "../../animated-card";
 
 const Container = styled(Link)`
   display: flex;
   align-items: flex-start;
   padding: 0;
   text-decoration: none;
+  color: ${colors.text};
+  transition: color 200ms ease;
+
+  &:hover,
+  &:focus {
+    color: ${colors.secondary};
+  }
 
   & + & {
-    margin-top: ${rhythm(2)};
+    margin-top: ${rhythm(3)};
+  }
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 `;
 
@@ -29,6 +41,11 @@ const PostImage = styled(Image)`
 
 const Content = styled.div`
   padding-left: ${rhythm(1)};
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    padding: 0;
+    max-width: ${rhythm(16)};
+  }
 `;
 
 const Title = styled.h3`
@@ -36,14 +53,15 @@ const Title = styled.h3`
   flex-shrink: 1;
   margin: 0 0 ${rhythm(1 / 2)};
   padding: 0;
-  color: ${colors.text};
-  text-align: left;
   ${scale(1 / 6)}
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    margin-top: ${rhythm(1 / 2)};
+  }
 `;
 
 const Excerpt = styled.p`
   margin: 0;
-  color: ${colors.text};
   ${scale(-1 / 4)}
 `;
 

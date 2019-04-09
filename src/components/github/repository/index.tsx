@@ -62,9 +62,12 @@ const Description = styled.p`
 
 const Stars = styled.span`
   margin-right: ${rhythm(1 / 2)};
+  font-weight: bold;
 `;
 
-const Forks = styled.span``;
+const Forks = styled.span`
+  font-weight: bold;
+`;
 
 interface Repository {
   id: string;

@@ -101,13 +101,19 @@ class BlogPostTemplate extends React.Component<Props> {
       date,
       featuredImageCredit,
       featuredImage,
+      tags,
     } = post.frontmatter;
     const siteTitle = this.props.data.site.siteMetadata.title;
     const { previous, next } = this.props.pageContext;
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
-        <SEO title={title} description={description || post.excerpt} />
+        <SEO
+          title={title}
+          description={description || post.excerpt}
+          keywords={tags}
+          image={featuredImage.childImageSharp.fixed.src}
+        />
         <ContentContainer>
           <Title>{title}</Title>
           <Date>{date}</Date>
@@ -171,10 +177,14 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         description
         featuredImageCredit
+        tags
         featuredImage {
           childImageSharp {
             fluid(maxWidth: 600) {
               ...GatsbyImageSharpFluid
+            }
+            fixed(width: 400) {
+              src
             }
           }
         }

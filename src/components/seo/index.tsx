@@ -13,12 +13,13 @@ import { useStaticQuery, graphql } from "gatsby";
 interface Props {
   title: string;
   description?: string;
+  image?: string;
   lang?: string;
   meta?: Array<{ property: string; content: string }>;
   keywords?: string[];
 }
 
-const SEO = ({ description, lang, meta, keywords, title }: Props) => {
+const SEO = ({ description, lang, meta, keywords, title, image }: Props) => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -27,6 +28,9 @@ const SEO = ({ description, lang, meta, keywords, title }: Props) => {
             title
             description
             author
+            social {
+              twitter
+            }
           }
         }
       }
@@ -65,7 +69,7 @@ const SEO = ({ description, lang, meta, keywords, title }: Props) => {
         },
         {
           name: `twitter:creator`,
-          content: site.siteMetadata.author,
+          content: `@${site.siteMetadata.social.twitter}`,
         },
         {
           name: `twitter:title`,
@@ -76,6 +80,7 @@ const SEO = ({ description, lang, meta, keywords, title }: Props) => {
           content: metaDescription,
         },
       ]
+        .concat(image ? { property: `og:image`, content: image } : [])
         .concat(
           keywords.length > 0
             ? {
