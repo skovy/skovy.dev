@@ -59,7 +59,7 @@ export class BlogRecentPosts extends React.Component<Props> {
               <BlogPost post={post} key={post.fields.slug} />
             ))}
           </Grid>
-          <AllPosts to="/posts">
+          <AllPosts to="/blog">
             See all posts <FontAwesomeIcon icon={faArrowRight} />
           </AllPosts>
         </ContentContainer>
