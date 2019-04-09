@@ -65,7 +65,7 @@ const SEO = ({ description, lang, meta, keywords, title, image }: Props) => {
         },
         {
           name: `twitter:card`,
-          content: `summary`,
+          content: image ? `summary_large_image` : `summary`,
         },
         {
           name: `twitter:creator`,
@@ -80,7 +80,14 @@ const SEO = ({ description, lang, meta, keywords, title, image }: Props) => {
           content: metaDescription,
         },
       ]
-        .concat(image ? { property: `og:image`, content: image } : [])
+        .concat(
+          image
+            ? [
+                { property: `og:image`, content: image },
+                { name: `twitter:image`, content: image },
+              ]
+            : []
+        )
         .concat(
           keywords.length > 0
             ? {
