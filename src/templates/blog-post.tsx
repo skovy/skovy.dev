@@ -45,6 +45,8 @@ const PostLink = styled(Link)`
 `;
 
 const Content = styled.div`
+  line-height: 1.75em;
+
   a {
     color: ${colors.primary};
     text-decoration: underline;

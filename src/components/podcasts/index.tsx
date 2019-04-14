@@ -15,8 +15,6 @@ const TOTAL_EPISODES = 4;
 
 const Container = styled.div`
   background-image: linear-gradient(135deg, #3b2667 10%, #bc78ec 100%);
-  box-shadow: inset 0px 16px 8px -10px rgba(0, 0, 0, 0.2),
-    inset 0px -16px 8px -10px rgba(0, 0, 0, 0.2);
   padding: ${rhythm(3)} 0;
 `;
 
@@ -33,15 +31,9 @@ const Grid = styled.div`
 
 const AllPodcasts = styled.a`
   display: block;
-  text-align: right;
   margin-top: ${rhythm(1)};
   color: ${colors.white};
   text-decoration: none;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
 `;
 
 export class Podcasts extends React.Component {

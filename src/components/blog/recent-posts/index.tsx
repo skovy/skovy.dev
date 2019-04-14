@@ -13,8 +13,6 @@ import { colors } from "../../../config/colors";
 
 const Container = styled.div`
   background-image: linear-gradient(135deg, #fccf31 10%, #f55555 100%);
-  box-shadow: inset 0px 16px 8px -10px rgba(0, 0, 0, 0.2),
-    inset 0px -16px 8px -10px rgba(0, 0, 0, 0.2);
   padding: ${rhythm(3)} 0;
 `;
 
@@ -31,15 +29,9 @@ const Grid = styled.div`
 
 const AllPosts = styled(Link)`
   display: block;
-  text-align: right;
   margin-top: ${rhythm(1)};
   color: ${colors.text};
   text-decoration: none;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
 `;
 
 interface Props {

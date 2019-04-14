@@ -27,15 +27,9 @@ const Grid = styled.div`
 
 const AllProjects = styled.a`
   display: block;
-  text-align: right;
   margin-top: ${rhythm(1)};
   color: ${colors.text};
   text-decoration: none;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
 `;
 
 export class GitHubProjects extends React.Component {
