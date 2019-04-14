@@ -39,7 +39,6 @@
     "gatsby-source-rss-feed": "^1.1.1",
     "gatsby-transformer-remark": "^2.3.8",
     "gatsby-transformer-sharp": "^2.1.17",
-    "i": "^0.3.6",
     "npm": "^6.9.0",
     "prismjs": "^1.15.0",
     "react": "^16.8.4",
