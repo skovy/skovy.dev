@@ -3,6 +3,7 @@ import { Link, graphql, PageRendererProps } from "gatsby";
 import Image from "gatsby-image";
 import styled from "styled-components";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Bio from "../components/bio";
@@ -12,6 +13,9 @@ import { rhythm, scale } from "../utils/typography";
 import { Query } from "../generated/graphql";
 import { ContentContainer } from "../components/content-container";
 import { colors } from "../config/colors";
+
+const GITHUB_USERNAME = "skovy";
+const GITHUB_REPO_NAME = "skovy.dev";
 
 const Title = styled.h1`
   margin-bottom: ${rhythm(1 / 2)};
@@ -63,6 +67,22 @@ const OtherPost = styled.li`
 `;
 
 const PostLink = styled(Link)`
+  color: ${colors.primary};
+  text-decoration: none;
+  transition: color 200ms ease;
+
+  &:hover,
+  &:focus {
+    color: ${colors.secondary};
+  }
+`;
+
+const ActionLinks = styled.div`
+  margin-bottom: ${rhythm(2)};
+`;
+
+const ActionLink = styled.a`
+  display: inline-block;
   color: ${colors.primary};
   text-decoration: none;
   transition: color 200ms ease;
@@ -136,6 +156,12 @@ class BlogPostTemplate extends React.Component<Props> {
     } = post.frontmatter;
     const siteTitle = this.props.data.site.siteMetadata.title;
     const { previous, next } = this.props.pageContext;
+    const { slug } = post.fields;
+
+    const githubUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog${slug}index.md`;
+    const twitterUrl = `https://mobile.twitter.com/search?q=${encodeURIComponent(
+      `https://skovy.dev${slug}`
+    )}`;
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -157,6 +183,15 @@ class BlogPostTemplate extends React.Component<Props> {
           )}
           <Content dangerouslySetInnerHTML={{ __html: post.html }} />
           <PostFooter>
+            <ActionLinks>
+              <ActionLink href={twitterUrl} target="_blank">
+                <FontAwesomeIcon icon={faTwitter} /> Discuss on Twitter
+              </ActionLink>{" "}
+              &mdash;{" "}
+              <ActionLink href={githubUrl} target="_blank">
+                <FontAwesomeIcon icon={faGithub} /> Edit on GitHub
+              </ActionLink>
+            </ActionLinks>
             <Bio />
             <OtherPosts>
               <OtherPost>
@@ -197,6 +232,9 @@ export const pageQuery = graphql`
       id
       excerpt(pruneLength: 160)
       html
+      fields {
+        slug
+      }
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
