@@ -6,6 +6,7 @@ import Layout from "../components/layout";
 import SEO from "../components/seo";
 import { Query } from "../generated/graphql";
 import { BlogAllPosts } from "../components/blog/all-posts";
+import { ContentContainer } from "../components/content-container";
 
 interface Props extends PageRendererProps {
   data: Query;
@@ -23,7 +24,9 @@ class Blog extends React.Component<Props> {
           title="All Blog Posts"
           keywords={[`blog`, `javascript`, `typescript`, `react`]}
         />
-        <Bio />
+        <ContentContainer>
+          <Bio />
+        </ContentContainer>
         <BlogAllPosts posts={posts} />
       </Layout>
     );
