@@ -44,8 +44,8 @@ const FeaturedImageCredit = styled.p`
 const PostFooter = styled.div`
   border-top: 2px solid ${colors.lightGray};
   border-bottom: 2px solid ${colors.lightGray};
-  padding: ${rhythm(2)} 0;
-  margin: ${rhythm(2)} 0 0;
+  padding: ${rhythm(3)} 0;
+  margin: ${rhythm(3)} 0 0;
 `;
 
 const OtherPosts = styled.ul`
