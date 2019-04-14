@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "gatsby";
 import styled from "styled-components";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { MarkdownRemarkEdge } from "../../../generated/graphql";
 import { BlogInlinePost } from "../inline-post";

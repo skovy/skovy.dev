@@ -2,6 +2,8 @@ import React from "react";
 import { Link, graphql, PageRendererProps } from "gatsby";
 import Image from "gatsby-image";
 import styled from "styled-components";
+import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Bio from "../components/bio";
 import Layout from "../components/layout";
@@ -35,15 +37,40 @@ const FeaturedImageCredit = styled.p`
   ${scale(-1 / 5)}
 `;
 
-const Divider = styled.hr`
-  background: ${colors.lightGray};
-  margin: ${rhythm(1)} 0;
-  height: 2px;
+const PostFooter = styled.div`
+  border-top: 2px solid ${colors.lightGray};
+  border-bottom: 2px solid ${colors.lightGray};
+  padding: ${rhythm(2)} 0;
+  margin: ${rhythm(2)} 0 0;
+`;
+
+const OtherPosts = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+`;
+
+const OtherPost = styled.li`
+  margin: 0;
+
+  & + & {
+    margin-top: ${rhythm(1 / 2)};
+  }
 `;
 
 const PostLink = styled(Link)`
   color: ${colors.primary};
   text-decoration: none;
+  transition: color 200ms ease;
+
+  &:hover,
+  &:focus {
+    color: ${colors.secondary};
+  }
 `;
 
 const Content = styled.div`
@@ -129,35 +156,27 @@ class BlogPostTemplate extends React.Component<Props> {
             <FeaturedImageCredit>{featuredImageCredit}</FeaturedImageCredit>
           )}
           <Content dangerouslySetInnerHTML={{ __html: post.html }} />
-          <Divider />
-          <Bio />
-
-          <ul
-            style={{
-              display: `flex`,
-              flexWrap: `wrap`,
-              justifyContent: `space-between`,
-              listStyle: `none`,
-              padding: 0,
-            }}
-          >
-            <li>
-              {previous && (
-                <PostLink to={previous.fields.slug} rel="prev">
-                  ← {previous.frontmatter.title}
-                </PostLink>
-              )}
-            </li>
-            <li>
-              {next && (
-                <PostLink to={next.fields.slug} rel="next">
-                  {next.frontmatter.title} →
-                </PostLink>
-              )}
-            </li>
-          </ul>
-
-          <Divider />
+          <PostFooter>
+            <Bio />
+            <OtherPosts>
+              <OtherPost>
+                {previous && (
+                  <PostLink to={previous.fields.slug} rel="prev">
+                    <FontAwesomeIcon icon={faArrowLeft} />{" "}
+                    {previous.frontmatter.title}
+                  </PostLink>
+                )}
+              </OtherPost>
+              <OtherPost>
+                {next && (
+                  <PostLink to={next.fields.slug} rel="next">
+                    {next.frontmatter.title}{" "}
+                    <FontAwesomeIcon icon={faArrowRight} />
+                  </PostLink>
+                )}
+              </OtherPost>
+            </OtherPosts>
+          </PostFooter>
         </ContentContainer>
       </Layout>
     );
