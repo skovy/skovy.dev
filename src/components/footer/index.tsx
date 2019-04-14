@@ -5,19 +5,42 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 import { ContentContainer } from "../content-container";
+import { Newsletter } from "../newsletter";
 import { rhythm } from "../../utils/typography";
 import { colors } from "../../config/colors";
 
 const Container = styled.footer`
-  padding: ${rhythm(3)};
+  padding: ${rhythm(3)} 0;
+`;
+
+const Content = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const SocialLinks = styled.div`
+  @media screen and (max-width: ${rhythm(24)}) {
+    margin-top: ${rhythm(1)};
+  }
 `;
 
 const SocialLink = styled.a`
   display: inline-block;
   color: ${colors.primary};
+  transition: color 200ms ease;
 
   & + & {
     margin-left: ${rhythm(1 / 2)};
+  }
+
+  &:hover,
+  &:focus {
+    color: ${colors.secondary};
   }
 `;
 
@@ -27,18 +50,25 @@ export const Footer = () => (
     render={data => (
       <Container>
         <ContentContainer>
-          <SocialLink
-            href={`https://github.com/${data.site.siteMetadata.social.github}`}
-          >
-            <FontAwesomeIcon icon={faGithub} size="lg" />
-          </SocialLink>
-          <SocialLink
-            href={`https://twitter.com/${
-              data.site.siteMetadata.social.twitter
-            }`}
-          >
-            <FontAwesomeIcon icon={faTwitter} size="lg" />
-          </SocialLink>
+          <Content>
+            <Newsletter />
+            <SocialLinks>
+              <SocialLink
+                href={`https://github.com/${
+                  data.site.siteMetadata.social.github
+                }`}
+              >
+                <FontAwesomeIcon icon={faGithub} size="lg" />
+              </SocialLink>
+              <SocialLink
+                href={`https://twitter.com/${
+                  data.site.siteMetadata.social.twitter
+                }`}
+              >
+                <FontAwesomeIcon icon={faTwitter} size="lg" />
+              </SocialLink>
+            </SocialLinks>
+          </Content>
         </ContentContainer>
       </Container>
     )}

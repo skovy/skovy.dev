@@ -36,7 +36,9 @@ const FeaturedImageCredit = styled.p`
 `;
 
 const Divider = styled.hr`
-  margin-bottom: ${rhythm(1)};
+  background: ${colors.lightGray};
+  margin: ${rhythm(1)} 0;
+  height: 2px;
 `;
 
 const PostLink = styled(Link)`
@@ -154,6 +156,8 @@ class BlogPostTemplate extends React.Component<Props> {
               )}
             </li>
           </ul>
+
+          <Divider />
         </ContentContainer>
       </Layout>
     );
