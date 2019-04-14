@@ -40,7 +40,7 @@ Many of the benefits are solutions to the problems and limitations we are facing
 
 ### ⚙️ Core Technologies
 
-We didn’t make any big changes to our core tooling and setup to minimize change and make the transition as smooth as possible. The core tooling has also worked well for us so we didn’t have a reason to make any changes. TypeScript has been extremely beneficial when working with React, so our entire design system is written in TypeScript, even the webpack configuration. [CSS Modules](https://medium.com/@skovy/writing-maintainable-styles-and-components-with-css-modules-308a9216a6c2) has also worked well in the main application. For now, we’re going to stick with CSS Modules but in the future may explore CSS-in-JS primarily to make it easier to render components elsewhere (eg: documentation or tools like [Framer X](https://framer.com/features/components/)) without the complex CSS Module webpack loaders.
+We didn’t make any big changes to our core tooling and setup to minimize change and make the transition as smooth as possible. The core tooling has also worked well for us so we didn’t have a reason to make any changes. TypeScript has been extremely beneficial when working with React, so our entire design system is written in TypeScript, even the webpack configuration. [CSS Modules](/writing-maintainable-styles-and-components-with-css-modules) has also worked well in the main application. For now, we’re going to stick with CSS Modules but in the future may explore CSS-in-JS primarily to make it easier to render components elsewhere (eg: documentation or tools like [Framer X](https://framer.com/features/components/)) without the complex CSS Module webpack loaders.
 
 ### 📝 Documentation
 

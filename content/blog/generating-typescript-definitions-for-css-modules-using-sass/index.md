@@ -11,11 +11,11 @@ tags:
   - sass
 ---
 
-CSS Modules can be [a great tool for maintaining styles](https://medium.com/@skovy/writing-maintainable-styles-and-components-with-css-modules-308a9216a6c2) in a large codebase. It works much like vanilla CSS with the primary difference being all class names are local by default. This works well in modern component-based architectures where a single style module can live alongside the component that relies on those styles.
+CSS Modules can be [a great tool for maintaining styles](/writing-maintainable-styles-and-components-with-css-modules) in a large codebase. It works much like vanilla CSS with the primary difference being all class names are local by default. This works well in modern component-based architectures where a single style module can live alongside the component that relies on those styles.
 
-Since a CSS Module is vanilla CSS by default, it doesn’t introduce a steep learning curve. But in a large codebase, it’s not desirable to repeatedly define specific values (such as color hexes), especially if using a [design system](https://medium.com/rubber-ducking/migrating-a-design-system-to-a-dedicated-repository-38582e3b9812). There are [approaches specific to CSS Modules for adding support for variables](https://github.com/css-modules/css-modules/blob/master/docs/values-variables.md), but SASS is a reliable technology to add support not only for variables but many other useful features.
+Since a CSS Module is vanilla CSS by default, it doesn’t introduce a steep learning curve. But in a large codebase, it’s not desirable to repeatedly define specific values (such as color hexes), especially if using a [design system](/migrating-a-design-system-to-a-dedicated-repository). There are [approaches specific to CSS Modules for adding support for variables](https://github.com/css-modules/css-modules/blob/master/docs/values-variables.md), but SASS is a reliable technology to add support not only for variables but many other useful features.
 
-Beyond styling an application, TypeScript can be a great tool for maintaining a large codebase in general. Providing type definitions for functions or components can [make the APIs more discoverable](https://medium.com/@skovy/using-component-dot-notation-with-typescript-to-create-a-set-of-components-b0b2aad4892b) to newcomers and dissuade improper usage.
+Beyond styling an application, TypeScript can be a great tool for maintaining a large codebase in general. Providing type definitions for functions or components can [make the APIs more discoverable](/using-component-dot-notation-with-typescript-to-create-a-set-of-components) to newcomers and dissuade improper usage.
 
 CSS Modules and TypeScript can each be used on their own. But what about integrating CSS Modules, SASS and TypeScript to add type-safety around the usage of the styles?
 
