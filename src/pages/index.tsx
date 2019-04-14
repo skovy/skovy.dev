@@ -4,6 +4,7 @@ import { graphql, PageRendererProps } from "gatsby";
 import Bio from "../components/bio";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
+import { ContentContainer } from "../components/content-container";
 import { BlogFeaturedPost } from "../components/blog/featured-post";
 import { GitHubProjects } from "../components/github/projects";
 import { Podcasts } from "../components/podcasts";
@@ -26,7 +27,9 @@ class BlogIndex extends React.Component<Props> {
           title="Home"
           keywords={[`blog`, `gatsby`, `javascript`, `react`]}
         />
-        <Bio />
+        <ContentContainer>
+          <Bio />
+        </ContentContainer>
         <BlogFeaturedPost post={posts[0].node} />
         <BlogRecentPosts posts={posts.slice(1, 5)} />
         <GitHubProjects />

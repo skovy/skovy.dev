@@ -24,35 +24,34 @@ function Bio() {
       render={data => {
         const { author, social } = data.site.siteMetadata;
         return (
-          <ContentContainer>
-            <div
+          <div
+            style={{
+              display: `flex`,
+              marginBottom: rhythm(1),
+            }}
+          >
+            <Image
+              fixed={data.avatar.childImageSharp.fixed}
+              alt={author}
               style={{
-                display: `flex`,
-                marginBottom: rhythm(1),
+                marginRight: rhythm(1 / 2),
+                marginBottom: 0,
+                minWidth: 50,
+                borderRadius: `100%`,
               }}
-            >
-              <Image
-                fixed={data.avatar.childImageSharp.fixed}
-                alt={author}
-                style={{
-                  marginRight: rhythm(1 / 2),
-                  marginBottom: 0,
-                  minWidth: 50,
-                  borderRadius: `100%`,
-                }}
-                imgStyle={{
-                  borderRadius: `50%`,
-                }}
-              />
-              <p>
-                Ramblings on React, TypeScript, Design Systems, frontend things,
-                and occassionally other stuff by{" "}
-                <Twitter href={`https://twitter.com/${social.twitter}`}>
-                  {author}
-                </Twitter>.
-              </p>
-            </div>
-          </ContentContainer>
+              imgStyle={{
+                borderRadius: `50%`,
+              }}
+            />
+            <p>
+              Ramblings on React, TypeScript, Design Systems, frontend things,
+              and occassionally other stuff by{" "}
+              <Twitter href={`https://twitter.com/${social.twitter}`}>
+                {author}
+              </Twitter>
+              .
+            </p>
+          </div>
         );
       }}
     />
