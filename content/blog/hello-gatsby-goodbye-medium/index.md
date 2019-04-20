@@ -9,7 +9,7 @@ tags:
   - netlify
 ---
 
-For the past two years or so I've semi-regularly wrote and published content on Medium.
+For the past two years or so I've semi-regularly written and published content on Medium.
 Most of the content relates to my experience and thoughts on various frontend
 technology and patterns: React, TypeScript, CSS Modules, Design Systems and the like.
 I've found taking the time to write fairly rewarding.
@@ -28,7 +28,7 @@ I've found taking the time to write fairly rewarding.
 
 # Motivation
 
-When I first started to write more regularly it would have been easy to spend
+When I first started to write regularly it would have been easy to spend
 weeks making the "perfect" personal blog... with no content. It was more
 important that I write and publish _something_. For me, Medium was the obvious
 choice. Much of the content I was consuming was being published there and
