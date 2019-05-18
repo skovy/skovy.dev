@@ -117,7 +117,18 @@ const Content = styled.div`
   & *:not(pre) > code[class*="language-"] {
     background: ${colors.code.inlineBackground};
     color: ${colors.code.inlineColor};
+    padding: 2px 6px;
   }
+
+  .gatsby-highlight-code-line {
+    background-color: ${colors.code.highlightedBackground};
+    display: block;
+    margin-right: -1em;
+    margin-left: -1em;
+    padding-right: 1em;
+    padding-left: 0.75em;
+    border-left: 0.25em solid ${colors.secondary};
+  }  
 
   // Custom class for displaying image captions
   .image-caption {
@@ -132,6 +143,10 @@ const Content = styled.div`
 
   .gatsby-highlight {
     margin-bottom: ${rhythm(1.2)};
+    
+    pre {
+      border-radius: ${rhythm(1/4)};
+    }
   }
 `;
 

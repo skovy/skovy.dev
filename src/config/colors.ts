@@ -7,7 +7,8 @@ export const colors = {
   text: "#242423",
   background: "#fafafa",
   code: {
-    inlineBackground: "#FFEED6",
+    inlineBackground: "#DDD",
     inlineColor: "#2B061E",
+    highlightedBackground: "#5a5a5a"
   },
 };
