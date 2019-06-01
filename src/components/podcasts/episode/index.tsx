@@ -12,7 +12,7 @@ import { AnimatedCard } from "../../animated-card";
 const Container = styled.a`
   display: block;
   width: 100%;
-  height:100%;
+  height: 100%;
   padding: 0;
   text-decoration: none;
   border-radius: ${rhythm(1 / 2)}};
@@ -39,6 +39,11 @@ const Image = styled.img`
   margin: 0;
 `;
 
+// Simplecast seems to have stopped sending (or setting) the image for each
+// individual item.
+const FALLBACK_IMAGE =
+  "https://cdn.simplecast.com/images/47f7d3/47f7d3c6-b36d-49cf-b4e0-876d09a827e6/c5b394b9-eb7e-4483-a0f8-2a7e8a6b0b4a/1400x1400/1552160508artwork.jpg?aid=rss_feed";
+
 interface Props {
   episode: FeedRubberDucking | SiteSiteMetadataOtherPodcasts;
 }
@@ -50,7 +55,10 @@ export class PodcastsEpisode extends React.Component<Props> {
     return (
       <AnimatedCard>
         <Container href={episode.link} target="_blank">
-          <Image src={episode.itunes.image} alt={episode.title} />
+          <Image
+            src={episode.itunes.image || FALLBACK_IMAGE}
+            alt={episode.title}
+          />
           <Title>{episode.title}</Title>
         </Container>
       </AnimatedCard>
