@@ -68,12 +68,84 @@ important metrics for specific sites.
 _([Google Web Fundamentals](https://developers.google.com/web/fundamentals/)
 was an invaluable resource when investigating and learning about frontend performance)_
 
-# Measuring frontend performance
+## What should be measured?
+
+Even though frontend performance may not be an exact science, we need something
+precise to measure. Given the qualitative feedback that "the application
+feels slow" how do you know it's slow and not a networking issue? Or, some other
+factor? You don't. We need to measure something, but what?
+
+Reframed in the context of the above definition: **what measurements can be made
+that would determine if an application is usable?** The [Web Fundamentals](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics)
+does an excellent job outlining questions that can be related to exact numbers:
+Is it happening? Is it usable? Is it delightful?
+
+### Is it happening?
+
+How does the user know if anything is happening when first navigating to your
+application? Something visually different appears or "paints" on the screen.
+There are actually three common "paint" measurements:
+
+- [First Paint (FP)](https://developer.mozilla.org/en-US/docs/Glossary/First_paint):
+  _the time it takes to render the first pixels on the screen, something visually
+  different from the previous page_
+- [First Contentful Paint (FCP)](https://developer.mozilla.org/en-US/docs/Glossary/First_contentful_paint):
+  _the time it takes to render the first element or piece of content_
+- [First Meaningful Paint (FMP)](https://developer.mozilla.org/en-US/docs/Glossary/first_meaningful_paint):
+  _the time it takes the most important content to load, often referred to as
+  the hero content_
+
+![Lighthouse Paint Timing](./images/lighthouse-paint-timing.png)
+
+<span class="image-caption">
+First Contentful Paint and First Meaningful Paint in Lighthouse
+</span>
+
+Another metric that I also found helpful to provide a full perspective was
+[Time to First Byte (TTFB)](https://developer.mozilla.org/en-US/docs/Glossary/time_to_first_byte):
+_the time it takes from the start of the request to receiving the first byte_.
+From the frontend perspective, this is where you can start to control the
+performance experience. Before this point is the DNS lookup, request overhead,
+server time, network latency, etc. (all things out of the control of the frontend).
+It's also straightforward to calculate using the 
+[`Performance​Navigation​Timing` API](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming).
+
+```typescript
+// Get the performance entry for the browser navigation events
+const pageNav = performance.getEntriesByType("navigation")[0];
+
+// Calculate the time it took to receive the first byte
+const durationMs = pageNav.responseStart - pageNav.requestStart;
+```
+
+The Time to First Byte timing is also visible in the Chrome Devtools under the Network
+tab.
+
+![Chrome Devtools TTFB](./images/chrome-devtools-ttfb.png)
+
+<span class="image-caption">
+Time to First Byte (TTFB) in Chrome Devtools
+</span>
+
+### Is it usable?
+
+- Time to Interactive
+
+### Is it delightful?
+
+- Long Running Tasks
+- FID
+
+## How should it be measured?
+
+In general, there are two approaches: "lab" tools and "real world" tools.
 
 ### Lighthouse
 
 ### Browser APIs & Polyfills
 
-Interested in more? Check out [this recent episode on Rubber Ducking](https://rubberducking.fm/15)
+## Conclusion
+
+Interested in learning more? Check out [this recent episode on Rubber Ducking](https://rubberducking.fm/15)
 about frontend performance, [Google Web Fundamentals](https://developers.google.com/web/fundamentals/),
 or [reach out on Twitter](https://twitter.com/spencerskovy).
