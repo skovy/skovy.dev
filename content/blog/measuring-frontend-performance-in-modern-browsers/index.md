@@ -66,7 +66,8 @@ outlining specific examples of how performance directly improved various
 important metrics for specific sites.
 
 _([Google Web Fundamentals](https://developers.google.com/web/fundamentals/)
-was an invaluable resource when investigating and learning about frontend performance)_
+was an invaluable resource when investigating and learning about frontend
+performance. Much of this content was inspired from their resources)_
 
 ## What should be measured?
 
@@ -95,10 +96,10 @@ There are actually three common "paint" measurements:
   _the time it takes the most important content to load, often referred to as
   the hero content_
 
-![Lighthouse Paint Timing](./images/lighthouse-paint-timing.png)
+![Lighthouse First Paint Timing](./images/lighthouse-paint-timing.png)
 
 <span class="image-caption">
-First Contentful Paint and First Meaningful Paint in Lighthouse
+First Contentful Paint (FCP) and First Meaningful Paint (FMP) in Lighthouse
 </span>
 
 Another metric that I also found helpful to provide a full perspective was
@@ -107,16 +108,8 @@ _the time it takes from the start of the request to receiving the first byte_.
 From the frontend perspective, this is where you can start to control the
 performance experience. Before this point is the DNS lookup, request overhead,
 server time, network latency, etc. (all things out of the control of the frontend).
-It's also straightforward to calculate using the 
+It's also straightforward to calculate using the
 [`Performance​Navigation​Timing` API](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming).
-
-```typescript
-// Get the performance entry for the browser navigation events
-const pageNav = performance.getEntriesByType("navigation")[0];
-
-// Calculate the time it took to receive the first byte
-const durationMs = pageNav.responseStart - pageNav.requestStart;
-```
 
 The Time to First Byte timing is also visible in the Chrome Devtools under the Network
 tab.
@@ -129,23 +122,187 @@ Time to First Byte (TTFB) in Chrome Devtools
 
 ### Is it usable?
 
-- Time to Interactive
+The user is aware it's happening, they can see something visually on the screen
+but there's like a button, a link or some other interaction. Presumably, they'll
+want to click or interact with the page in some way. But, can they?
+
+- [Time to Interactive (TTI)](https://developer.mozilla.org/en-US/docs/Glossary/Time_to_interactive):
+  _the time is takes for the application to render and be ready to handle user input_
+
+This metric is more complicated and relies on a few criteria. First, the application
+is rendered so by definition it's always after the First Paints. Second, it's
+"ready" to handle user input.
+
+What does "ready" mean? For Time to Interactivity, it's measured as the first
+time the main thread _will be_ inactive for 5 seconds meaning that any user
+input could be handled. It can be a bit tricky to understand since we have to
+wait 5 seconds to see if that given point was followed by 5 seconds of inactivity.
+Time to Interactive is not a standardized performance metric and requires using
+the Long Running Task API _(see below for more details)_.
+
+![Lighthouse Time to Interactive](./images/lighthouse-time-to-interactive.png)
+
+<span class="image-caption">
+Time to Interactive (TTI) in Lighthouse
+</span>
 
 ### Is it delightful?
 
-- Long Running Tasks
-- FID
+I like to think about all of the previous metrics as snapshots along a timeline.
+First Paint has to happen before First Contentful Paint. Both have to happen
+before Time to Interactive. But what about the prolonged usage of the
+application after the initial load? There are two more measurements that can
+help answer this question:
+
+- [Long Running Task](https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API):
+  _a long running task is anything task that takes longer than 50 milliseconds to complete_
+- [First Input Delay](https://developer.mozilla.org/en-US/docs/Glossary/First_input_delay):
+  _the time it takes from the user interacting (eg: clicking a button) to when the
+  browser responds_
+
+The Long Running Tasks are used to calculate the Time to Interactive, but they can
+also be measured on their own. Anytime there is a Long Running Tasks it could
+potentially impact the user's experience. The threshold is 50 milliseconds
+because anything above 100 milliseconds will not feel immediate and could
+be felt as delayed.
+
+![Chrome Devtools Long Running Tasks](./images/chrome-devtools-long-running-task.png)
+
+<span class="image-caption">
+Example of a Long Running Task in Chrome Devtools
+</span>
+
+The First Input Delay compliments the Time to Interactive measurement, but the
+difference is that the First Input Delay actually requires a user to interact
+with the page. Each measurement is an actual length of time that a user had
+to wait for the browser to handle their interaction. First Input Delay can
+happen at any point, not at a set point along the timeline like the earlier
+metrics.
 
 ## How should it be measured?
 
 In general, there are two approaches: "lab" tools and "real world" tools.
+You can think of lab tools as those you run on a local computer (or on a small
+sample) to get a general idea of how the application is performing. The numbers
+are not exact since there can be a large amount of variability depending on
+client devices, network connections, etc. To collect a representative example
+the metrics need to be collected in the real world, often referred to as
+Real User Monitoring (RUM). This approach uses browser APIs to collect and
+report these metrics to a tool like Google Analytics or maybe a custom
+setup like Datadog.
 
 ### Lighthouse
 
+[Lighthouse](https://developers.google.com/web/tools/lighthouse/) is a tool
+available in Chrome Devtools _(screenshots above)_ under the Audits tab. It's
+also available as a node module to run in other environments like CI. It provides
+insights into many of these performance metrics, some additional ones as well
+as other useful information such as accessibility or approaches to improve the
+performance of your application. Again, this is an excellent tool to get a
+general idea of the overall performance or where the bottlenecks might be.
+However, if you want to quantitatively discuss the performance of your application
+you'll need to implement Real User Monitoring.
+
 ### Browser APIs & Polyfills
+
+This post covers the browser APIs (in modern browsers) and polyfills available
+to implement and measure the frontend performance of an application. There are
+also several paid solutions or open source packages. As with most decisions,
+you'll have to decide if the costs and benefits are worth using one of these
+tools or reaching for the browser APIs.
+
+#### Measuring Time to First Byte (TTFB)
+
+Measuring Time to First Byte is the easiest metric to collect.
+
+To start, most of these metrics rely on the [Performance API](https://developer.mozilla.org/en-US/docs/Web/API/Performance)
+either directly or as part of the computation for a metric. To measure the time
+it takes to receive the first byte of data from the server we need to know
+the **difference between when the response started and when the request started**.
+
+This data is part of the [Navigation Timing API](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming).
+It can be retrieved by pass the [`entryType` of `navigation`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry/entryType#Performance_entry_type_names)
+to the [`getEntriesByType`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/getEntriesByType)
+function available on the performance object. To put this into code:
+
+```typescript
+// Get the performance entry for the browser navigation events
+const pageNav = performance.getEntriesByType("navigation")[0];
+
+// Calculate the time it took to receive the first byte
+const durationMs = pageNav.responseStart - pageNav.requestStart;
+```
+
+If using TypeScript, it may be necessary to cast `pageNav` to `PerformanceNavigationTiming`.
+
+#### Measuring First Paints (FP & FCP)
+
+Fortunately, there is also a browser API for tracking First Paint and First Contentful
+Paint but it's slightly more involved. The same approach be used above but passing
+the [`entryType` of `paint`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry/entryType#Performance_entry_type_names)
+to `getEntriesByType`.
+
+```typescript
+performance.getEntriesByType("paint");
+```
+
+However, if this is added in the `head` (or early) in the document, it may
+return `[]` (an empty array) if invoked before the `first-paint` or
+`first-contentful-paint` entries exist. This is where the
+[`PerformanceObserver`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver)
+can be useful. It will observe performance events and can invoke a callback when
+a specific event occurs. However, this can have the _opposite_ problem if the
+observer is created after the paint events have occurred the callback will never
+be invoked. This will no longer be a problem once the `PerformanceObserver`
+accepts the [`buffered`](https://w3c.github.io/performance-timeline/#dom-performanceobserverinit-buffered)
+parameter. Until then, ensure `PerformanceObserver` is initialized as early as
+possible, such as in the head of the document.
+
+```typescript
+(() => {
+  // Early return in browsers that don't support the paint 
+  // timing API. This also assumes if the browser supports 
+  // the PerformancePaintTiming API it also supports the 
+  // PerformanceObserver API.
+  if (!("PerformancePaintTiming" in window)) {
+    return;
+  }
+
+  const observer = new PerformanceObserver(list => {
+    for (const entry of list.getEntries()) {
+      // The `PerformanceEntry` has a `startTime` and 
+      // `duration` attribute. Usually, these need to 
+      // be subtracted but `duration` is always `0`. 
+      // Round to the nearest whole millisecond.
+      const durationMs = Math.round(entry.startTime);
+
+      // `entry.name` will be either `first-paint` 
+      // or `first-contentful-paint`. Log or track 
+      // `entry.name` and `durationMs`
+      console.log({ name: entry.name, durationMs });
+    }
+  });
+
+  observer.observe({ entryTypes: ["paint"] });
+})();
+```
+
+If looking to measure First Meaningful Paint
+that will likely need to be a custom implementation since that depends on the
+specific application and what is considered the most important content. Check
+out the [Performance `mark` API](https://developer.mozilla.org/en-US/docs/Web/API/Performance/mark)
+for one possible approach for the custom performance measurement.
+
+#### Measuring Time to Interactive (TTI)
+
+#### Measuring First Input Delay (FID)
 
 ## Conclusion
 
-Interested in learning more? Check out [this recent episode on Rubber Ducking](https://rubberducking.fm/15)
-about frontend performance, [Google Web Fundamentals](https://developers.google.com/web/fundamentals/),
-or [reach out on Twitter](https://twitter.com/spencerskovy).
+Remember, these APIs are not available in all browsers so make sure to verify
+they exist before using them to avoid errors in older browsers.
+
+Interested in learning more? Listen to this
+[recent episode on Rubber Ducking about frontend performance](https://rubberducking.fm/15),
+read [Google Web Fundamentals](https://developers.google.com/web/fundamentals/),
+or reach out on [Twitter](https://twitter.com/spencerskovy).
