@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, graphql, PageRendererProps } from "gatsby";
-import Image from "gatsby-image";
+import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -171,7 +171,7 @@ class BlogPostTemplate extends React.Component<Props> {
     } = post.frontmatter;
     const siteTitle = this.props.data.site.siteMetadata.title;
     const { previous, next } = this.props.pageContext;
-    const { slug } = post.fields;
+    const { slug, readingTime } = post.fields;
 
     const githubUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog${slug}index.md`;
     const twitterUrl = `https://mobile.twitter.com/search?q=${encodeURIComponent(
@@ -188,7 +188,7 @@ class BlogPostTemplate extends React.Component<Props> {
         />
         <ContentContainer>
           <Title>{title}</Title>
-          <Date>{date}</Date>
+          <Date>{date} &mdash; {readingTime.text}</Date>
           <FeaturedImage
             fluid={featuredImage.childImageSharp.fluid as FluidObject}
             alt={title}
@@ -249,6 +249,9 @@ export const pageQuery = graphql`
       html
       fields {
         slug
+        readingTime {
+          text
+        }
       }
       frontmatter {
         title
