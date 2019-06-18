@@ -13,13 +13,12 @@ tags:
   - typescript
 ---
 
-Up until a few months ago I had almost no idea how to think about "frontend
-performance," what it means, or how to measure it. Previously, I've looked at server
+Up until a few months ago I had no idea how to think about frontend
+performance, what it means, or how to measure it. Previously, I've looked at server
 response times and often assumed if that was "fast" the whole user experience
 would be "fast." However, there's a lot more to the performance of an application
-and the overall user experience. There are experts that know way more on this
-topic, but this is an overview of what I learned after a few months of trying to
-understand and implement frontend performance metrics.
+and the overall user experience. This is an overview of what I learned after a
+few months of trying to understand and implement frontend performance metrics.
 
 ### What is frontend performance?
 
@@ -34,7 +33,7 @@ server responds, it's 0% usable. The user hasn't received the response and they
 can't do anything without that. Once the server has responded it's now 100%
 usable for the user (or at least for the client to make it usable). With that,
 improving the server response time will improve the time it takes the server to
-become usable.
+"become usable."
 
 When looking at frontend performance it becomes less straightforward. Rarely, it's
 exactly 0% or 100% usable, but rather somewhere between during an application's
@@ -42,7 +41,7 @@ life cycle. There are a large number of variables
 that can affect the usability: the actual feature code efficiency (eg:
 [maybe using `concat` vs `push` in a large loop](https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki)),
 network latency, server response time, server response size, JavaScript and CSS
-file size, which browser, available resources on the client, caching,
+file size, browser, available resources on the client, caching,
 long running tasks, loading states, etc.
 
 ### Why care about frontend performance?
@@ -56,16 +55,14 @@ experience will usually lead to an increase in some important business metric.
 This may mean users will spend more time using your product (if you care about
 that) or maybe it means they actually spend _less_ time using your product
 because they can achieve their task quickly. Later on they might recommend it to
-their friend since it was a fast and delightful experience which increases the
-number of users.
+their friend since it was a fast and delightful experience.
 
 It's hard to generalize what exactly improving performance will lead to, but
-it will generally lead to an improvement of an important business metric.
+it will generally lead to an improvement of some important metric.
 
-If you're looking for more concrete examples there are
+If you're looking for something more concrete, there are
 [several great examples curated by Google Web Fundamentals](https://developers.google.com/web/fundamentals/performance/why-performance-matters/#performance_is_about_improving_conversions)
-outlining specific examples of how performance directly improved various
-important metrics for several sites.
+outlining specific cases of how performance directly improved important metrics.
 
 _([Google Web Fundamentals](https://developers.google.com/web/fundamentals/)
 was an invaluable resource when investigating and learning about frontend
@@ -104,9 +101,12 @@ There are actually three common "paint" measurements:
 First Contentful Paint (FCP) and First Meaningful Paint (FMP) in Lighthouse
 </span>
 
-Another metric that can br helpful to provide a full perspective is
-[Time to First Byte (TTFB)](https://developer.mozilla.org/en-US/docs/Glossary/time_to_first_byte):
-_the time it takes from the start of the request to receiving the first byte_.
+Another metric that can be helpful to provide a full perspective is the amount
+of time it takes to start receiving a response from the server.
+
+- [Time to First Byte (TTFB)](https://developer.mozilla.org/en-US/docs/Glossary/time_to_first_byte):
+  _the time it takes from the start of the request to receiving the first byte_.
+
 From the frontend perspective, this is where you can start to control the
 performance experience. Before this point is the DNS lookup, request overhead,
 server time, network latency, etc. (things generally out of the control of the frontend).
@@ -140,7 +140,7 @@ time the main thread _will be_ inactive for 5 seconds meaning that any user
 input could be handled. It can be a bit tricky to understand since we have to
 wait 5 seconds to see if that given point was followed by 5 seconds of inactivity.
 Time to Interactive is not a standardized performance metric and requires using
-the Long Running Task API _(see below for more details)_.
+the [Long Tasks API](https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API) _(see below for more details)_.
 
 ![Lighthouse Time to Interactive](./images/lighthouse-time-to-interactive.png)
 
@@ -157,15 +157,15 @@ application after the initial load? There are two more measurements that can
 help answer this question:
 
 - [Long Running Task](https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API):
-  _a long running task is anything task that takes longer than 50 milliseconds to complete_
+  _a long running task is any task that takes longer than 50 milliseconds to complete_
 - [First Input Delay](https://developer.mozilla.org/en-US/docs/Glossary/First_input_delay):
   _the time it takes from the user interacting (eg: clicking a button) to when the
   browser responds_
 
-The Long Running Tasks are used to calculate the Time to Interactive, but they can
-also be measured on their own. Anytime there is a Long Running Tasks it could
+The Long Running Tasks are also used to calculate the Time to Interactive, but they can
+also be measured on their own. Anytime there is a Long Running Task it could
 potentially impact the user's experience. The threshold is 50 milliseconds
-because anything above 100 milliseconds will not feel immediate to a user.
+because anything above 100 milliseconds may feel delayed to a user.
 
 ![Chrome Devtools Long Running Tasks](./images/chrome-devtools-long-running-task.png)
 
@@ -185,15 +185,15 @@ metrics.
 In general, there are two approaches for measuring frontend performance: "lab
 tools" and "real world tools."
 
-You can think of lab tools as something you run on a local computer (or on a small
+You can think of lab tools as something run on a your computer (or on a small
 sample) to get a general idea of how the application is performing. The numbers
 are not a true representation since there can be a large amount of variability
 depending on the device type, network connections, etc.
 
-To collect a representative sample the metrics need to be collected in the real
+To collect a true representative sample the metrics need to be collected in the real
 world, often referred to as Real User Monitoring (RUM). This approach uses
 browser APIs to collect and report these metrics to a tool like Google Analytics
-or maybe a custom integration with Datadog.
+or maybe a custom integration with Datadog or another performance monitoring tool.
 
 ### Lighthouse
 
@@ -202,7 +202,7 @@ available in Chrome Devtools _(screenshots above)_ under the Audits tab. It's
 also available as a node module to run in other environments like CI.
 
 It provides insights into many of these performance metrics and a few more.
-Lighthouse also includes additional useful information around accessibility,
+Lighthouse also includes other useful information around accessibility,
 Search Engine Optimization (SEO), Progressive Web Apps (PWA) and concrete
 approaches to improve the performance of your application.
 
@@ -213,13 +213,13 @@ you'll need to implement Real User Monitoring.
 
 ### Browser APIs & Polyfills
 
-This covers the browser APIs (in "modern" browsers) and polyfills available
-to implement and measure the frontend performance of an application. There are
+Real User Monitoring can be implemented using browser APIs (in "modern" browsers)
+and polyfills available to measure the frontend performance of an application. There are
 also several open source packages and paid solutions that take care of most of
 these implementation details. As with most decisions, you'll have to decide if the
 costs and benefits are worth using one of these tools or reaching for the browser
 APIs. Regardless, it can be beneficial to have an idea of how these metrics are
-being measured.
+being measured under the hood.
 
 #### Measuring Time to First Byte (TTFB)
 
@@ -254,7 +254,7 @@ console.log({ name: "time-to-first-byte", durationMs });
 #### Measuring First Paints (FP & FCP)
 
 Fortunately, there is also a browser API for tracking First Paint and First Contentful
-Paint but it's slightly more involved. The same approach be used above but passing
+Paint but it's slightly more involved. The same approach as above can be used but passing
 the [`entryType` of `paint`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry/entryType#Performance_entry_type_names)
 to `getEntriesByType`.
 
@@ -349,15 +349,32 @@ getFirstConsistentlyInteractive().then(durationMs => {
 });
 ```
 
+If using TypeScript, the following type definitions can be used for the `tti-polyfill` package:
+
+```typescript
+declare module "tti-polyfill" {
+  interface Options {
+    minValue?: number | null;
+    useMutationObserver?: boolean;
+  }
+
+  type GetFirstConsistentlyInteractive = (
+    options?: Options
+  ) => PromiseLike<number | null>;
+
+  export const getFirstConsistentlyInteractive: GetFirstConsistentlyInteractive;
+}
+```
+
 #### Measuring First Input Delay (FID)
 
 First Input Delay is measured in a similar fashion to Time to Interactive.
-It does not currently haven an official browser API but there is a polyfill
+It doesn't currently haven an official browser API but there is also a polyfill
 available: [`first-input-delay`](https://github.com/GoogleChromeLabs/first-input-delay).
 
 This polyfill can be installed as a package, but the recommend approach is to
 [inline the snippet](https://github.com/GoogleChromeLabs/first-input-delay/blob/master/dist/first-input-delay.min.js)
-in the head of the document.
+in the head of the document to ensure the first input is always captured.
 
 Now that the snippet is added, `perfMetrics.onFirstInputDelay` is exposed on
 the `window`. `onFirstInputDelay` is invoked by passing a callback function that
@@ -373,7 +390,7 @@ window.perfMetrics.onFirstInputDelay(durationMs => {
 });
 ```
 
-If using TypeScript, the following type definitions can be used:
+If using TypeScript, the following type definitions can be used with the `first-input-delay` snippet:
 
 ```typescript
 type OnFirstInputDelay = (callback: (duration: number) => void) => void;
@@ -394,7 +411,7 @@ declare global {
 There are a handful of other things that may be useful to consider when
 measuring these frontend performance metrics. None of these are hard
 requirements but questions that I had when investigating frontend performance
-and will likely depend on the exact scenario.
+and will likely depend on your use case.
 
 First, when should these metrics be collected? For example, are these only on
 the first page load? If you have a single page app (SPA) should some of these
@@ -417,16 +434,16 @@ document.addEventListener("visibilitychange", () => {
 });
 ```
 
-Another consideration may be to introduce bounds to avoid collecting any messy
+Another consideration may be to introduce bounds to avoid collecting any unexpected
 data. For example, all metrics must be greater than `0` and less than an
 arbitrary upper bound, say `60000` (1 minute). Generally, these metrics should be
 positive and hopefully significantly less than 1 minute so this shouldn't
 be necessary.
 
-Having these metrics are great, but as an entire aggregate it may be heard to
+Having these metrics are great, but as an entire aggregate it may be hard to
 pinpoint exact problems. Therefore, it may be beneficial to also collect metadata
-such as the device type, browser, connection type, the page or other metadata
-specific to your application 
+such as the device type _(eg: phone, tablet)_, browser, connection type _(eg: 2g, 4g)_,
+the page or other metadata specific to your application to slice the metrics
 _(see the [Chrome User Experience Report](https://developers.google.com/web/tools/chrome-user-experience-report/) for more inspiration)_.
 
 Lastly, where should these metrics be collected? There are several examples of
