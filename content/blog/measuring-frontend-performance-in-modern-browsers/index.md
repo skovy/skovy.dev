@@ -1,5 +1,5 @@
 ---
-date: 2019-05-29T11:00:00.000Z
+date: 2019-06-19T09:00:00.000Z
 title: "Measuring Frontend Performance (in modern browsers)"
 description: "The supported browser APIs and polyfills for measuring frontend performance."
 featuredImage: "./images/featured-image.jpg"
@@ -13,7 +13,7 @@ tags:
   - typescript
 ---
 
-Up until a few months ago I had no idea how to think about frontend
+Up until a few months ago, I had no idea how to think about frontend
 performance, what it means, or how to measure it. Previously, I've looked at server
 response times and often assumed if that was "fast" the whole user experience
 would be "fast." However, there's a lot more to the performance of an application
@@ -28,7 +28,7 @@ can be interpreted in different ways by different people _(or maybe the same
 person on different days)_.
 
 You could argue, when looking at something like server response time there's
-one definition for "is it usable?". The overall response time. Before the
+one definition for "is it usable?" The overall response time. Before the
 server responds, it's 0% usable. The user hasn't received the response and they
 can't do anything without that. Once the server has responded it's now 100%
 usable for the user (or at least for the client to make it usable). With that,
