@@ -416,15 +416,15 @@ export type FeedRubberDuckingEdge = {
 };
 
 export type FeedRubberDuckingEnclosure = {
-  url?: Maybe<Scalars["String"]>;
   length?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
+  url?: Maybe<Scalars["String"]>;
 };
 
 export type FeedRubberDuckingEnclosureFilterInput = {
-  url?: Maybe<StringQueryOperatorInput>;
   length?: Maybe<StringQueryOperatorInput>;
   type?: Maybe<StringQueryOperatorInput>;
+  url?: Maybe<StringQueryOperatorInput>;
 };
 
 export enum FeedRubberDuckingFieldsEnum {
@@ -519,9 +519,9 @@ export enum FeedRubberDuckingFieldsEnum {
   Link = "link",
   PubDate = "pubDate",
   Author = "author",
-  EnclosureUrl = "enclosure___url",
   EnclosureLength = "enclosure___length",
   EnclosureType = "enclosure___type",
+  EnclosureUrl = "enclosure___url",
   Description = "description",
   ContentEncoded = "content___encoded",
   ContentSnippet = "contentSnippet",
@@ -532,9 +532,9 @@ export enum FeedRubberDuckingFieldsEnum {
   ItunesSummary = "itunes___summary",
   ItunesExplicit = "itunes___explicit",
   ItunesDuration = "itunes___duration",
-  ItunesImage = "itunes___image",
   ItunesEpisode = "itunes___episode",
   ItunesKeywords = "itunes___keywords",
+  ItunesImage = "itunes___image",
 }
 
 export type FeedRubberDuckingFilterInput = {
@@ -571,9 +571,9 @@ export type FeedRubberDuckingItunes = {
   summary?: Maybe<Scalars["String"]>;
   explicit?: Maybe<Scalars["String"]>;
   duration?: Maybe<Scalars["String"]>;
-  image?: Maybe<Scalars["String"]>;
   episode?: Maybe<Scalars["String"]>;
   keywords?: Maybe<Scalars["String"]>;
+  image?: Maybe<Scalars["String"]>;
 };
 
 export type FeedRubberDuckingItunesFilterInput = {
@@ -582,9 +582,9 @@ export type FeedRubberDuckingItunesFilterInput = {
   summary?: Maybe<StringQueryOperatorInput>;
   explicit?: Maybe<StringQueryOperatorInput>;
   duration?: Maybe<StringQueryOperatorInput>;
-  image?: Maybe<StringQueryOperatorInput>;
   episode?: Maybe<StringQueryOperatorInput>;
   keywords?: Maybe<StringQueryOperatorInput>;
+  image?: Maybe<StringQueryOperatorInput>;
 };
 
 export type FeedRubberDuckingSortInput = {
@@ -632,8 +632,8 @@ export type File = Node & {
   birthtime?: Maybe<Scalars["Date"]>;
   /** Copy file to static directory and return public url to it */
   publicURL?: Maybe<Scalars["String"]>;
-  childImageSharp?: Maybe<ImageSharp>;
   childMarkdownRemark?: Maybe<MarkdownRemark>;
+  childImageSharp?: Maybe<ImageSharp>;
 };
 
 export type FileModifiedTimeArgs = {
@@ -1494,6 +1494,8 @@ export type GitHub_BranchProtectionRule = GitHub_Node & {
   requiredStatusCheckContexts?: Maybe<Array<Maybe<Scalars["String"]>>>;
   /** Are approving reviews required to update matching branches. */
   requiresApprovingReviews: Scalars["Boolean"];
+  /** Are reviews from code owners required to update matching branches. */
+  requiresCodeOwnerReviews: Scalars["Boolean"];
   /** Are commits required to be signed. */
   requiresCommitSignatures: Scalars["Boolean"];
   /** Are status checks required to update matching branches. */
@@ -1602,6 +1604,8 @@ export type GitHub_ChangeUserStatusInput = {
   organizationId?: Maybe<Scalars["ID"]>;
   /** Whether this status should indicate you are not fully available on GitHub, e.g., you are away. */
   limitedAvailability?: Maybe<Scalars["Boolean"]>;
+  /** If set, the user status will not be shown after this date. */
+  expiresAt?: Maybe<Scalars["GitHub_DateTime"]>;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars["String"]>;
 };
@@ -2273,8 +2277,13 @@ export type GitHub_ContributionCalendarWeek = {
 
 /** Ordering options for contribution connections. */
 export type GitHub_ContributionOrder = {
-  /** The field by which to order contributions. */
-  field: GitHub_ContributionOrderField;
+  /** The field by which to order contributions.
+   *
+   * **Upcoming Change on 2019-10-01 UTC**
+   * **Description:** `field` will be removed. Only one order field is supported.
+   * **Reason:** `field` will be removed.
+   */
+  field?: Maybe<GitHub_ContributionOrderField>;
   /** The ordering direction. */
   direction: GitHub_OrderDirection;
 };
@@ -3440,6 +3449,8 @@ export type GitHub_Gist = GitHub_Node &
     description?: Maybe<Scalars["String"]>;
     /** The files in this gist. */
     files?: Maybe<Array<Maybe<GitHub_GistFile>>>;
+    /** A list of forks associated with the gist */
+    forks: GitHub_GistConnection;
     id: Scalars["ID"];
     /** Identifies if the gist is a fork. */
     isFork: Scalars["Boolean"];
@@ -3470,6 +3481,16 @@ export type GitHub_GistCommentsArgs = {
 /** A Gist. */
 export type GitHub_GistFilesArgs = {
   limit: Scalars["Int"];
+  oid?: Maybe<Scalars["GitHub_GitObjectID"]>;
+};
+
+/** A Gist. */
+export type GitHub_GistForksArgs = {
+  after?: Maybe<Scalars["String"]>;
+  before?: Maybe<Scalars["String"]>;
+  first?: Maybe<Scalars["Int"]>;
+  last?: Maybe<Scalars["Int"]>;
+  orderBy?: Maybe<GitHub_GistOrder>;
 };
 
 /** A Gist. */
@@ -3810,13 +3831,13 @@ export type GitHub_HeadRefRestoredEvent = GitHub_Node & {
   pullRequest: GitHub_PullRequest;
 };
 
-/** The possible states in which authentication can be configured with an Identity Provider. */
+/** The possible states in which authentication can be configured with an identity provider. */
 export enum GitHub_IdentityProviderConfigurationState {
-  /** Authentication with an Identity Provider is configured and enforced. */
+  /** Authentication with an identity provider is configured and enforced. */
   Enforced = "ENFORCED",
-  /** Authentication with an Identity Provider is configured but not enforced. */
+  /** Authentication with an identity provider is configured but not enforced. */
   Configured = "CONFIGURED",
-  /** Authentication with an Identity Provider is not configured. */
+  /** Authentication with an identity provider is not configured. */
   Unconfigured = "UNCONFIGURED",
 }
 
@@ -3970,7 +3991,7 @@ export type GitHub_IssueProjectCardsArgs = {
   before?: Maybe<Scalars["String"]>;
   first?: Maybe<Scalars["Int"]>;
   last?: Maybe<Scalars["Int"]>;
-  archivedStates?: Maybe<Array<Maybe<GitHub_ProjectCardArchivedState>>>;
+  archivedStates: Array<Maybe<GitHub_ProjectCardArchivedState>>;
 };
 
 /** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
@@ -4631,6 +4652,32 @@ export enum GitHub_LockReason {
   Spam = "SPAM",
 }
 
+/** A placeholder user for attribution of imported data on GitHub. */
+export type GitHub_Mannequin = GitHub_Node &
+  GitHub_Actor &
+  GitHub_UniformResourceLocatable & {
+    /** A URL pointing to the GitHub App's public avatar. */
+    avatarUrl: Scalars["GitHub_URI"];
+    /** Identifies the date and time when the object was created. */
+    createdAt: Scalars["GitHub_DateTime"];
+    /** Identifies the primary key from the database. */
+    databaseId?: Maybe<Scalars["Int"]>;
+    id: Scalars["ID"];
+    /** The username of the actor. */
+    login: Scalars["String"];
+    /** The HTML path to this resource. */
+    resourcePath: Scalars["GitHub_URI"];
+    /** Identifies the date and time when the object was last updated. */
+    updatedAt: Scalars["GitHub_DateTime"];
+    /** The URL to this resource. */
+    url: Scalars["GitHub_URI"];
+  };
+
+/** A placeholder user for attribution of imported data on GitHub. */
+export type GitHub_MannequinAvatarUrlArgs = {
+  size?: Maybe<Scalars["Int"]>;
+};
+
 /** A public description of a Marketplace category. */
 export type GitHub_MarketplaceCategory = GitHub_Node & {
   /** The category's description. */
@@ -4689,6 +4736,8 @@ export type GitHub_MarketplaceListing = GitHub_Node & {
   installedForViewer: Scalars["Boolean"];
   /** Whether this listing has been approved for display in the Marketplace. */
   isApproved: Scalars["Boolean"];
+  /** Whether this listing has been removed from the Marketplace. */
+  isArchived: Scalars["Boolean"];
   /** Whether this listing has been removed from the Marketplace. */
   isDelisted: Scalars["Boolean"];
   /** Whether this listing is still an editable draft that has not been submitted
@@ -5158,7 +5207,7 @@ export type GitHub_Organization = GitHub_Node &
     requiresTwoFactorAuthentication?: Maybe<Scalars["Boolean"]>;
     /** The HTTP path for this organization. */
     resourcePath: Scalars["GitHub_URI"];
-    /** The Organization's SAML Identity Providers */
+    /** The Organization's SAML identity providers */
     samlIdentityProvider?: Maybe<GitHub_OrganizationIdentityProvider>;
     /** Find an organization's team by its slug. */
     team?: Maybe<GitHub_Team>;
@@ -5243,8 +5292,8 @@ export type GitHub_OrganizationPinnedItemsArgs = {
 export type GitHub_OrganizationPinnedRepositoriesArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -5272,8 +5321,8 @@ export type GitHub_OrganizationProjectsArgs = {
 export type GitHub_OrganizationRepositoriesArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -5457,6 +5506,22 @@ export type GitHub_PageInfo = {
   startCursor?: Maybe<Scalars["String"]>;
 };
 
+/** Types that can grant permissions on a repository to a user */
+export type GitHub_PermissionGranter =
+  | GitHub_Organization
+  | GitHub_Repository
+  | GitHub_Team;
+
+/** A level of permission and source for a user's access to a repository. */
+export type GitHub_PermissionSource = {
+  /** The organization the repository belongs to. */
+  organization: GitHub_Organization;
+  /** The level of access this source has granted to the user. */
+  permission: GitHub_DefaultRepositoryPermissionField;
+  /** The source of this permission. */
+  source: GitHub_PermissionGranter;
+};
+
 /** Autogenerated input type of PinIssue */
 export type GitHub_PinIssueInput = {
   /** The ID of the issue to be pinned */
@@ -5488,12 +5553,24 @@ export type GitHub_PinnableItemEdge = {
   node?: Maybe<GitHub_PinnableItem>;
 };
 
-/** Represents items that can be pinned to a profile page. */
+/** Represents items that can be pinned to a profile page or dashboard. */
 export enum GitHub_PinnableItemType {
   /** A repository. */
   Repository = "REPOSITORY",
   /** A gist. */
   Gist = "GIST",
+  /** An issue. */
+  Issue = "ISSUE",
+  /** A project. */
+  Project = "PROJECT",
+  /** A pull request. */
+  PullRequest = "PULL_REQUEST",
+  /** A user. */
+  User = "USER",
+  /** An organization. */
+  Organization = "ORGANIZATION",
+  /** A team. */
+  Team = "TEAM",
 }
 
 /** Represents a 'pinned' event on a given issue or pull request. */
@@ -5637,7 +5714,7 @@ export type GitHub_ProjectPendingCardsArgs = {
   before?: Maybe<Scalars["String"]>;
   first?: Maybe<Scalars["Int"]>;
   last?: Maybe<Scalars["Int"]>;
-  archivedStates?: Maybe<Array<Maybe<GitHub_ProjectCardArchivedState>>>;
+  archivedStates: Array<Maybe<GitHub_ProjectCardArchivedState>>;
 };
 
 /** A card in a project. */
@@ -5751,7 +5828,7 @@ export type GitHub_ProjectColumnCardsArgs = {
   before?: Maybe<Scalars["String"]>;
   first?: Maybe<Scalars["Int"]>;
   last?: Maybe<Scalars["Int"]>;
-  archivedStates?: Maybe<Array<Maybe<GitHub_ProjectCardArchivedState>>>;
+  archivedStates: Array<Maybe<GitHub_ProjectCardArchivedState>>;
 };
 
 /** The connection type for ProjectColumn. */
@@ -5875,7 +5952,7 @@ export enum GitHub_ProjectState {
 export type GitHub_PublicKey = GitHub_Node & {
   /** The last time this authorization was used to perform an action */
   accessedAt?: Maybe<Scalars["GitHub_DateTime"]>;
-  /** Identifies the date and time when the object was created. */
+  /** Identifies the date and time when the key was created. Keys created before March 5th, 2014 have inaccurate values. */
   createdAt: Scalars["GitHub_DateTime"];
   /** The fingerprint for this PublicKey */
   fingerprint?: Maybe<Scalars["String"]>;
@@ -5884,7 +5961,7 @@ export type GitHub_PublicKey = GitHub_Node & {
   isReadOnly: Scalars["Boolean"];
   /** The public key string */
   key: Scalars["String"];
-  /** Identifies the date and time when the object was last updated. */
+  /** Identifies the date and time when the key was updated. Keys created before March 5th, 2014 may have inaccurate values. */
   updatedAt: Scalars["GitHub_DateTime"];
 };
 
@@ -6122,7 +6199,7 @@ export type GitHub_PullRequestProjectCardsArgs = {
   before?: Maybe<Scalars["String"]>;
   first?: Maybe<Scalars["Int"]>;
   last?: Maybe<Scalars["Int"]>;
-  archivedStates?: Maybe<Array<Maybe<GitHub_ProjectCardArchivedState>>>;
+  archivedStates: Array<Maybe<GitHub_ProjectCardArchivedState>>;
 };
 
 /** A repository pull request. */
@@ -7596,6 +7673,8 @@ export type GitHub_Repository = GitHub_Node &
     nameWithOwner: Scalars["String"];
     /** A Git object in the repository */
     object?: Maybe<GitHub_GitObject>;
+    /** The image used to represent this repository in Open Graph data. */
+    openGraphImageUrl: Scalars["GitHub_URI"];
     /** The User owner of the repository. */
     owner: GitHub_RepositoryOwner;
     /** The repository parent, if this is a fork. */
@@ -7642,6 +7721,8 @@ export type GitHub_Repository = GitHub_Node &
     updatedAt: Scalars["GitHub_DateTime"];
     /** The HTTP URL for this repository */
     url: Scalars["GitHub_URI"];
+    /** Whether this repository has a custom image to use with Open Graph as opposed to being represented by the owner's avatar. */
+    usesCustomOpenGraphImage: Scalars["Boolean"];
     /** Indicates whether the viewer has admin permissions on this repository. */
     viewerCanAdminister: Scalars["Boolean"];
     /** Can the current viewer create new projects on this owner. */
@@ -7715,8 +7796,8 @@ export type GitHub_RepositoryDeploymentsArgs = {
 export type GitHub_RepositoryForksArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -7931,6 +8012,8 @@ export type GitHub_RepositoryCollaboratorEdge = {
   node: GitHub_User;
   /** The permission the user has on the repository. */
   permission: GitHub_RepositoryPermission;
+  /** A list of sources for the user's access to the repository. */
+  permissionSources?: Maybe<Array<GitHub_PermissionSource>>;
 };
 
 /** A list of repositories owned by the subject. */
@@ -8005,6 +8088,8 @@ export type GitHub_RepositoryInfo = {
   name: Scalars["String"];
   /** The repository's name with owner. */
   nameWithOwner: Scalars["String"];
+  /** The image used to represent this repository in Open Graph data. */
+  openGraphImageUrl: Scalars["GitHub_URI"];
   /** The User owner of the repository. */
   owner: GitHub_RepositoryOwner;
   /** Identifies when the repository was last pushed to. */
@@ -8017,6 +8102,8 @@ export type GitHub_RepositoryInfo = {
   updatedAt: Scalars["GitHub_DateTime"];
   /** The HTTP URL for this repository */
   url: Scalars["GitHub_URI"];
+  /** Whether this repository has a custom image to use with Open Graph as opposed to being represented by the owner's avatar. */
+  usesCustomOpenGraphImage: Scalars["Boolean"];
 };
 
 /** A subset of repository info. */
@@ -8113,8 +8200,8 @@ export type GitHub_RepositoryOwnerAvatarUrlArgs = {
 export type GitHub_RepositoryOwnerPinnedRepositoriesArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -8126,8 +8213,8 @@ export type GitHub_RepositoryOwnerPinnedRepositoriesArgs = {
 export type GitHub_RepositoryOwnerRepositoriesArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -8143,11 +8230,17 @@ export type GitHub_RepositoryOwnerRepositoryArgs = {
 
 /** The access level to a repository */
 export enum GitHub_RepositoryPermission {
-  /** Can read, clone, push, and add collaborators */
+  /** Can read, clone, and push to this repository. Can also manage issues, pull
+   * requests, and repository settings, including adding collaborators
+   */
   Admin = "ADMIN",
-  /** Can read, clone and push */
+  /** Can read, clone, and push to this repository. They can also manage issues, pull requests, and some repository settings */
+  Maintain = "MAINTAIN",
+  /** Can read, clone, and push to this repository. Can also manage issues and pull requests */
   Write = "WRITE",
-  /** Can read and clone */
+  /** Can read and clone this repository. Can also manage issues and pull requests */
+  Triage = "TRIAGE",
+  /** Can read and clone this repository. Can also open and comment on issues and pull requests */
   Read = "READ",
 }
 
@@ -8192,7 +8285,10 @@ export type GitHub_RepositoryTopicEdge = {
 };
 
 /** Types that can be requested reviewers. */
-export type GitHub_RequestedReviewer = GitHub_User | GitHub_Team;
+export type GitHub_RequestedReviewer =
+  | GitHub_User
+  | GitHub_Team
+  | GitHub_Mannequin;
 
 /** Autogenerated input type of RequestReviews */
 export type GitHub_RequestReviewsInput = {
@@ -8432,6 +8528,8 @@ export type GitHub_SecurityAdvisory = GitHub_Node & {
   id: Scalars["ID"];
   /** A list of identifiers for this advisory */
   identifiers: Array<GitHub_SecurityAdvisoryIdentifier>;
+  /** The organization that originated the advisory */
+  origin: Scalars["String"];
   /** When the advisory was published */
   publishedAt: Scalars["GitHub_DateTime"];
   /** A list of references for this advisory */
@@ -8737,6 +8835,8 @@ export type GitHub_StatusContextArgs = {
 
 /** Represents an individual commit status context */
 export type GitHub_StatusContext = GitHub_Node & {
+  /** The avatar of the OAuth application or the user that created the status */
+  avatarUrl?: Maybe<Scalars["GitHub_URI"]>;
   /** This commit this status context is attached to. */
   commit?: Maybe<GitHub_Commit>;
   /** The name of this status context. */
@@ -8752,6 +8852,11 @@ export type GitHub_StatusContext = GitHub_Node & {
   state: GitHub_StatusState;
   /** The URL for this status context. */
   targetUrl?: Maybe<Scalars["GitHub_URI"]>;
+};
+
+/** Represents an individual commit status context */
+export type GitHub_StatusContextAvatarUrlArgs = {
+  size: Scalars["Int"];
 };
 
 /** The possible commit status states. */
@@ -9929,8 +10034,8 @@ export type GitHub_UserPinnedItemsArgs = {
 export type GitHub_UserPinnedRepositoriesArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -9979,8 +10084,8 @@ export type GitHub_UserPullRequestsArgs = {
 export type GitHub_UserRepositoriesArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -10021,8 +10126,8 @@ export type GitHub_UserStarredRepositoriesArgs = {
 export type GitHub_UserWatchingArgs = {
   privacy?: Maybe<GitHub_RepositoryPrivacy>;
   orderBy?: Maybe<GitHub_RepositoryOrder>;
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>;
+  affiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
+  ownerAffiliations: Array<Maybe<GitHub_RepositoryAffiliation>>;
   isLocked?: Maybe<Scalars["Boolean"]>;
   after?: Maybe<Scalars["String"]>;
   before?: Maybe<Scalars["String"]>;
@@ -10122,6 +10227,8 @@ export type GitHub_UserStatus = GitHub_Node & {
   createdAt: Scalars["GitHub_DateTime"];
   /** An emoji summarizing the user's status. */
   emoji?: Maybe<Scalars["String"]>;
+  /** If set, the status will not be shown after this date. */
+  expiresAt?: Maybe<Scalars["GitHub_DateTime"]>;
   /** ID of the object. */
   id: Scalars["ID"];
   /** Whether this status indicates the user is not fully available on GitHub. */
@@ -10903,6 +11010,7 @@ export type MarkdownRemarkEdge = {
 };
 
 export type MarkdownRemarkFields = {
+  readingTime?: Maybe<MarkdownRemarkFieldsReadingTime>;
   slug?: Maybe<Scalars["String"]>;
 };
 
@@ -11044,12 +11152,15 @@ export enum MarkdownRemarkFieldsEnum {
   FrontmatterFeaturedImageCtime = "frontmatter___featuredImage___ctime",
   FrontmatterFeaturedImageBirthtime = "frontmatter___featuredImage___birthtime",
   FrontmatterFeaturedImagePublicUrl = "frontmatter___featuredImage___publicURL",
-  FrontmatterImages = "frontmatter___images",
-  FrontmatterTags = "frontmatter___tags",
   FrontmatterFeaturedImageCredit = "frontmatter___featuredImageCredit",
+  FrontmatterTags = "frontmatter___tags",
   Excerpt = "excerpt",
   RawMarkdownBody = "rawMarkdownBody",
   FileAbsolutePath = "fileAbsolutePath",
+  FieldsReadingTimeText = "fields___readingTime___text",
+  FieldsReadingTimeMinutes = "fields___readingTime___minutes",
+  FieldsReadingTimeTime = "fields___readingTime___time",
+  FieldsReadingTimeWords = "fields___readingTime___words",
   FieldsSlug = "fields___slug",
   Html = "html",
   HtmlAst = "htmlAst",
@@ -11065,7 +11176,22 @@ export enum MarkdownRemarkFieldsEnum {
 }
 
 export type MarkdownRemarkFieldsFilterInput = {
+  readingTime?: Maybe<MarkdownRemarkFieldsReadingTimeFilterInput>;
   slug?: Maybe<StringQueryOperatorInput>;
+};
+
+export type MarkdownRemarkFieldsReadingTime = {
+  text?: Maybe<Scalars["String"]>;
+  minutes?: Maybe<Scalars["Float"]>;
+  time?: Maybe<Scalars["Float"]>;
+  words?: Maybe<Scalars["Int"]>;
+};
+
+export type MarkdownRemarkFieldsReadingTimeFilterInput = {
+  text?: Maybe<StringQueryOperatorInput>;
+  minutes?: Maybe<FloatQueryOperatorInput>;
+  time?: Maybe<FloatQueryOperatorInput>;
+  words?: Maybe<IntQueryOperatorInput>;
 };
 
 export type MarkdownRemarkFilterInput = {
@@ -11092,9 +11218,8 @@ export type MarkdownRemarkFrontmatter = {
   date?: Maybe<Scalars["Date"]>;
   description?: Maybe<Scalars["String"]>;
   featuredImage?: Maybe<File>;
-  images?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
   featuredImageCredit?: Maybe<Scalars["String"]>;
+  tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
 };
 
 export type MarkdownRemarkFrontmatterDateArgs = {
@@ -11109,9 +11234,8 @@ export type MarkdownRemarkFrontmatterFilterInput = {
   date?: Maybe<DateQueryOperatorInput>;
   description?: Maybe<StringQueryOperatorInput>;
   featuredImage?: Maybe<FileFilterInput>;
-  images?: Maybe<StringQueryOperatorInput>;
-  tags?: Maybe<StringQueryOperatorInput>;
   featuredImageCredit?: Maybe<StringQueryOperatorInput>;
+  tags?: Maybe<StringQueryOperatorInput>;
 };
 
 export type MarkdownRemarkGroupConnection = {
@@ -11185,12 +11309,12 @@ export type Query = {
   allDirectory?: Maybe<DirectoryConnection>;
   imageSharp?: Maybe<ImageSharp>;
   allImageSharp?: Maybe<ImageSharpConnection>;
+  markdownRemark?: Maybe<MarkdownRemark>;
+  allMarkdownRemark?: Maybe<MarkdownRemarkConnection>;
   graphQlSource?: Maybe<GraphQlSource>;
   allGraphQlSource?: Maybe<GraphQlSourceConnection>;
   feedRubberDucking?: Maybe<FeedRubberDucking>;
   allFeedRubberDucking?: Maybe<FeedRubberDuckingConnection>;
-  markdownRemark?: Maybe<MarkdownRemark>;
-  allMarkdownRemark?: Maybe<MarkdownRemarkConnection>;
   github?: Maybe<GitHub>;
 };
 
@@ -11376,6 +11500,32 @@ export type QueryAllImageSharpArgs = {
   limit?: Maybe<Scalars["Int"]>;
 };
 
+export type QueryMarkdownRemarkArgs = {
+  id?: Maybe<StringQueryOperatorInput>;
+  parent?: Maybe<NodeFilterInput>;
+  children?: Maybe<NodeFilterListInput>;
+  internal?: Maybe<InternalFilterInput>;
+  frontmatter?: Maybe<MarkdownRemarkFrontmatterFilterInput>;
+  excerpt?: Maybe<StringQueryOperatorInput>;
+  rawMarkdownBody?: Maybe<StringQueryOperatorInput>;
+  fileAbsolutePath?: Maybe<StringQueryOperatorInput>;
+  fields?: Maybe<MarkdownRemarkFieldsFilterInput>;
+  html?: Maybe<StringQueryOperatorInput>;
+  htmlAst?: Maybe<JsonQueryOperatorInput>;
+  excerptAst?: Maybe<JsonQueryOperatorInput>;
+  headings?: Maybe<MarkdownHeadingFilterListInput>;
+  timeToRead?: Maybe<IntQueryOperatorInput>;
+  tableOfContents?: Maybe<StringQueryOperatorInput>;
+  wordCount?: Maybe<WordCountFilterInput>;
+};
+
+export type QueryAllMarkdownRemarkArgs = {
+  filter?: Maybe<MarkdownRemarkFilterInput>;
+  sort?: Maybe<MarkdownRemarkSortInput>;
+  skip?: Maybe<Scalars["Int"]>;
+  limit?: Maybe<Scalars["Int"]>;
+};
+
 export type QueryGraphQlSourceArgs = {
   id?: Maybe<StringQueryOperatorInput>;
   parent?: Maybe<NodeFilterInput>;
@@ -11414,32 +11564,6 @@ export type QueryFeedRubberDuckingArgs = {
 export type QueryAllFeedRubberDuckingArgs = {
   filter?: Maybe<FeedRubberDuckingFilterInput>;
   sort?: Maybe<FeedRubberDuckingSortInput>;
-  skip?: Maybe<Scalars["Int"]>;
-  limit?: Maybe<Scalars["Int"]>;
-};
-
-export type QueryMarkdownRemarkArgs = {
-  id?: Maybe<StringQueryOperatorInput>;
-  parent?: Maybe<NodeFilterInput>;
-  children?: Maybe<NodeFilterListInput>;
-  internal?: Maybe<InternalFilterInput>;
-  frontmatter?: Maybe<MarkdownRemarkFrontmatterFilterInput>;
-  excerpt?: Maybe<StringQueryOperatorInput>;
-  rawMarkdownBody?: Maybe<StringQueryOperatorInput>;
-  fileAbsolutePath?: Maybe<StringQueryOperatorInput>;
-  fields?: Maybe<MarkdownRemarkFieldsFilterInput>;
-  html?: Maybe<StringQueryOperatorInput>;
-  htmlAst?: Maybe<JsonQueryOperatorInput>;
-  excerptAst?: Maybe<JsonQueryOperatorInput>;
-  headings?: Maybe<MarkdownHeadingFilterListInput>;
-  timeToRead?: Maybe<IntQueryOperatorInput>;
-  tableOfContents?: Maybe<StringQueryOperatorInput>;
-  wordCount?: Maybe<WordCountFilterInput>;
-};
-
-export type QueryAllMarkdownRemarkArgs = {
-  filter?: Maybe<MarkdownRemarkFilterInput>;
-  sort?: Maybe<MarkdownRemarkSortInput>;
   skip?: Maybe<Scalars["Int"]>;
   limit?: Maybe<Scalars["Int"]>;
 };
@@ -11873,10 +11997,12 @@ export enum SitePageFieldsEnum {
   PluginCreatorPluginOptionsPluginsId = "pluginCreator___pluginOptions___plugins___id",
   PluginCreatorPluginOptionsPluginsName = "pluginCreator___pluginOptions___plugins___name",
   PluginCreatorPluginOptionsPluginsVersion = "pluginCreator___pluginOptions___plugins___version",
+  PluginCreatorPluginOptionsPluginsNodeApIs = "pluginCreator___pluginOptions___plugins___nodeAPIs",
   PluginCreatorPluginOptionsPluginsPluginFilepath = "pluginCreator___pluginOptions___plugins___pluginFilepath",
   PluginCreatorPluginOptionsPath = "pluginCreator___pluginOptions___path",
   PluginCreatorPluginOptionsName = "pluginCreator___pluginOptions___name",
   PluginCreatorPluginOptionsMaxWidth = "pluginCreator___pluginOptions___maxWidth",
+  PluginCreatorPluginOptionsBackgroundColor = "pluginCreator___pluginOptions___backgroundColor",
   PluginCreatorPluginOptionsWrapperStyle = "pluginCreator___pluginOptions___wrapperStyle",
   PluginCreatorPluginOptionsShortName = "pluginCreator___pluginOptions___short_name",
   PluginCreatorPluginOptionsStartUrl = "pluginCreator___pluginOptions___start_url",
@@ -12083,11 +12209,14 @@ export enum SitePluginFieldsEnum {
   PluginOptionsPluginsName = "pluginOptions___plugins___name",
   PluginOptionsPluginsVersion = "pluginOptions___plugins___version",
   PluginOptionsPluginsPluginOptionsMaxWidth = "pluginOptions___plugins___pluginOptions___maxWidth",
+  PluginOptionsPluginsPluginOptionsBackgroundColor = "pluginOptions___plugins___pluginOptions___backgroundColor",
   PluginOptionsPluginsPluginOptionsWrapperStyle = "pluginOptions___plugins___pluginOptions___wrapperStyle",
+  PluginOptionsPluginsNodeApIs = "pluginOptions___plugins___nodeAPIs",
   PluginOptionsPluginsPluginFilepath = "pluginOptions___plugins___pluginFilepath",
   PluginOptionsPath = "pluginOptions___path",
   PluginOptionsName = "pluginOptions___name",
   PluginOptionsMaxWidth = "pluginOptions___maxWidth",
+  PluginOptionsBackgroundColor = "pluginOptions___backgroundColor",
   PluginOptionsWrapperStyle = "pluginOptions___wrapperStyle",
   PluginOptionsShortName = "pluginOptions___short_name",
   PluginOptionsStartUrl = "pluginOptions___start_url",
@@ -12223,6 +12352,7 @@ export type SitePluginPluginOptions = {
   path?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
   maxWidth?: Maybe<Scalars["Int"]>;
+  backgroundColor?: Maybe<Scalars["String"]>;
   wrapperStyle?: Maybe<Scalars["String"]>;
   short_name?: Maybe<Scalars["String"]>;
   start_url?: Maybe<Scalars["String"]>;
@@ -12244,6 +12374,7 @@ export type SitePluginPluginOptionsFilterInput = {
   path?: Maybe<StringQueryOperatorInput>;
   name?: Maybe<StringQueryOperatorInput>;
   maxWidth?: Maybe<IntQueryOperatorInput>;
+  backgroundColor?: Maybe<StringQueryOperatorInput>;
   wrapperStyle?: Maybe<StringQueryOperatorInput>;
   short_name?: Maybe<StringQueryOperatorInput>;
   start_url?: Maybe<StringQueryOperatorInput>;
@@ -12296,6 +12427,7 @@ export type SitePluginPluginOptionsPlugins = {
   name?: Maybe<Scalars["String"]>;
   version?: Maybe<Scalars["String"]>;
   pluginOptions?: Maybe<SitePluginPluginOptionsPluginsPluginOptions>;
+  nodeAPIs?: Maybe<Array<Maybe<Scalars["String"]>>>;
   pluginFilepath?: Maybe<Scalars["String"]>;
 };
 
@@ -12305,6 +12437,7 @@ export type SitePluginPluginOptionsPluginsFilterInput = {
   name?: Maybe<StringQueryOperatorInput>;
   version?: Maybe<StringQueryOperatorInput>;
   pluginOptions?: Maybe<SitePluginPluginOptionsPluginsPluginOptionsFilterInput>;
+  nodeAPIs?: Maybe<StringQueryOperatorInput>;
   pluginFilepath?: Maybe<StringQueryOperatorInput>;
 };
 
@@ -12314,11 +12447,13 @@ export type SitePluginPluginOptionsPluginsFilterListInput = {
 
 export type SitePluginPluginOptionsPluginsPluginOptions = {
   maxWidth?: Maybe<Scalars["Int"]>;
+  backgroundColor?: Maybe<Scalars["String"]>;
   wrapperStyle?: Maybe<Scalars["String"]>;
 };
 
 export type SitePluginPluginOptionsPluginsPluginOptionsFilterInput = {
   maxWidth?: Maybe<IntQueryOperatorInput>;
+  backgroundColor?: Maybe<StringQueryOperatorInput>;
   wrapperStyle?: Maybe<StringQueryOperatorInput>;
 };
 
