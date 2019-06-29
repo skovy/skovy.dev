@@ -11,6 +11,8 @@ module.exports = {
     social: {
       twitter: `spencerskovy`,
       github: `skovy`,
+      goodreads: `64661635-spencer-miskoviak`,
+      linkedin: `skovy`
     },
     otherPodcasts: [
       {

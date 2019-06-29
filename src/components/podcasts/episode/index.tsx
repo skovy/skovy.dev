@@ -5,7 +5,7 @@ import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import {
   FeedRubberDucking,
-  SiteSiteMetadataOtherPodcasts,
+  SiteSiteMetadataOtherPodcasts
 } from "../../../generated/graphql";
 import { AnimatedCard } from "../../animated-card";
 
@@ -55,10 +55,7 @@ export class PodcastsEpisode extends React.Component<Props> {
     return (
       <AnimatedCard>
         <Container href={episode.link} target="_blank">
-          <Image
-            src={episode.itunes.image || FALLBACK_IMAGE}
-            alt={episode.title}
-          />
+          <Image src={episode.itunes.image || FALLBACK_IMAGE} alt="podcast logo"/>
           <Title>{episode.title}</Title>
         </Container>
       </AnimatedCard>

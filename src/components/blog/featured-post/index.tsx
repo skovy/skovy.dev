@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 
-import { rhythm } from "../../../utils/typography";
+import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { MarkdownRemark } from "../../../generated/graphql";
 import { ContentContainer } from "../../content-container";
@@ -27,12 +27,13 @@ const Container = styled(Link)`
   }
 `;
 
-const Title = styled.h3`
+const Title = styled.h2`
   margin: 0;
   padding: ${rhythm(1)};
   padding-bottom: 0;
   color: ${colors.text};
   text-align: left;
+  font-size: ${rhythm(1)};
 `;
 
 const Description = styled.p`
@@ -51,7 +52,7 @@ export const BlogFeaturedPost = (props: Props) => {
 
   return (
     <ContentContainer>
-      <SectionHeading>Latest Post</SectionHeading>
+      <SectionHeading as="h1">Latest Post</SectionHeading>
       <AnimatedCard>
         <Container to={fields.slug}>
           <Image
