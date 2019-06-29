@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { Link } from "gatsby";
 
 import { ContentContainer } from "../content-container";
+import { NavigationMenu } from "../navigation/menu";
 import { colors } from "../../config/colors";
 import { rhythm, scale } from "../../utils/typography";
 
 const Container = styled.header``;
 
 const Title = styled.h3`
-  margin-top: ${rhythm(1)};
+  margin: 0;
   ${scale(1)}
 `;
 
@@ -23,6 +24,13 @@ const TitleLink = styled(Link)`
   }
 `;
 
+const TopBar = styled.div`
+  margin: ${rhythm(1)} 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 interface Props {
   title: string;
 }
@@ -33,9 +41,12 @@ export const Header = (props: Props) => {
   return (
     <Container>
       <ContentContainer>
-        <Title>
-          <TitleLink to={`/`}>{title}</TitleLink>
-        </Title>
+        <TopBar>
+          <Title>
+            <TitleLink to={`/`}>{title}</TitleLink>
+          </Title>
+          <NavigationMenu />
+        </TopBar>
       </ContentContainer>
     </Container>
   );

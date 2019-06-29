@@ -63,6 +63,7 @@ export const Footer = () => (
                   data.site.siteMetadata.social.github
                 }`}
                 aria-label="GitHub"
+                title="GitHub"
               >
                 <FontAwesomeIcon icon={faGithub} size="lg" />
               </SocialLink>
@@ -71,6 +72,7 @@ export const Footer = () => (
                   data.site.siteMetadata.social.twitter
                 }`}
                 aria-label="Twitter"
+                title="Twitter"
               >
                 <FontAwesomeIcon icon={faTwitter} size="lg" />
               </SocialLink>
@@ -79,6 +81,7 @@ export const Footer = () => (
                   data.site.siteMetadata.social.goodreads
                 }`}
                 aria-label="Goodreads"
+                title="Goodreads"
               >
                 <FontAwesomeIcon icon={faGoodreadsG} size="lg" />
               </SocialLink>
@@ -87,6 +90,7 @@ export const Footer = () => (
                   data.site.siteMetadata.social.linkedin
                 }`}
                 aria-label="Linkedin"
+                title="Linkedin"
               >
                 <FontAwesomeIcon icon={faLinkedinIn} size="lg" />
               </SocialLink>
