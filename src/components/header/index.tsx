@@ -29,6 +29,11 @@ const TopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 interface Props {

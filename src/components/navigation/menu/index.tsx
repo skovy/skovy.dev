@@ -12,12 +12,10 @@ const NavLink = styled(Link)`
   font-weight: 700;
   color: ${colors.primary};
   text-decoration: none;
-  padding: ${rhythm(1/2)};
-  border-radius: ${rhythm(1/4)};
   transition: color 200ms ease;
 
   & + & {
-    margin-left: ${rhythm(1/2)};
+    margin-left: ${rhythm(1)};
   }
 
   &:hover,
