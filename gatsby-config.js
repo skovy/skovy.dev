@@ -11,6 +11,8 @@ module.exports = {
     social: {
       twitter: `spencerskovy`,
       github: `skovy`,
+      goodreads: `64661635-spencer-miskoviak`,
+      linkedin: `skovy`
     },
     otherPodcasts: [
       {
@@ -18,7 +20,7 @@ module.exports = {
         title: `RRU 044: TypeScript with Spencer Miskoviak`,
         link: `https://devchat.tv/react-round-up/rru-044-typescript-with-spencer-miskoviak/`,
         itunes: {
-          image: `https://devchat.tv/wp-content/uploads/2018/03/reactroundup-itunes.jpg`,
+          image: `https://devchat.tv/images/podcasts/reactroundup-500.jpg`,
         },
       },
     ],

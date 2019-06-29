@@ -38,7 +38,7 @@ export class GitHubProjects extends React.Component {
       <StaticQuery
         query={query}
         render={data => (
-          <Container>
+          <Container id="projects-and-packages">
             <ContentContainer>
               <SectionHeading>Projects & Packages</SectionHeading>
               <Grid>

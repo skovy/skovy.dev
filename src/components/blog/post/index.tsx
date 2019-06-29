@@ -46,7 +46,6 @@ export const BlogPost = (props: Props) => {
       <Container to={fields.slug}>
         <Image
           fluid={frontmatter.featuredImage.childImageSharp.fluid as FluidObject}
-          alt={frontmatter.title}
         />
         <Title>{frontmatter.title}</Title>
       </Container>
