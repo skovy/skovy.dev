@@ -1,5 +1,5 @@
 ---
-date: 2019-07-14T08:00:00.000Z
+date: 2019-07-20T08:00:00.000Z
 title: "Separating webpack from the Rails Asset Pipeline"
 description: "An approach for decoupling a webpack build process from the Rails Asset Pipeline build process"
 featuredImage: "./images/featured-image.jpg"
@@ -11,24 +11,25 @@ tags:
 ---
 
 Years ago, if generating a new Rails app, the out-of-the-box setup for writing 
-implementing client-side functionality was CoffeeScript. This CoffeeScript was 
+client-side functionality was CoffeeScript. This CoffeeScript was 
 then transpiled by the [Rails Asset Pipeline](https://guides.rubyonrails.org/asset_pipeline.html) 
 to vanilla JavaScript for use in the browser. 
 
 This worked great at the time, especially when creating a server-rendered app 
-and sprinkling on a bit of additional functionality only when needed. However,
-consumer products and the world of JavaScript moves fast. Today we have tooling 
-and technology like webpack, TypeScript, React, CSS Modules and patterns for
-building more dynamic consumer applications like single page applications.
+and sprinkling on a bit of additional functionality only when needed on the client. However,
+consumer products and the world of JavaScript have evolved quickly. Today we have tooling 
+and technology like webpack, TypeScript, React, CSS Modules and patterns 
+like client side routing and single page applications.
 
 These tools were either in their infancy or didn't exist at all when generating 
-a new Rails app several years ago. How do you get these to work within a Rails app?
+a new Rails app several years ago. How can these be leveraged in an existing
+Rails app?
 
 ## Transitioning to a new frontend stack
 
-In 2016, we started to "modernize" our frontend stack at Handshake to enable
-us to build the necessary product experience and scale with our growing
-engineering team.
+In 2016, Handshake started to "modernize" the frontend stack and introduce
+React, TypeScript and webpack to build the necessary product experience and 
+scale with the growing engineering team.
 
 At the time, the build tool of choice was webpack. However, the application
 was almost entirely server-rendered with additional functionality added on with
@@ -38,14 +39,14 @@ deployment, etc.
 
 It wasn't ideal to spend the time re-thinking this entire 
 process for use with webpack. There were more important questions to figure out: 
-will these technologies work for us? what are the foundations and patterns we 
+will these technologies work for our needs? what are the foundations and patterns we 
 want to establish? what does a good build process look like with this setup?
 
 The approach that required the least effort to begin using these new tools was
 to let webpack compile the TypeScript and extract the CSS Modules into a single
 file. This output was then put through the Asset Pipeline to take advantage of
-the existing tooling. _(sidenote: [webpacker](https://github.com/rails/webpacker)
-wasn't an option at the time)_. So how did this legacy setup work?
+the existing tooling _([webpacker](https://github.com/rails/webpacker)
+also wasn't an option at the time)_. So how did this legacy setup work?
 
 ### Hooking into the Asset Pipeline
 
@@ -91,8 +92,7 @@ the build process.
 
 This setup lasted a long time. As the codebase grew using the new technology,
 the engineering team grew, and the product needs changed the disadvantages of 
-this setup started to become bigger problems. For us, there were three main pain
-points.
+this setup started to become bigger problems. There were three main pain points.
 
 ### Source maps
 
@@ -108,7 +108,7 @@ can be used to globally search in the codebase.
 
 Second, this setup has an added build time cost (especially as a code base
 grows). These build steps _must_ be synchronous. Before the Asset Pipeline can
-begin webpack must do all it's processing and have completed. Furthermore,
+begin, webpack must do all it's processing and have completed. Furthermore,
 the Asset Pipeline is re-loading and re-processing these assets output by 
 webpack. Effectively, the assets were being double processed. Both of these
 issues can add minutes to the build process.
@@ -123,8 +123,8 @@ introducing a lot of complexity and custom logic.
 ## Solution
 
 As mentioned earlier, the main advantages of hooking into the Asset Pipeline
-was the existing build process. All of these steps it handled have to 
-effectively be emulated to decouple the webpack build. Namely: compiling,
+was the existing build process. All of these steps it handled have to be
+effectively emulated to decouple the webpack build. Namely: compiling,
 minimizing, fingerprinting (hashing), deploying to the CDN and then asset lookup
 at runtime in production. Fortunately, webpack is great at compiling (which it
 was already doing), minimizing and hashing files. The only pieces not quite
@@ -269,10 +269,10 @@ end
 
 One disadvantage to this approach could be the development experience. Now
 the Rails server and the webpack process are ran separately and presumably
-the webpack process will output new files as you make changes. It's probably
-not desirable to fail the boot in an environment where you can compile assets
+the webpack process will output new files as changes are made. It's probably
+not desirable to fail the boot in an environment where assets can be compiled
 on the fly. Rails has on option for [live compilation](https://guides.rubyonrails.org/asset_pipeline.html#live-compilation)
-and can be enabled by setting the proper configuraiton option.
+and can be enabled by setting the proper configuration option.
 
 ```ruby
 # config/application.rb
@@ -345,7 +345,7 @@ have identical contents but different names. In the previous example, the Asset
 Pipeline manifest relied on a predictable name (eg: `bundle.js`) but with the
 new setup webpack is now responsible for hashing (eg: `bundle.1234567890.js`).
 Since webpack needs to do the hashing at build time we have to output the file
-with the hash: `bundle.1234567890.js`. But now we need an identical file but
+with the hash: `bundle.1234567890.js`. Now there needs to be an identical file but
 named `bundle.js`. There are existing plugins that can help with copying like
 the [`CopyPlugin`](https://github.com/webpack-contrib/copy-webpack-plugin) but
 there were [issues](https://github.com/webpack-contrib/copy-webpack-plugin/issues/15)
