@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link, graphql } from "gatsby";
 import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 
@@ -52,3 +52,24 @@ export const BlogPost = (props: Props) => {
     </AnimatedCard>
   );
 };
+
+export const query = graphql`
+  fragment BlogPostData on MarkdownRemark {
+    excerpt
+    fields {
+      slug
+    }
+    frontmatter {
+      date(formatString: "MMMM DD, YYYY")
+      title
+      description
+      featuredImage {
+        childImageSharp {
+          fluid(maxWidth: 400, maxHeight: 250) {
+            ...GatsbyImageSharpFluid
+          }
+        }
+      }
+    }
+  }
+`;

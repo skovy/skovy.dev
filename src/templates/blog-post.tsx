@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, graphql, PageRendererProps } from "gatsby";
+import { Link, graphql, PageRendererProps, useStaticQuery } from "gatsby";
 import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +13,7 @@ import { rhythm, scale } from "../utils/typography";
 import { Query } from "../generated/graphql";
 import { ContentContainer } from "../components/content-container";
 import { colors } from "../config/colors";
+import { BlogPost } from "../components/blog/post";
 
 const GITHUB_USERNAME = "skovy";
 const GITHUB_REPO_NAME = "skovy.dev";
@@ -48,32 +49,16 @@ const PostFooter = styled.div`
   margin: ${rhythm(3)} 0 0;
 `;
 
-const OtherPosts = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-`;
+const OtherPostsTitle = styled.h3``;
 
-const OtherPost = styled.li`
-  margin: 0;
+const OtherPosts = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: ${rhythm(1)};
+  grid-row-gap: ${rhythm(1)};
 
-  & + & {
-    margin-top: ${rhythm(1 / 2)};
-  }
-`;
-
-const PostLink = styled(Link)`
-  color: ${colors.primary};
-  text-decoration: none;
-  transition: color 200ms ease;
-
-  &:hover,
-  &:focus {
-    color: ${colors.secondary};
+  @media screen and (max-width: ${rhythm(24)}) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -128,7 +113,7 @@ const Content = styled.div`
     padding-right: 1em;
     padding-left: 0.75em;
     border-left: 0.25em solid ${colors.secondary};
-  }  
+  }
 
   // Custom class for displaying image captions
   .image-caption {
@@ -143,15 +128,20 @@ const Content = styled.div`
 
   .gatsby-highlight {
     margin-bottom: ${rhythm(1.2)};
-    
+
     pre {
-      border-radius: ${rhythm(1/4)};
+      border-radius: ${rhythm(1 / 4)};
     }
   }
 `;
 
+interface PageQuery extends Query {
+  previous: Query["markdownRemark"];
+  next: Query["markdownRemark"];
+}
+
 interface Props extends PageRendererProps {
-  data: Query;
+  data: PageQuery;
   pageContext: {
     previous: any;
     next: any;
@@ -167,10 +157,10 @@ class BlogPostTemplate extends React.Component<Props> {
       date,
       featuredImageCredit,
       featuredImage,
-      tags,
+      tags
     } = post.frontmatter;
     const siteTitle = this.props.data.site.siteMetadata.title;
-    const { previous, next } = this.props.pageContext;
+    const { previous, next } = this.props.data;
     const { slug, readingTime } = post.fields;
 
     const githubUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog${slug}index.md`;
@@ -188,7 +178,9 @@ class BlogPostTemplate extends React.Component<Props> {
         />
         <ContentContainer>
           <Title>{title}</Title>
-          <Date>{date} &mdash; {readingTime.text}</Date>
+          <Date>
+            {date} &mdash; {readingTime.text}
+          </Date>
           <FeaturedImage
             fluid={featuredImage.childImageSharp.fluid as FluidObject}
             alt={title}
@@ -208,23 +200,10 @@ class BlogPostTemplate extends React.Component<Props> {
               </ActionLink>
             </ActionLinks>
             <Bio />
+            <OtherPostsTitle>More Posts</OtherPostsTitle>
             <OtherPosts>
-              <OtherPost>
-                {previous && (
-                  <PostLink to={previous.fields.slug} rel="prev">
-                    <FontAwesomeIcon icon={faArrowLeft} />{" "}
-                    {previous.frontmatter.title}
-                  </PostLink>
-                )}
-              </OtherPost>
-              <OtherPost>
-                {next && (
-                  <PostLink to={next.fields.slug} rel="next">
-                    {next.frontmatter.title}{" "}
-                    <FontAwesomeIcon icon={faArrowRight} />
-                  </PostLink>
-                )}
-              </OtherPost>
+              <BlogPost post={previous} />
+              <BlogPost post={next} />
             </OtherPosts>
           </PostFooter>
         </ContentContainer>
@@ -236,12 +215,18 @@ class BlogPostTemplate extends React.Component<Props> {
 export default BlogPostTemplate;
 
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!) {
+  query BlogPostBySlug($slug: String!, $nextId: String!, $previousId: String!) {
     site {
       siteMetadata {
         title
         author
       }
+    }
+    previous: markdownRemark(id: { eq: $previousId }) {
+      ...BlogPostData
+    }
+    next: markdownRemark(id: { eq: $nextId }) {
+      ...BlogPostData
     }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       id

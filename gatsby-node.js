@@ -1,10 +1,10 @@
-const path = require(`path`)
-const { createFilePath } = require(`gatsby-source-filesystem`)
+const path = require(`path`);
+const { createFilePath } = require(`gatsby-source-filesystem`);
 
 exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
 
-  const blogPost = path.resolve(`./src/templates/blog-post.tsx`)
+  const blogPost = path.resolve(`./src/templates/blog-post.tsx`);
   return graphql(
     `
       {
@@ -14,11 +14,9 @@ exports.createPages = ({ graphql, actions }) => {
         ) {
           edges {
             node {
+              id
               fields {
                 slug
-              }
-              frontmatter {
-                title
               }
             }
           }
@@ -27,40 +25,56 @@ exports.createPages = ({ graphql, actions }) => {
     `
   ).then(result => {
     if (result.errors) {
-      throw result.errors
+      throw result.errors;
     }
 
     // Create blog posts pages.
-    const posts = result.data.allMarkdownRemark.edges
+    const posts = result.data.allMarkdownRemark.edges;
 
     posts.forEach((post, index) => {
-      const previous = index === posts.length - 1 ? null : posts[index + 1].node
-      const next = index === 0 ? null : posts[index - 1].node
+      const mostRecentPost = index === 0;
+      const oldedPost = index === posts.length - 1;
+
+      let previous;
+      let next;
+      if (mostRecentPost) {
+        // If it's the newest post there are no next posts so go with the previous two
+        previous = posts[index + 1].node;
+        next = posts[index + 2].node;
+      } else if (oldedPost) {
+        // If it's the oldest there is no previous so go with the next two
+        previous = posts[index - 1].node;
+        next = posts[index - 2].node;
+      } else {
+        // If it's somewhere in between, this post actually has a previous and next
+        previous = posts[index + 1].node;
+        next = posts[index - 1].node;
+      }
 
       createPage({
         path: post.node.fields.slug,
         component: blogPost,
         context: {
           slug: post.node.fields.slug,
-          previous,
-          next,
-        },
-      })
-    })
+          previousId: previous.id,
+          nextId: next.id
+        }
+      });
+    });
 
-    return null
-  })
-}
+    return null;
+  });
+};
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+  const { createNodeField } = actions;
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+    const value = createFilePath({ node, getNode });
     createNodeField({
       name: `slug`,
       node,
-      value,
-    })
+      value
+    });
   }
-}
+};
