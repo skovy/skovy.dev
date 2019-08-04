@@ -121,9 +121,14 @@ const Content = styled.div`
     text-align: center;
     font-style: italic;
     color: ${colors.muted};
-    margin-top: -${rhythm(1)};
     margin-bottom: ${rhythm(1)};
     ${scale(-1 / 5)};
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .gatsby-highlight {
