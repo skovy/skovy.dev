@@ -329,20 +329,20 @@ import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 At first glance, this seems fairly straightforward. However, if using Font Awesome
 in a larger codebase for some duration of time there likely are hundreds or
 thousands of usages. Updating each one individually is not only manual but
-also fairly error prone. This is where a tool like 
-[`jscodeshift`](https://github.com/facebook/jscodeshift) can become useful to 
+also fairly error prone. This is where a tool like
+[`jscodeshift`](https://github.com/facebook/jscodeshift) can become useful to
 automate changes link these.
 
 ## Conclusion
 
 If working in an app that produces a large bundle, the first step to understanding
 where the problem is to use a tool like the webpack bundle analyzer to visualize
-the output. It can be an invaluable tool for surfacing opportunities for 
+the output. It can be an invaluable tool for surfacing opportunities for
 decreasing bundle size. Decreasing bundle size might mean removing a dependency
 altogether, swapping it out for a smaller replacement or exploring patterns like
 code splitting to minimize it's impact. However, many times only pieces of that
-dependency are needed and the rest is "dead code" that can be eliminated. More 
-times than not there's only one issue blocking tree shaking: a webpack 
+dependency are needed and the rest is "dead code" that can be eliminated. More
+times than not there's only one issue blocking tree shaking: a webpack
 misconfiguration, a package missing the `sideEffects` attribute, an outdated
 package, a single import that is importing everything or maybe a library that
 could be distributed with ES Modules. Whatever the solution is, tree shaking is
