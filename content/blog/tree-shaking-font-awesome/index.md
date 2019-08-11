@@ -64,9 +64,9 @@ dependency or it's not?
 
 ## 🌳 Tree Shaking
 
-As of version 2, webpack supports tree shaking. Tree shaking requires the
-packages to be properly configured and built to allow tree shaking. It's
-performed automatically by webpack in production mode. When it does work, it
+As of version 2, webpack supports tree shaking. It requires the
+packages to be properly configured and built to allow tree shaking. Tree shaking
+is performed automatically by webpack in production mode. When it does work, it
 hopefully looks something like this.
 
 ![GIF of an actual tree shaker](./images/tree-shaking.gif)
