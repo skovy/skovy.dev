@@ -1,5 +1,5 @@
 ---
-date: 2019-08-01T08:00:00.000Z
+date: 2019-08-11T08:00:00.000Z
 title: "Tree Shaking Font Awesome Icons"
 description: "An overview of tree shaking dead code with webpack and a specific example with Font Awesome"
 featuredImage: "./images/featured-image.jpg"
@@ -167,7 +167,7 @@ the icons that are actually being used?
 
 _Keep in mind that a development build often will produce different output than
 the production build. If looking to see exactly what will be produced in
-production make sure to run in production mode._
+production make sure to run in production mode when using the bundle analyzer._
 
 ### "Enabling" tree shaking with webpack
 
@@ -228,7 +228,7 @@ can be referenced as a string if using the React Font Awesome components.
 <FontAwesomeIcon icon="coffee" />
 ```
 
-As mentioned, tree shaking was actually enabled the entire time but it was "broke"
+As mentioned, tree shaking was actually enabled the entire time but it was "broken"
 by the way Font Awesome was setup. How is webpack supposed to determine that we're
 only using the `"coffee"` icon but none of the others when _all_ of the `fas` icons
 are being imported? It can't.
@@ -259,8 +259,8 @@ great to automatically include the exact icons used (not less, not more).
 
 This is where webpack's automated tree shaking can really shine ✨. In order to
 leverage webpack, the usages need to be explicit so it can properly determine
-what is and isn't used. With this approach, first remove the `library.add` setup
-entirely. Now, the icons need to be explicitly imported. So the above
+what is and isn't used. With this approach, the `library.add` setup needs to be
+removed entirely. Now, the icons need to be explicitly imported. The above
 `FontAwesomeIcon` example would become the following.
 
 ```javascript
@@ -273,19 +273,19 @@ Now, only the icons that are used are being explicitly imported. If this icon
 is removed and it's not used anywhere else it will not longer be bundled. When
 new icons are imported, they'll automatically be included.
 
-See the [Font Awesome docs](https://fontawesome.com/how-to-use/with-the-api/other/tree-shaking)
+_See the [Font Awesome docs](https://fontawesome.com/how-to-use/with-the-api/other/tree-shaking)
 for more details on working with Font Awesome, tree shaking or deep importing
-if using a tool other than webpack.
+if using a tool other than webpack._
 
-See the source for all these [examples in this repository](https://github.com/skovy/webpack-tree-shaking-demo).
+_See the source for all these [examples in this repository](https://github.com/skovy/webpack-tree-shaking-demo)._
 
 ## How is this working?
 
-For the above example to work, there are often many pieces that need to come
-together for tree shaking to work properly. If only one of these is missing
-tree shaking often won't work.
+There are often many pieces that need to come together for tree shaking to
+properly work. If only one of the steps is missing the dead code cannot be
+eliminated. These are some of the important steps to keep in mind:
 
-- webpack needs to be running in production mode (or have the right configuration)
+- webpack needs to be running in production mode (or have the right configuration).
 - Imports should be explicit and only use what's need (avoid `import *` or
   values that import unused things like `fas`)
 - The package either needs `sideEffects` defined in the `package.json` or to be
@@ -293,7 +293,7 @@ tree shaking often won't work.
   properly configuring any files that have `sideEffects` or also building ES
   Modules as part of the distribution with a tool like `rollup`.
 
-The [webpack documentation for tree shaking](https://webpack.js.org/guides/tree-shaking)
+The [tree shaking documentation](https://webpack.js.org/guides/tree-shaking)
 provides a great overview on the usage of `sideEffects`, `usedExports` and how the
 minifier (`terser`) come into play,
 
@@ -310,15 +310,15 @@ up to date. Unfortunately, some packages are distributed in a way that does not
 allow tree shaking, such as [`@blueprintjs/icons`](https://unpkg.com/@blueprintjs/icons@3.9.1/lib/esm/generated/iconSvgPaths.js)
 _(as of version `3.9.1`)_ because _all_ the icons are exported.
 
-### How do I avoid manually updating all my Font Awesome imports?
+### Tooling for automating code modifications
 
-In the above examples, the initial code:
+In the above example, the original code referenced the icon by it's string name.
 
 ```javascript
 <FontAwesomeIcon icon="coffee" />
 ```
 
-had to be converted to this code:
+That code had to be converted to an explicit import to enable tree shaking.
 
 ```javascript
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
@@ -331,7 +331,7 @@ in a larger codebase for some duration of time there likely are hundreds or
 thousands of usages. Updating each one individually is not only manual but
 also fairly error prone. This is where a tool like
 [`jscodeshift`](https://github.com/facebook/jscodeshift) can become useful to
-automate changes link these.
+automate these changes with a custom transform.
 
 ## Conclusion
 
@@ -340,10 +340,12 @@ where the problem is to use a tool like the webpack bundle analyzer to visualize
 the output. It can be an invaluable tool for surfacing opportunities for
 decreasing bundle size. Decreasing bundle size might mean removing a dependency
 altogether, swapping it out for a smaller replacement or exploring patterns like
-code splitting to minimize it's impact. However, many times only pieces of that
+code splitting to minimize it's impact. 
+
+However, many times only pieces of that
 dependency are needed and the rest is "dead code" that can be eliminated. More
 times than not there's only one issue blocking tree shaking: a webpack
 misconfiguration, a package missing the `sideEffects` attribute, an outdated
 package, a single import that is importing everything or maybe a library that
 could be distributed with ES Modules. Whatever the solution is, tree shaking is
-a great tool for minimizing the foot print of an app.
+a great tool for minimizing the overall footprint of an app.
