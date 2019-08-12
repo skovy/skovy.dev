@@ -288,8 +288,8 @@ eliminated. These are some of the important steps to keep in mind:
 - webpack needs to be running in production mode (or have the right configuration).
 - Imports should be explicit and only use what's need (avoid `import *` or
   values that import unused things like `fas`)
-- The package either needs `sideEffects` defined in the `package.json` or to be
-  built with ES Modules (and possibly both). If you're a library author consider
+- The package likely needs `sideEffects` defined in the `package.json` and to be
+  built with ES Modules. If you're a library author consider
   properly configuring any files that have `sideEffects` or also building ES
   Modules as part of the distribution with a tool like `rollup`.
 
@@ -308,7 +308,7 @@ started tree shaking (assuming only explicit components were imported) because
 of the `"sideEffects": false` option being set. Another reason to keep packages
 up to date. Unfortunately, some packages are distributed in a way that does not
 allow tree shaking, such as [`@blueprintjs/icons`](https://unpkg.com/@blueprintjs/icons@3.9.1/lib/esm/generated/iconSvgPaths.js)
-_(as of version `3.9.1`)_ because _all_ the icons are exported.
+_(as of version `3.9.1`)_ because _all_ the icons are a single export.
 
 ### Tooling for automating code modifications
 
