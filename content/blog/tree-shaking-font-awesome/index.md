@@ -13,8 +13,8 @@ tags:
   - dead code elimination
 ---
 
-Tree shaking: a word that at first sounds like another one of those convoluted
-terms used to describe some obscure technology or pattern. After rephrasing it as
+Tree shaking: a word that at first sounds like another convoluted
+term used to describe some obscure technology or pattern. After rephrasing it as
 "dead code elimination," I find tree shaking to actually be a strong metaphor
 for what it describes.
 
@@ -125,7 +125,7 @@ line-by-line, or start inspecting the packages in `node_modules` but that would
 be like looking for a needle in a haystack if you don't know what exactly it is
 your looking for.
 
-Fortunately we don't have to do that because there's the
+Fortunately, we don't have to do that because there's the
 [`webpack-bundle-analyzer`](https://github.com/webpack-contrib/webpack-bundle-analyzer)
 plugin that visualizes the built bundle. It's an invaluable tool to understand
 the cost of including a package and determining the biggest opportunities.
