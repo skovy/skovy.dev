@@ -63,7 +63,7 @@ potentially subtle "gotcha's" when working with TypeScript to be aware of.
 
 The first step is to properly configure the [`module`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) setting.
 For code splitting to work with webpack, it _must_ be set to `esnext`. [Dynamic
-imports](https://tc39.es/proposal-dynamic-import/) were introduced in 
+imports](https://tc39.es/proposal-dynamic-import/) were introduced in
 [TypeScript 2.4](https://github.com/Microsoft/TypeScript/wiki/What%27s-new-in-TypeScript#dynamic-import-expressions).
 This allows imports to be executed dynamically to lazy load modules. However,
 for code splitting to work with webpack these dynamic imports must be left as is
@@ -81,7 +81,7 @@ code splitting.
 }
 ```
 
-Without this setting, the build will likely still work, but it will be a 
+Without this setting, the build will likely still work, but it will be a
 _single large bundle_ rather than many smaller chunks.
 
 ### Magic comments
@@ -94,7 +94,7 @@ TypeScript has a compiler option [`removeComments`](https://www.typescriptlang.o
 This will remove all comments except copy-right header comments. Fortunately,
 this setting defaults to `false` but ensure it's not _enabled_. Otherwise,
 the magic comments will be removed and webpack won't ever see them and won't
-do anything. 
+do anything.
 
 ```json
 // tsconfig.json
@@ -123,7 +123,7 @@ webpack.
 If you were not using `esnext` modules before this and relying on the same
 `tsconfig.json` for both source code and the webpack configuration a new
 `tsconfig.json` will be necessary specifically for your webpack configuration.
-`ts-node` is sued to run webpack configurations written in TypeScript and 
+`ts-node` is sued to run webpack configurations written in TypeScript and
 [it doesn't support `esnext` modules](https://github.com/TypeStrong/ts-node/issues/510).
 Therefore, another setting like `commonjs` is necessary. This can be done by
 creating another file such as `tsconfig.webpack.json` and then prefixing any
@@ -149,11 +149,112 @@ TS_NODE_PROJECT=tsconfig.webpack.json npm run webpack
 Without this, `ts-node` will continue to default to `tsconfig.json` and will
 likely throw `SyntaxError: Unexpected identifier`.
 
+These are the main three gotcha's I have experienced when working with TypeScript
+and webpack. Aware of other ones? [Let me know on Twitter](https://twitter.com/spencerskovy)!
+
 ## React
+
+Now that TypeScript is configured to allow code splitting, the application
+code needs to be updated to use dynamic imports.
 
 ### React.lazy and React.Suspense
 
+React [`v16.6.0`](https://reactjs.org/blog/2018/10/23/react-v-16-6.html) introduced
+`React.lazy` and `React.Suspense`.
+
+For example, let's assume you have a simple static (no code splitting) app that
+looks like the following.
+
+```typescript
+import PageA from "./PageA";
+import PageB from "./PageB";
+
+const App = () => (
+  <div>
+    <PageA />
+    <PageB />
+  </div>
+);
+```
+
+The first step is to update the imports to be dynamic and wrapped with `React.lazy`.
+`React.lazy` expects a function as the argument that returns a dynamic import that
+will returns a promise that resolves to a module where the component is the `default`
+export.
+
+```typescript{1-2}
+const PageA = React.lazy(() => import("./PageA"));
+const PageB = React.lazy(() => import("./PageB"));
+
+const App = () => (
+  <div>
+    <PageA />
+    <PageB />
+  </div>
+);
+```
+
+Finally, as these modules are resolving (loading) we need a way to suspend
+rendering (since they haven't been loaded) and possibly show a loading state
+if appropriate.
+
+```typescript{6,9}
+const PageA = React.lazy(() => import("./PageA"));
+const PageB = React.lazy(() => import("./PageB"));
+
+const App = () => (
+  <div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <PageA />
+      <PageB />
+    </Suspense>
+  </div>
+);
+```
+
+> Unfortunately, if you're doing server rendering `React.Suspense` will not work.
+
+### Non-default exports
+
+`React.lazy` only works with `default` exports. There are a number of options.
+First, the component being imported can be updated to be the default export.
+
+```diff
+// PageA.js
+-export { PageA };
++export default PageA;
+```
+
+Second, as [suggested in the docs](https://reactjs.org/docs/code-splitting.html#named-exports),
+an intermediate module could be created to re-export the component as a default.
+
+```typescript
+// SomeComponents.js
+export { PageA };
+export { OtherComponent };
+```
+
+```typescript
+// PageA.js
+export { PageA as default } from "./SomeComponents";
+```
+
+Or lastly, the dynamic import can be modified to assign the default.
+
+```typescript
+const PageA = React.lazy(() =>
+  import("./PageA").then(importedModule => ({
+    default: importedModule.PageA
+  }))
+);
+```
+
+For more details on code splitting with React, see the
+[React doc's on Code Splitting](https://reactjs.org/docs/code-splitting.html).
+
 ## webpack
+
+### "Dynamic" Dynamic Imports
 
 ### Optimizing Split Chunks
 
