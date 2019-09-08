@@ -125,6 +125,11 @@ const Content = styled.div`
     ${scale(-1 / 5)};
   }
 
+  // The default "green" is not accessible
+  .token.inserted {
+    color: #7ec699;
+  }
+
   img {
     display: block;
     margin-left: auto;
