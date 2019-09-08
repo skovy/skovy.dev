@@ -52,3 +52,109 @@ or [Next.js](https://nextjs.org/learn/excel/lazy-loading-modules).
 
 The remainder of this post is going to focus on using webpack as the build tool
 with a TypeScript and React application.
+
+## TypeScript
+
+Since webpack is responsible for most the work it doesn't take long to get
+code splitting working with TypeScript. However, there are a handful of
+potentially subtle "gotcha's" when working with TypeScript to be aware of.
+
+### ESNext modules
+
+The first step is to properly configure the [`module`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) setting.
+For code splitting to work with webpack, it _must_ be set to `esnext`. [Dynamic
+imports](https://tc39.es/proposal-dynamic-import/) were introduced in 
+[TypeScript 2.4](https://github.com/Microsoft/TypeScript/wiki/What%27s-new-in-TypeScript#dynamic-import-expressions).
+This allows imports to be executed dynamically to lazy load modules. However,
+for code splitting to work with webpack these dynamic imports must be left as is
+and not transpiled. Setting the `module` to `esnext` will output the dynamic
+imports as is and preserve them for webpack to handle to perform chunking and
+code splitting.
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "module": "esnext"
+    // other configuration ...
+  }
+}
+```
+
+Without this setting, the build will likely still work, but it will be a 
+_single large bundle_ rather than many smaller chunks.
+
+### Magic comments
+
+Another feature webpack supports are [magic comments](https://webpack.js.org/api/module-methods/#magic-comments)
+to help control the output and behavior of code split modules. As the name
+suggests, this relies on using actual comments (eg: `/* webpackChunkName: "my-chunk-name" */`).
+
+TypeScript has a compiler option [`removeComments`](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+This will remove all comments except copy-right header comments. Fortunately,
+this setting defaults to `false` but ensure it's not _enabled_. Otherwise,
+the magic comments will be removed and webpack won't ever see them and won't
+do anything. 
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    // since this is the default, it can also be omitted
+    "removeComments": false
+    // other configuration ...
+  }
+}
+```
+
+### TypeScript webpack configuration
+
+If you're webpack configuration _is not_ written in TypeScript this section can
+be skipped. However, when working with TypeScript and webpack chances are you
+at least considered [writing your webpack configuration in TypeScript](https://webpack.js.org/configuration/configuration-languages/#typescript).
+
+It does introduce some additional complexity (hence the need for this section)
+but the benefit of type-safety when working with webpack outweighs this cost in
+my opinion. It's easy to typo a configuration setting, or nest it in the wrong
+configuration object. Fortunately, using TypeScript can help alleviate this
+entire class of issues and reduce the amount of time digging into unexpected
+webpack.
+
+If you were not using `esnext` modules before this and relying on the same
+`tsconfig.json` for both source code and the webpack configuration a new
+`tsconfig.json` will be necessary specifically for your webpack configuration.
+`ts-node` is sued to run webpack configurations written in TypeScript and 
+[it doesn't support `esnext` modules](https://github.com/TypeStrong/ts-node/issues/510).
+Therefore, another setting like `commonjs` is necessary. This can be done by
+creating another file such as `tsconfig.webpack.json` and then prefixing any
+or your `webpack` commands with [`TS_NODE_PROJECT=tsconfig.webpack.json`](https://github.com/TypeStrong/ts-node#cli-and-programmatic-options).
+It may look something like the following.
+
+```json
+// tsconfig.webpack.json
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "esModuleInterop": true
+  }
+}
+```
+
+```bash
+TS_NODE_PROJECT=tsconfig.webpack.json yarn webpack
+TS_NODE_PROJECT=tsconfig.webpack.json npm run webpack
+```
+
+Without this, `ts-node` will continue to default to `tsconfig.json` and will
+likely throw `SyntaxError: Unexpected identifier`.
+
+## React
+
+### React.lazy and React.Suspense
+
+## webpack
+
+### Optimizing Split Chunks
+
+### Tree Shaking
