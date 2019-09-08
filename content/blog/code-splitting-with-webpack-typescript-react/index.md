@@ -300,7 +300,7 @@ getComponent().then(component => {
 });
 ```
 
-When webpack finds a dynamic import it will assume that code should be code split
+When webpack finds a dynamic import, it will assume that code should be code split
 and lazy loaded. Technically, you could stop here and officially have done
 code splitting! However, there's likely a reasonable amount of optimization that
 can still be done.
