@@ -254,8 +254,86 @@ For more details on code splitting with React, see the
 
 ## webpack
 
+With webpack 4, code splitting should be enabled by default without any extra
+work! This is great because it makes it easy to get started. However, these
+default settings will likely need to be tweaked or optimized for each app.
+
+### Dynamic Imports
+
+To "enable" code splitting the only thing required is a dynamic import. As already
+mentioned both in the TypeScript configuration changes and in the React setup
+the use of dynamic imports is the key to code splitting. A basic example is shown
+in the [webpack code splitting guide](https://webpack.js.org/guides/code-splitting/)
+to lazily load `lodash`.
+
+```javascript
+function getComponent() {
+  // Lazily load the "lodash" package and name 
+  // the code split chunk "lodash" using the 
+  // webpackChunkName magic comment.
+  return (
+    import(/* webpackChunkName: "lodash" */ "lodash")
+      // Rename the default import to "_" 
+      // (done by convention, not necessary)
+      .then(({ default: _ }) => {
+        // Create a new HTML element
+        const element = document.createElement("div");
+        element.innerHTML = _.join(["Hello", "webpack"], " ");
+        return element;
+      })
+      .catch(error => "An error occurred")
+  );
+}
+
+// Lazily load the "component". Once the promise to 
+// load the module  has resolved, append the 
+// element to the body.
+getComponent().then(component => {
+  document.body.appendChild(component);
+});
+```
+
+When webpack finds a dynamic import it will assume that code should be code split
+and lazy loaded. Technically, you could stop here and officially have
+code splitting. However, there's likely a reasonable amount of optimization that
+can still be done.
+
 ### "Dynamic" Dynamic Imports
+
+The webpack documentation refers to this as 
+["Dynamic expressions in import()"](https://webpack.js.org/api/module-methods/#dynamic-expressions-in-import).
+I've found the term "dynamic dynamic imports" to paint a better picture of what
+this means in my head but both terms are referring to the same thing. The idea
+behind this is to dynamically generate a dynamic import. This is useful when
+working with a number of modules that follow a strict convention. For example,
+as again demonstrated in the webpack documentation a basic example may be
+a directory of JSON files for different locales that need to be loaded 
+using a dynamic import dynamically based on the current user.
+
+```javascript
+// Determine what language the current user needs
+const language = detectVisitorLanguage();
+
+// Lazily load that language out of the set of all possible languages
+import(`./locale/${language}.json`).then(module => {
+  // Do something with the translations...
+});
+```
+
+To parse this, webpack will effectively convert this statement to regex so
+`./locale/${language}.json` will become something like `^\.\/locale\/.*\.json$`.
+
+This will match files such as `./locale/english.json` and `./locale/spanish.json` 
+and will create chunks for these files. But with great power comes great 
+responsibility. If this dynamic expression is too broad it may build files that
+will never be imported. Make sure to use as specific of a dynamic import as
+possible and minimize the number of files that could match otherwise build
+performance could suffer.
 
 ### Optimizing Split Chunks
 
 ### Tree Shaking
+
+### Performance Budgets
+
+### Preloading
