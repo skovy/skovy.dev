@@ -13,33 +13,33 @@ tags:
 ---
 
 Code splitting is an approach to break apart a single large file into many
-smaller files. A common pattern is to do this at the route or page level because
-a user generally only needs the code for the current page, and not the other
-50 or so pages.
+smaller files. A common pattern is to code split at the route or page level because
+a user only needs the code for the current page, but not the fifty other
+or so pages in an application.
 
-As with most things, code splitting has its tradeoffs. It requires a tool that
-supports it, a specific configuration and can add additional complexities that
-might be overkill for a small application. However, at a certain point it can
-become critical. Shipping a single large bundle has a number of downsides that
-can result in poorer performance.
+As with most things, code splitting has its tradeoffs. It requires a build tool that
+supports it, a specific configuration, and can add additional complexities that
+might be overkill for a small application. However, at a certain point the benefits
+start to outweigh the cost. Shipping a single large bundle has a number of
+downsides that generally results in poor performance.
 
 One of the biggest downsides is the cost to download a single large file.
-It consumes additional bandwidth which can take longer to download and cost
-users with limited bandwidth by forcing them to download more than they need.
+It consumes additional bandwidth which can take longer to download and costs
+users with limited bandwidth actual money by forcing them to download more than they need.
 After downloading, the browser also has to parse and compile all that code which
 adds a non-trivial amount of time. If it's a very large file, the main thread
 will likely be blocked as a single, long task so _other_ important tasks will
-have to wait. Assuming this file is being cached, the entire file will have to
-be invalidated anytime a single change is made so users will have to re-download
-everything.
+have to wait for however long that takes. Finally, assuming this file is being
+cached, the entire file will have to be invalidated anytime even a single byte
+is changed so users will have to re-download everything.
 
 These problems are what code splitting can help solve (along with some other
 benefits). Only the code for the current page or feature needs to be downloaded
-so less bandwidth is used and less time spent. Since it's less code, that means
+so less bandwidth is used and less time spent waiting. Since it's less code, that means
 the parsing and compilation is also faster. Even if the code splitting results
-in downloading multiple files this can happen in parallel (too many could also
-be bad). If one feature's code is changed, only that code split chunk needs to
-be invalidated rather than all the code. Lastly, this results in smaller tasks
+in downloading multiple files this can happen in parallel. If one feature's code
+is changed, only that code split chunk needs to be invalidated rather than all
+the code. Lastly, this results in smaller tasks
 on the main thread that could be interleaved with other important work if
 necessary.
 
@@ -57,7 +57,7 @@ with a TypeScript and React application.
 
 Since webpack is responsible for most the work it doesn't take long to get
 code splitting working with TypeScript. However, there are a handful of
-potentially subtle "gotcha's" when working with TypeScript to be aware of.
+potentially subtle "gotcha's" to be aware of when working with TypeScript.
 
 ### ESNext modules
 
@@ -67,9 +67,8 @@ imports](https://tc39.es/proposal-dynamic-import/) were introduced in
 [TypeScript 2.4](https://github.com/Microsoft/TypeScript/wiki/What%27s-new-in-TypeScript#dynamic-import-expressions).
 This allows imports to be executed dynamically to lazy load modules. However,
 for code splitting to work with webpack these dynamic imports must be left as is
-and not transpiled. Setting the `module` to `esnext` will output the dynamic
-imports as is and preserve them for webpack to handle to perform chunking and
-code splitting.
+and not transpiled by TypeScript. Setting the `module` to `esnext` will preserve
+the dynamic imports in the output for webpack to handle and perform code splitting.
 
 ```json
 // tsconfig.json
@@ -100,7 +99,8 @@ do anything.
 // tsconfig.json
 {
   "compilerOptions": {
-    // since this is the default, it can also be omitted
+    // since this is the default, it can also be omitted,
+    // as long as it's not set to true
     "removeComments": false
     // other configuration ...
   }
@@ -118,14 +118,14 @@ but the benefit of type-safety when working with webpack outweighs this cost in
 my opinion. It's easy to typo a configuration setting, or nest it in the wrong
 configuration object. Fortunately, using TypeScript can help alleviate this
 entire class of issues and reduce the amount of time digging into unexpected
-webpack.
+webpack output.
 
 If you were not using `esnext` modules before this and relying on the same
 `tsconfig.json` for both source code and the webpack configuration a new
 `tsconfig.json` will be necessary specifically for your webpack configuration.
-`ts-node` is sued to run webpack configurations written in TypeScript and
+`ts-node` is used to run webpack configurations written in TypeScript and
 [it doesn't support `esnext` modules](https://github.com/TypeStrong/ts-node/issues/510).
-Therefore, another setting like `commonjs` is necessary. This can be done by
+Therefore, another module setting like `commonjs` is necessary. This can be done by
 creating another file such as `tsconfig.webpack.json` and then prefixing any
 or your `webpack` commands with [`TS_NODE_PROJECT=tsconfig.webpack.json`](https://github.com/TypeStrong/ts-node#cli-and-programmatic-options).
 It may look something like the following.
@@ -142,14 +142,15 @@ It may look something like the following.
 ```
 
 ```bash
+# In your terminal or package.json "scripts":
 TS_NODE_PROJECT=tsconfig.webpack.json yarn webpack
 TS_NODE_PROJECT=tsconfig.webpack.json npm run webpack
 ```
 
 Without this, `ts-node` will continue to default to `tsconfig.json` and will
-likely throw `SyntaxError: Unexpected identifier`.
+likely throw `SyntaxError: Unexpected identifier` when trying to run webpack.
 
-These are the main three gotcha's I have experienced when working with TypeScript
+These are the main "gotcha's" I have experienced when working with TypeScript
 and webpack. Aware of other ones? [Let me know on Twitter](https://twitter.com/spencerskovy)!
 
 ## React
@@ -162,7 +163,7 @@ code needs to be updated to use dynamic imports.
 React [`v16.6.0`](https://reactjs.org/blog/2018/10/23/react-v-16-6.html) introduced
 `React.lazy` and `React.Suspense`.
 
-For example, let's assume you have a simple static (no code splitting) app that
+For example, let's assume you have a simple static (no code splitting) application that
 looks like the following.
 
 ```typescript
@@ -178,8 +179,8 @@ const App = () => (
 ```
 
 The first step is to update the imports to be dynamic and wrapped with `React.lazy`.
-`React.lazy` expects a function as the argument that returns a dynamic import that
-will returns a promise that resolves to a module where the component is the `default`
+It expects a function as the argument, and that function returns a dynamic import that
+will return a promise that resolves to a module where the component is the `default`
 export.
 
 ```typescript{1-2}
@@ -196,7 +197,8 @@ const App = () => (
 
 Finally, as these modules are resolving (loading) we need a way to suspend
 rendering (since they haven't been loaded) and possibly show a loading state
-if appropriate.
+(if appropriate). For this we can use `React.Suspense`. The `fallback` prop
+will be rendered while waiting for `PageA` or `PageB` to load.
 
 ```typescript{6,9}
 const PageA = React.lazy(() => import("./PageA"));
@@ -204,20 +206,24 @@ const PageB = React.lazy(() => import("./PageB"));
 
 const App = () => (
   <div>
-    <Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense fallback={<div>Loading...</div>}>
       <PageA />
       <PageB />
-    </Suspense>
+    </React.Suspense>
   </div>
 );
 ```
 
-> Unfortunately, if you're doing server rendering `React.Suspense` will not work.
+> Unfortunately, if you're doing server rendering `React.lazy` and `React.Suspense`
+> currently will not work. The current recommendation is to use
+> [Loadable Components](https://github.com/smooth-code/loadable-components) for this.
 
 ### Non-default exports
 
-`React.lazy` only works with `default` exports. There are a number of options.
-First, the component being imported can be updated to be the default export.
+As mentioned `React.lazy` only works with `default` exports. If all your components
+are already default exports feel free to skip this section. If not, there are a
+number of options. First, the component being imported can be updated to be the
+default export.
 
 ```diff
 // PageA.js
@@ -256,12 +262,13 @@ For more details on code splitting with React, see the
 
 With webpack 4, code splitting should be enabled by default without any extra
 work! This is great because it makes it easy to get started. However, these
-default settings will likely need to be tweaked or optimized for each app.
+default settings will likely need to be adjusted to optimize code splitting
+for your application.
 
 ### Dynamic Imports
 
 To "enable" code splitting the only thing required is a dynamic import. As already
-mentioned both in the TypeScript configuration changes and in the React setup
+mentioned in the TypeScript configuration changes and in the React setup
 the use of dynamic imports is the key to code splitting. A basic example is shown
 in the [webpack code splitting guide](https://webpack.js.org/guides/code-splitting/)
 to lazily load `lodash`.
@@ -274,7 +281,7 @@ function getComponent() {
   return (
     import(/* webpackChunkName: "lodash" */ "lodash")
       // Rename the default import to "_"
-      // (done by convention, not necessary)
+      // (done by convention with lodash, not necessary)
       .then(({ default: _ }) => {
         // Create a new HTML element
         const element = document.createElement("div");
@@ -286,7 +293,7 @@ function getComponent() {
 }
 
 // Lazily load the "component". Once the promise to
-// load the module  has resolved, append the
+// load the module has resolved, append the
 // element to the body.
 getComponent().then(component => {
   document.body.appendChild(component);
@@ -294,8 +301,8 @@ getComponent().then(component => {
 ```
 
 When webpack finds a dynamic import it will assume that code should be code split
-and lazy loaded. Technically, you could stop here and officially have
-code splitting. However, there's likely a reasonable amount of optimization that
+and lazy loaded. Technically, you could stop here and officially have done
+code splitting! However, there's likely a reasonable amount of optimization that
 can still be done.
 
 ### "Dynamic" Dynamic Imports
@@ -314,21 +321,26 @@ using a dynamic import dynamically based on the current user.
 // Determine what language the current user needs
 const language = detectVisitorLanguage();
 
-// Lazily load that language out of the set of all possible languages
+// Lazily load the current user's language out
+// of the set of all possible languages defined
+// in the ./locale directory
 import(`./locale/${language}.json`).then(module => {
   // Do something with the translations...
 });
 ```
 
 To parse this, webpack will effectively convert this statement to regex so
-`./locale/${language}.json` will become something like `^\.\/locale\/.*\.json$`.
+`./locale/${language}.json` will become something like `/^\.\/locale\/.*\.json$/`.
 
 This will match files such as `./locale/english.json` and `./locale/spanish.json`
-and will create chunks for these files. But with great power comes great
+and will create chunks for each of these files that match. But with great power comes great
 responsibility. If this dynamic expression is too broad it may build files that
-will never be imported. Make sure to use as specific of a dynamic import as
+will never be imported. Make sure to use as specific of a dynamic expression as
 possible and minimize the number of files that could match otherwise build
 performance could suffer.
+
+Since each application is unique a dynamic expression import may never be needed,
+but it's a good technique to keep in mind.
 
 ### Optimizing Split Chunks
 
@@ -340,15 +352,15 @@ size versus the number of chunks.
 With chunks that are too large, we start to run into similar problems as having
 a single large bundle. The time to download the larger files, the time to parse,
 the lack of cache-ability, etc. However, with too many chunks, we can start to
-run into limits on the number of requests a browser can make and the corresponding
+run into limitations with the number of requests a browser can make and the corresponding
 overhead. However, if using HTTP/2 this is not an issue in which case
-`AggressiveSplittingPlugin` can optimize for this.
+`AggressiveSplittingPlugin` may be a good option to explore.
 
-Although webpack has reasonable default, it may be useful to explicitly split
-out certain portions of your code. For example, say there's a set of shared
+Although webpack has reasonable defaults, it may be useful to explicitly split
+out certain portions of code. For example, say there's a set of shared
 common components that are used throughout an application. It may be desirable
-to force these into their own chunk. As with most things, make sure to test in
-your own application and profile the impacts on webpack build performance,
+to force these into their own chunk. As with most things, make sure to test the
+implications and profile the impacts on webpack build performance,
 the output files ([webpack bundle analzyer](https://www.npmjs.com/package/webpack-bundle-analyzer) is a great tool for this)
 and browser performance using a tool like [Lighthouse](https://developers.google.com/web/tools/lighthouse/).
 
@@ -359,11 +371,14 @@ const config = {
   optimization: {
     splitChunks: {
       cacheGroups: {
+        // custom cache group to force all components files
+        // in /components/common into their own chunk
         common: {
           name: "common-components",
           test: /[\\/]components[\\/]common[\\/]/,
           enforce: true
         },
+        // default defined by webpack
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           priority: -10
@@ -375,7 +390,7 @@ const config = {
 ```
 
 > Keep in mind that the defaults for `splitChunks` differs in production versus
-> development mode so if profiling make sure to run in production mode.
+> development mode so when profiling make sure to run in production mode.
 
 ### Tree Shaking
 
@@ -394,20 +409,23 @@ amount of code a user needs to download make sure to protect against regressions
 
 Although it's not bullet proof, performance budgets can be a great way to at
 least catch large regressions and intentionally decide if a slightly larger
-entry point or chunk size is acceptable.
+entry point or chunk size is acceptable rather than sneaking in.
 
-Again, webpack has [reasonable defaults](https://webpack.js.org/configuration/performance/).
+Again, webpack has [reasonable defaults](https://webpack.js.org/configuration/performance/)
+for the performance budget but it may need to be adjusted.
 
 By default the `performance.hints` will be set to `"warning"`. However, if you
 want to _prevent_ large regressions it's desirable to set this to `"error"` to
 fail the webpack build. In development, due to the lack of minification and
-differing split chunks defaults it may be preferabble to disable these warnings
-altogether by setting it to `false`.
+differing split chunks defaults it may be preferable to disable these warnings
+altogether by setting it to `false` since the warnings will be inaccurate.
 
 The `maxEntrypointSize` represents all assets that will be loaded during the
-initial load time for a specific entry. Here it's set to an arbitrary 200 Kilobytes.
+initial load time for a specific entry. In the example below, it's set to an
+arbitrary 200 kilobytes.
 
-The `maxAssetSize` is any file emitted by webpack, here it's set to an arbitrary 100 Kilobytes.
+The `maxAssetSize` is any file emitted by webpack. In the example below, it's
+set to an arbitrary 100 kilobytes.
 
 And finally, the `assetFilter` allows controlling which files this applies to.
 In this example, it's not applied to any files ending with `.css` or `.map`.
@@ -430,27 +448,34 @@ const config = {
 
 ### Preloading
 
-One final consideration is preloading chunks that a given page will need.
+One final consideration is to preload chunks that a given page will need.
 This is not required, but can help with browser performance by fetching known
 assets as early possible. There are a number of approaches to achieve this.
 
 First, using the [preload/prefetch magic comments](https://webpack.js.org/guides/code-splitting/#prefetchingpreloading-modules)
-`/* webpackPrefetch: true */` (probably needed  for some future navigation) or 
-`/* webpackPreload: true */` (resource needed during  the current navigation).
+`/* webpackPrefetch: true */` (probably needed for some future navigation) or
+`/* webpackPreload: true */` (resource needed during the current navigation).
 
-However, this doesn't work well with "dynamic" dynamic imports or possibly working
-with both a server-rendered and client-rendered application. For this, a chunk
+However, this doesn't work well with "dynamic" dynamic imports or working
+with a complex server-rendered and client-rendered application. For this, a chunk
 group manifest file can be generated at build time to know which chunks are
-necessary for a given page and dynamically inject `link` tags. For an example
-of how a plugin like this might look, check out 
+necessary for a given page and dynamically inject
+[`<link rel="preload">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) tags.
+For an example of how a plugin like this might look, check out
 [Gatsby's webpack stats extractor](https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby/src/utils/gatsby-webpack-stats-extractor.js).
 
-Finally, as mentioned earlier, exploring [HTTP/2 Server Push](https://developers.google.com/web/fundamentals/performance/http2/#server_push).
+Finally, as mentioned earlier, exploring [HTTP/2 Server Push](https://developers.google.com/web/fundamentals/performance/http2/#server_push)
+could also be another consideration to download necessary assets as early
+as possible and avoid request overhead.
 
 ## Conclusion
 
-Hopefully this overview is helpful in getting started with code splitting a 
+Hopefully this overview was helpful in getting started with code splitting a
 TypeScript, React and webpack-built application. Although webpack is complex,
 it fortunately ships with reasonable defaults for code splitting, performance
 budgets and other settings. Support for code splitting is only improving with
-recent features shipping in React with `React.lazy` and `React.Suspense`.
+great support in webpack and recent features shipping in React with `React.lazy`
+and `React.Suspense`.
+
+If you're concerned about the performance of your application consider giving
+code splitting a shot!
