@@ -12,7 +12,8 @@ module.exports = {
       twitter: `spencerskovy`,
       github: `skovy`,
       goodreads: `64661635-spencer-miskoviak`,
-      linkedin: `skovy`
+      linkedin: `skovy`,
+      stackOverflow: `2690790`
     },
     otherPodcasts: [
       {

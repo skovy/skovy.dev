@@ -6,7 +6,8 @@ import {
   faGithub,
   faTwitter,
   faGoodreadsG,
-  faLinkedinIn
+  faLinkedinIn,
+  faStackOverflow
 } from "@fortawesome/free-brands-svg-icons";
 
 import { ContentContainer } from "../content-container";
@@ -94,6 +95,15 @@ export const Footer = () => (
               >
                 <FontAwesomeIcon icon={faLinkedinIn} size="lg" />
               </SocialLink>
+              <SocialLink
+                href={`https://stackoverflow.com/users/${
+                  data.site.siteMetadata.social.stackOverflow
+                }`}
+                aria-label="Stack Overflow"
+                title="Stack Overflow"
+              >
+                <FontAwesomeIcon icon={faStackOverflow} size="lg" />
+              </SocialLink>
             </SocialLinks>
           </Content>
         </ContentContainer>
@@ -111,6 +121,7 @@ const footerQuery = graphql`
           github
           goodreads
           linkedin
+          stackOverflow
         }
       }
     }
