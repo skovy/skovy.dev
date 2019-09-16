@@ -11,14 +11,14 @@ tags:
   - missing @types
 ---
 
-Some packages in the TypeScript ecosystem, such as
+Some packages in the JavaScript ecosystem, such as
 [`apollo-client`](https://www.npmjs.com/package/apollo-client) are written in
-TypeScript. This means that the source can be used to output decelerations that
-are included in the package and usually ar accurate.
+TypeScript. This means that the source can be used to output type definitions that
+are included in the package and typically very accurate.
 
-However, there are also many packages that do not ship with any type definitions,
+However, there are also many packages that do not ship with type definitions,
 such as [`react`](https://www.npmjs.com/package/react). It's not a reasonable
-or fair expectation to expect all packages to define type definitions.
+or expectation for all packages to define type definitions.
 It adds a lot of overhead for maintainers to deal with TypeScript specific issues,
 requires effectively re-writing definitions for the entire public API, and
 understand the intricacies of all the TypeScript features. So how do these
@@ -27,16 +27,16 @@ packages provide type definitions for the community?
 TypeScript has a great community around providing type definitions for packages
 that do not ship with typings. All of these definitions live in the
 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)
-repository on GitHub and published to npm under the `@types` namespace
+repository on GitHub and are published to npm under the `@types` scope
 (eg: `@types/react`) to install alongside the corresponding packages. All of
 these definitions are created and maintained by the community.
 
 ## Where to start?
 
-The first step is to find an issue. Either an existing package with incorrect
-typings or a package with no typings defined. This is going to focus on
-entirely missing definitions (updating existing definitions will be roughly
-the same steps but minus a few).
+The first step is to find a package. Either an existing package with incorrect
+typings or a package with no typings defined. This is going to focus on a
+package with missing definitions (updating definitions will be a
+few less steps since they already exist).
 
 When adding a new package without type definitions, this error is common. It
 prompts to install the corresponding `@types` package.
