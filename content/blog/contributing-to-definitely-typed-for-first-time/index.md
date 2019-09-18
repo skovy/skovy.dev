@@ -13,40 +13,47 @@ tags:
 
 Some packages in the JavaScript ecosystem, such as
 [`apollo-client`](https://www.npmjs.com/package/apollo-client) are written in
-TypeScript. This means that the source can be used to output type definitions that
-are included in the package and typically very accurate.
+TypeScript. This means that the source can be used to automatically generate and
+output type definitions that are included as part of the package. Some other 
+packages, such as [`reselect`](https://www.npmjs.com/package/reselect), define 
+their own type definitions even though they are not written in TypeScript.
 
-However, there are also many packages that do not ship with type definitions,
-such as [`react`](https://www.npmjs.com/package/react). It's not a reasonable
-or expectation for all packages to define type definitions.
-It adds a lot of overhead for maintainers to deal with TypeScript specific issues,
-requires effectively re-writing definitions for the entire public API, and
-understand the intricacies of all the TypeScript features. So how do these
-packages provide type definitions for the community?
+However, there are also many packages that are not written in TypeScript or do 
+not ship with type definitions, such as [`react`](https://www.npmjs.com/package/react). 
+It's not a reasonable expectation for all packages to define type definitions.
+It adds a lot of overhead for maintainers. There are the TypeScript specific issues to triage,
+the effort to effectively translate the entire public API to type definitions, 
+and the overhead of learning the intricacies of all the TypeScript features. 
+So how do the type definitions for these packages get defined?
 
-TypeScript has a great community around providing type definitions for packages
+Luckily, TypeScript has a great community around providing type definitions for packages
 that do not ship with typings. All of these definitions live in the
 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)
 repository on GitHub and are published to npm under the `@types` scope
 (eg: `@types/react`) to install alongside the corresponding packages. All of
-these definitions are created and maintained by the community.
+these definitions are created and maintained by the community. It relies on
+TypeScript users of the various packages to create and maintain the type
+definitions.
 
-## Where to start?
+## How can I contribute?
 
 The first step is to find a package. Either an existing package with incorrect
 typings or a package with no typings defined. This is going to focus on a
-package with missing definitions (updating definitions will be a
-few less steps since they already exist).
+package with missing definitions (updating existing definitions is a few less
+steps since the necessary files exist).
 
-When adding a new package without type definitions, this error is common. It
-prompts to install the corresponding `@types` package.
+How to find a package without type definitions? The best way is to stumble across
+a package when working with it. It's commonly new or less popular packages that 
+do not have corresponding type definitions. When adding a new package without 
+type definitions, the following TypeScript error is thrown. 
 
 ```
 Could not find a declaration file for module '[package]'. [package] implicitly has an 'any' type.
   Try `npm install @types/[package]` if it exists or add a new declaration (.d.ts) file containing `declare module '[package]';`
 ```
 
-So you try `npm install @types/[package]` but get another error.
+It prompts to install the corresponding `@types` package. So you try 
+`npm install @types/[package]` but get another error.
 
 ```
 > npm install @types/[package]
@@ -79,11 +86,12 @@ and specifically the [`@loadable/webpack-plugin`](https://www.npmjs.com/package/
 
 At the time of writing, it did not have typings so the remainder will use this
 package as a specific example. To get started, the [`dts-gen`](https://github.com/microsoft/dts-gen)
-tool can be used to generate the scaffolding.
+tool can be used to generate the scaffolding for the type definitions.
 
 > Since this is a scoped package, it has a naming exception as outlined in
 > the [README](https://github.com/DefinitelyTyped/DefinitelyTyped#what-about-scoped-packages).
-> The types package should be named `loadable__webpack-plugin`
+> The types package will be named `loadable__webpack-plugin` since @types itself
+> is a scoped package.
 
 ```
 npx dts-gen --dt --name loadable__webpack-plugin --template module
@@ -91,7 +99,7 @@ npx dts-gen --dt --name loadable__webpack-plugin --template module
 
 This will output the following four files:
 
-**`types/loadable__webpack-plugin/index.d.ts`**
+1. **`types/loadable__webpack-plugin/index.d.ts`**
 
 ```typescript
 // Type definitions for @loadable/webpack-plugin 5.7
@@ -100,11 +108,11 @@ This will output the following four files:
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 ```
 
-**`types/loadable__webpack-plugin/loadable__webpack-plugin-tests.ts`**
+2. **`types/loadable__webpack-plugin/loadable__webpack-plugin-tests.ts`**
 
 _(no content)_
 
-**`types/loadable__webpack-plugin/tsconfig.json`**
+3. **`types/loadable__webpack-plugin/tsconfig.json`**
 
 ```json
 {
@@ -125,14 +133,18 @@ _(no content)_
 }
 ```
 
-**`types/loadable__webpack-plugin/tslint.json`**
+4. **`types/loadable__webpack-plugin/tslint.json`**
 
 ```json
 { "extends": "dtslint/dt.json" }
 ```
 
-Since the API already exists, it's usually easiest to copy examples from the
-documentation in the test file and use a test driven approach to create the types.
+This is all the setup needed to get started. Now to start filling it in.
+Generally, the `tsconfig.json` and `tslint.json` shouldn't be modified (unless
+there's some exception). The main focus is on `index.d.ts` and the associated
+test file. As mentioned earlier, this example is a scoped package so there is
+an exception that requires modifying the `tsconfig.json` to properly test
+this package.
 
 ```json{4-6}
 {
@@ -144,6 +156,12 @@ documentation in the test file and use a test driven approach to create the type
   }
 }
 ```
+
+Since the API already exists, it's usually easiest to copy examples from the
+documentation in the test file and use a test driven approach to create the types.
+For example, copying [examples from the documentation](https://www.smooth-code.com/open-source/loadable-components/docs/api-loadable-webpack-plugin/) and then verifying by 
+[looking directly at the source](https://github.com/smooth-code/loadable-components/blob/master/packages/webpack-plugin/src/index.js)
+is usually a good approach to building up test cases.
 
 ```typescript
 import LoadablePlugin from "@loadable/webpack-plugin";
