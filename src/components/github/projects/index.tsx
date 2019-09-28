@@ -71,7 +71,7 @@ const query = graphql`
           privacy: PUBLIC
           orderBy: { field: STARGAZERS, direction: DESC }
           ownerAffiliations: OWNER
-          first: 4
+          first: 6
         ) {
           nodes {
             id
