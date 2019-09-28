@@ -1,5 +1,5 @@
 ---
-date: 2019-09-15T09:00:00.000Z
+date: 2019-09-28T09:00:00.000Z
 title: "Contributing to DefinitelyTyped for the first time"
 description: "A guide to add missing type definitions to the DefinitelyTyped repository"
 featuredImage: "./images/featured-image.jpg"
