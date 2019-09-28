@@ -21,7 +21,7 @@ their own type definitions even though they are not written in TypeScript.
 However, there are also many packages that are not written in TypeScript or do
 not ship with type definitions, such as [`react`](https://www.npmjs.com/package/react).
 It's not a reasonable expectation for all packages to define type definitions.
-It adds a lot of overhead for maintainers; there are the TypeScript specific issues to triage,
+It adds a lot of overhead for maintainers; there are the TypeScript-specific issues to triage,
 the effort to effectively translate the entire public API to type definitions,
 and the overhead of learning the intricacies of all the TypeScript language features.
 So how do the type definitions for these packages get defined?
@@ -37,7 +37,7 @@ definitions.
 
 ## How can I contribute?
 
-The first step is to find a package. Either an existing package with incorrect
+The first step is to find a package, either an existing package with incorrect
 typings or a package with no typings defined. This post is going to focus on a
 package with missing definitions (because updating existing definitions is a
 few less steps since the necessary files exist).
@@ -303,10 +303,10 @@ import * as webpack from "webpack";
 
 ## Conclusion
 
-The TypeScript ecosystem depends on the community to create and maintain type 
-definitions so the next time you run into missing or incorrect types 
-hopefully you're now ready to open a pull request to add new types or a fix for an
-existing package! 
+The TypeScript ecosystem depends on the community to create and maintain type
+definitions. The next time you run into missing or incorrect types hopefully
+you're now ready to open a pull request to add new types or a fix for an
+existing package!
 
 This didn't touch on every possible scenario or issue so [refer to the README](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/README.md)
 for more details if you have questions or let me know on Twitter.
