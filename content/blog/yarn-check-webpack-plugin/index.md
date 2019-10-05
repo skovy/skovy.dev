@@ -11,7 +11,7 @@ tags:
   - typescript errors
 ---
 
-When working in a codebase with a large number of contributors it's likely
+When working in a codebase with a large number of contributors, it's likely
 npm packages will be getting added or upgraded over time. The next time
 another person pulls those changes they may forget to run
 `yarn install`. They start up webpack _(assuming that's the build tool of choice)_
