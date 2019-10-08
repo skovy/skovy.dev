@@ -97,7 +97,7 @@ export default transform;
 
 Now, to run and test this, the development dependencies can be added.
 
-```sh
+```bash
 yarn add -D jscodeshift @types/jscodeshift
 ```
 
@@ -115,7 +115,7 @@ const Component = () => {
 
 Finally, the transform can be ran.
 
-```sh
+```bash
 yarn jscodeshift -t transforms/implicit-icons-to-explicit-imports.ts transforms/__testfixtures__/implicit-icons-to-explicit-imports/array.input.tsx --dry --print
 ```
 
@@ -153,7 +153,7 @@ describe("implicit-icons-to-explicit-imports", () => {
 The `defineTest` helpers requires a [specific directory structure](https://github.com/facebook/jscodeshift#unit-testing)
 so it can find the correct files.
 
-```sh
+```bash
 # The transform file
 transforms/implicit-icons-to-explicit-imports.ts
 
