@@ -172,3 +172,76 @@ For more advanced testing examples, [see the tests for this transform](https://g
 or the [React codemods](https://github.com/reactjs/react-codemod/tree/master/transforms/__tests__).
 
 ## Creating the transform
+
+```typescript
+import { Transform } from "jscodeshift";
+import { camelCase } from "change-case";
+
+const transform: Transform = (file, api, options) => {
+  // Alias the jscodeshift API for ease of use.
+  const j = api.jscodeshift;
+
+  // Convert the entire file source into a collection of nodes paths.
+  const root = j(file.source);
+
+  root
+    // Find all JSX elements with the name FontAwesomeIcon...
+    .findJSXElements("FontAwesomeIcon")
+    // with an `icon` prop with a string value...
+    .find(j.JSXAttribute, {
+      name: {
+        type: "JSXIdentifier",
+        name: "icon"
+      },
+      value: {
+        type: "StringLiteral"
+      }
+    })
+    // narrowed down to that string value (eg: `user`)...
+    .find(j.StringLiteral)
+    // and replace the existing node...
+    .replaceWith(nodePath => {
+      const { node } = nodePath;
+
+      // eg: "minus-circle" -> "faMinusCircle"
+      const iconDefinition = camelCase(`fa-${node.value}`);
+
+      // with a new JSX expression with the icon definition.
+      return j.jsxExpressionContainer(j.identifier(iconDefinition));
+    });
+
+  return root.toSource();
+};
+
+export default transform;
+```
+
+This will now convert a given input with a string `icon` value to a JSX expression.
+
+**Input:**
+
+```typescript
+import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return <FontAwesomeIcon icon="minus-circle" />;
+};
+```
+
+**Output:**
+
+```typescript
+import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return <FontAwesomeIcon icon={faMinusCircle} />;
+};
+```
+
+However, this is now producing invalid code because `faMinusCircle` is not defined.
+
+## Conclusion
+
+The completed source code for [this example is available here](https://github.com/skovy/font-awesome-codemod).
