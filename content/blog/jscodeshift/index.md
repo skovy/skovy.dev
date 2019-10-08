@@ -75,3 +75,100 @@ and icon for another).
 
 Since this was a very repetitive problem with a well defined set of rules,
 creating a custom transform for jscodeshift seemed like a great option.
+
+## Getting Started
+
+The bare minimum to get started is to define a transform. A transform is a file
+where the default export is a function that accepts the file info, the jscodeshift
+API, and finally any custom options.
+
+The transforms [can be written in TypeScript](https://github.com/facebook/jscodeshift/pull/287) which can be helpful to ensure proper usage of the jscodeshift API when first starting.
+
+```typescript
+// transforms/implicit-icons-to-explicit-imports.ts
+import { Transform } from "jscodeshift";
+
+const transform: Transform = (file, api, options) => {
+  return null;
+};
+
+export default transform;
+```
+
+Now, to run and test this, the development dependencies can be added.
+
+```sh
+yarn add -D jscodeshift @types/jscodeshift
+```
+
+Then, a test file to run the transform against.
+
+```typescript
+// transforms/__testfixtures__/implicit-icons-to-explicit-imports/basic.input.tsx
+import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return <FontAwesomeIcon icon="minus-circle" />;
+};
+```
+
+Finally, the transform can be ran.
+
+```sh
+yarn jscodeshift -t transforms/implicit-icons-to-explicit-imports.ts transforms/__testfixtures__/implicit-icons-to-explicit-imports/array.input.tsx --dry --print
+```
+
+The [`--dry`](https://github.com/facebook/jscodeshift#usage-cli) and
+[`--print`](https://github.com/facebook/jscodeshift#usage-cli) options will run
+the transform without overwriting the file and print the would-be-result to
+the console instead. The command will run successfully, but it won't print
+anything because the transform doesn't perform any transformations.
+
+Before diving into the transform, it will become tedious to continue running
+this command (or others) repeatedly. The jscodeshift package ships with a
+useful test utility: [`defineTest`](https://github.com/facebook/jscodeshift#definetest).
+This can be used with a test runner like [`jest`](https://jestjs.io/) to validate
+input against the expected output for a transform.
+
+```typescript
+// transforms/__tests__/implicit-icons-to-explicit-imports.ts
+import { defineTest } from "jscodeshift/dist/testUtils";
+
+describe("implicit-icons-to-explicit-imports", () => {
+  defineTest(
+    __dirname,
+    "implicit-icons-to-explicit-imports",
+    null,
+    `implicit-icons-to-explicit-imports/basic`,
+    { parser: "tsx" }
+  );
+});
+```
+
+> This last option (`{ parser: "tsx" }`) depends on
+> [an open pull request](https://github.com/facebook/jscodeshift/pull/332)
+> to add support for running against TypeScript files.
+
+The `defineTest` helpers requires a [specific directory structure](https://github.com/facebook/jscodeshift#unit-testing)
+so it can find the correct files.
+
+```sh
+# The transform file
+transforms/implicit-icons-to-explicit-imports.ts
+
+# The test file
+transforms/__tests__/implicit-icons-to-explicit-imports.ts
+
+# The input/output pairing to run the transform against
+transforms/__testfixtures__/implicit-icons-to-explicit-imports/basic.input.tsx
+transforms/__testfixtures__/implicit-icons-to-explicit-imports/basic.output.tsx
+```
+
+Now, as changes are made to the transform they can be easily tested to validate
+the input and expected output.
+
+For more advanced testing examples, [see the tests for this transform](https://github.com/skovy/font-awesome-codemod/blob/master/transforms/__tests__/implicit-icons-to-explicit-imports.ts)
+or the [React codemods](https://github.com/reactjs/react-codemod/tree/master/transforms/__tests__).
+
+## Creating the transform
