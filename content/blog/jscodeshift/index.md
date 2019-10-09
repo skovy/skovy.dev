@@ -191,30 +191,6 @@ depending on the complexity of a transform.
 To start, let's use the example from above. We know we have a component named
 `FontAwesomeIcon` with a prop named `icon`.
 
-Unfortunately, jscodeshift doesn't have great documentation and requires a bit
-of "source-diving" to find the methods you may need. It offers the 
-[`findJSXElements`](https://github.com/facebook/jscodeshift/blob/a268d0d1b96624427dddc2f1f4e65837b105031b/src/collections/JSXElement.js#L29-L38)
-which will find all the JSXElements filtered by the name passed. This will
-give us the correct component(s), but the `FontAwesomeIcon` component could have
-a set of other props.
-
-To narrow down to only the prop we care about, we can use the
-[`find`](https://github.com/facebook/jscodeshift/blob/d63aa8486c2099a65b071e7c86e9dccdb8577d80/src/collections/Node.js#L25-L57)
-method to find nodes of a specific type. The specific type of the node we're
-looking for is a 
-[`JSXAttribute`](https://github.com/benjamn/ast-types/blob/0b6bc6dec16203076e3a0ffca0157c9215ec14f9/gen/namedTypes.ts#L527-L531).
-This type is [defined in `ast-types`](https://github.com/benjamn/ast-types/blob/28c73fa503f070512a89e7cd1bc5ed97eacf173b/def/jsx.ts#L15-L23).
-
-But how do you know it's `JSXAttribute` in the first place? 
-[astexplorer.net](https://astexplorer.net) is an invaluable resource to
-understand the AST that represents a piece of code.
-
-![Example of AST explorer](./images/ast-explorer-example.png)
-
-This screenshot is an example of what the above code would look like if pasted
-into the AST explorer. This is how we know we needed to narrow down to only
-the `JSXAttribute` nodes.
-
 ```typescript
 import { Transform } from "jscodeshift";
 import { camelCase } from "change-case";
@@ -258,10 +234,50 @@ const transform: Transform = (file, api, options) => {
 export default transform;
 ```
 
-> The component name and prop name are hard-coded in this example, but the
-> [`font-awesome-codemod`](https://github.com/skovy/font-awesome-codemod) allows passing options to define these.
+This will now convert a given input file with any `FontAwesomeIcon` components 
+and a string `icon` value to a JSX expression.
 
-This will now convert a given input with a string `icon` value to a JSX expression.
+> The component name and prop name are hard-coded in this example, but the
+> [`font-awesome-codemod`](https://github.com/skovy/font-awesome-codemod) allows 
+> passing options to define these.
+
+Unfortunately, jscodeshift doesn't have great documentation and requires a bit
+of "source-diving" to find the methods you may need. It offers the 
+[`findJSXElements`](https://github.com/facebook/jscodeshift/blob/a268d0d1b96624427dddc2f1f4e65837b105031b/src/collections/JSXElement.js#L29-L38)
+which will find all the JSXElements filtered by the name passed. This will
+give us the correct component(s), but the `FontAwesomeIcon` component could have
+a set of other props.
+
+To narrow down to only the prop we care about, we can use the
+[`find`](https://github.com/facebook/jscodeshift/blob/d63aa8486c2099a65b071e7c86e9dccdb8577d80/src/collections/Node.js#L25-L57)
+method to find nodes of a specific type. The specific type of the node we're
+looking for is a 
+[`JSXAttribute`](https://github.com/benjamn/ast-types/blob/0b6bc6dec16203076e3a0ffca0157c9215ec14f9/gen/namedTypes.ts#L527-L531).
+This type is [defined in `ast-types`](https://github.com/benjamn/ast-types/blob/28c73fa503f070512a89e7cd1bc5ed97eacf173b/def/jsx.ts#L15-L23).
+
+But how do you know it's `JSXAttribute` in the first place? 
+[astexplorer.net](https://astexplorer.net) is an invaluable resource to
+understand the AST that represents a piece of code.
+
+![Example of AST explorer](./images/ast-explorer-example.png)
+
+This screenshot is an example of what the above code would look like if pasted
+into the AST explorer. This is how we know we needed to narrow down to only
+the `JSXAttribute` nodes. 
+
+Looking closer at the AST, we specifically want to filter to nodes that have
+a name of `icon` and a value that's a string. Arrays (eg: `icon={["far", "user"]}`) 
+will be handled later. Variables (eg: `icon={someVar}`) will print a warning since
+these cannot be easily automatically updated.
+
+Now, we only have a set of `icon` props with a string value. The `icon` prop
+doesn't need to change, only it's value. That can be narrowed by finding
+only nodes of type `StringLiteral`. Finally, replacing this string value with
+an actual icon definition that will eventually be imported. This can be done
+using the [`replaceWith`](https://github.com/facebook/jscodeshift/blob/d63aa8486c2099a65b071e7c86e9dccdb8577d80/src/collections/Node.js#L131-L145)
+method. The provided function is executed for every node and the node is 
+replaced with the functions return value. This function creates a `JSXExpression`
+node to replace the `StringLiteral`.
 
 **Input:**
 
