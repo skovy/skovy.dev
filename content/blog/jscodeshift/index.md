@@ -352,6 +352,89 @@ export default transform;
 
 ## Handling arrays
 
+```typescript
+import { Transform } from "jscodeshift";
+import { camelCase } from "change-case";
+
+const PACKAGES = {
+  fab: "@fortawesome/free-brands-svg-icons",
+  far: "@fortawesome/free-regular-svg-icons",
+  fas: "@fortawesome/free-solid-svg-icons"
+};
+
+const transform: Transform = (file, api, options) => {
+  // Alias the jscodeshift API for ease of use.
+  const j = api.jscodeshift;
+
+  // Convert the entire file source into a collection of nodes paths.
+  const root = j(file.source);
+
+  const FIRST_IMPORT = root.find(j.ImportDeclaration).at(0);
+
+  root
+    .findJSXElements("FontAwesomeIcon")
+    .find(j.JSXAttribute, {
+      name: {
+        type: "JSXIdentifier",
+        name: "icon"
+      },
+      value: {
+        type: "JSXExpressionContainer",
+        expression: {
+          type: "ArrayExpression"
+        }
+      }
+    })
+    .find(j.ArrayExpression)
+    .filter(nodePath => {
+      const [iconType, iconName] = nodePath.node.elements;
+
+      if (
+        iconType.type !== "StringLiteral" ||
+        iconName.type !== "StringLiteral"
+      ) {
+        console.error(`...`);
+
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .replaceWith(nodePath => {
+      const [iconType, iconName] = nodePath.node.elements;
+
+      // This check has already been performed but it's necessary for TS to
+      // properly narrow the types. This `return` code path should never be hit.
+      if (
+        iconType.type !== "StringLiteral" ||
+        iconName.type !== "StringLiteral"
+      ) {
+        return;
+      }
+
+      const iconDefinition = camelCase(`fa-${iconName.value}`);
+
+      FIRST_IMPORT.insertAfter(
+        j.importDeclaration(
+          [j.importSpecifier(j.identifier(iconDefinition))],
+          j.stringLiteral(PACKAGES[iconType.value]),
+          "value"
+        )
+      );
+
+      // Replace the array with a JSX expression value with the now
+      // import font name.
+      const newNode = j.identifier(iconDefinition);
+
+      return newNode;
+    });
+
+  return root.toSource();
+};
+
+export default transform;
+```
+
 ## Additional considerations
 
 - options
