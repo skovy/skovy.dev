@@ -303,6 +303,18 @@ const Component = () => {
 
 However, this is now producing invalid code because `faMinusCircle` is not defined.
 
+## Adding an import
+
+## Handling arrays
+
+## Additional considerations
+
+- options
+- handling components with different names and dot notation
+- switching between pro vs free imports
+- de-duping imports
+- uniqifying imports
+
 ## Conclusion
 
 The completed source code for [this example is available here](https://github.com/skovy/font-awesome-codemod).
