@@ -171,7 +171,7 @@ or the [React codemods](https://github.com/reactjs/react-codemod/tree/master/tra
 Now, as changes are made to the transform they can be easily tested to validate
 the input and expected output.
 
-## Filling the transform
+## Filling in the transform
 
 The first thing to be aware of when making a transform is that jscodeshift
 is actually built on top of several other tools. This is an important detail
@@ -279,6 +279,10 @@ method. The provided function is executed for every node and the node is
 replaced with the functions return value. This function creates a `JSXExpression`
 node to replace the `StringLiteral`.
 
+You might notice `const { node } = nodePath;`. This is necessary because each 
+node is also wrapped in a [`NodePath`](https://github.com/benjamn/ast-types#nodepath). 
+This isn't reflected in the AST explorer but an important thing to be aware of.
+
 **Input:**
 
 ```typescript
@@ -304,6 +308,9 @@ const Component = () => {
 However, this is now producing invalid code because `faMinusCircle` is not defined.
 
 ## Adding an import
+
+To make this example complete, there's needs to be an import for the newly
+defined `faMinusCircle` icon. Let's expand on the existing sample.
 
 ```typescript{9,28-34}
 import { Transform } from "jscodeshift";
@@ -350,7 +357,64 @@ const transform: Transform = (file, api, options) => {
 export default transform;
 ```
 
+To start, `FIRST_IMPORT` is defined as a reference to the first import in the 
+file. This isn't the most robust approach but it's sufficient for this example
+(and most other cases). Now, there's a place to insert the new import, a new
+import node can be added with the 
+[`insertAfter`](https://github.com/facebook/jscodeshift/blob/d63aa8486c2099a65b071e7c86e9dccdb8577d80/src/collections/Node.js#L161-L173) 
+method.
+
+The import is constructed to import the icon definition specifier that was 
+generated from the `"@fortawesome/free-solid-svg-icons"` package. 
+
+**Input:**
+
+```typescript
+import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return <FontAwesomeIcon icon="minus-circle" />;
+};
+```
+
+**Output:**
+
+```typescript
+import * as React from "react";
+import { faMinusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return <FontAwesomeIcon icon={faMinusCircle} />;
+};
+```
+
+All the basic scenarios for solid icons are now handled. However, there are 
+other icon packages and these can be used with an array syntax. For example,
+`icon={['far', 'circle']}` will use the regular circle icon (instead of solid).
+
 ## Handling arrays
+
+To work through this case, let's use this example.
+
+```typescript
+import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return (
+    <div>
+      <FontAwesomeIcon icon={["far", "envelope-open"]} />
+      <FontAwesomeIcon icon={["fas", "envelope"]} />
+      <FontAwesomeIcon icon={["fab", "twitter"]} />
+    </div>
+  );
+};
+```
+
+In order to simplify the transform, this example won't contain the logic for
+handling string icons and only handle array icons.
 
 ```typescript
 import { Transform } from "jscodeshift";
@@ -435,6 +499,57 @@ const transform: Transform = (file, api, options) => {
 export default transform;
 ```
 
+The first different is when finding the `icon` prop. Instead of looking for
+a `StringLiteral`, we're now looking for an `ArrayExpression`. However, any
+array can't be handled, only if there are two string values. For example,
+if either the font or icon name were a variable that couldn't be handled.
+Instead of silently skipping, an error can be printed to notify the user that
+it was skipped.
+
+Now, there's only icon props with an array value with two string literals. This
+icon definition can be referenced in the same fashion as above, but now the
+package name needs to be referenced dynamically since any font could be used.
+
+This setup should now handle the case of an `icon` prop with an array of two
+string values.
+
+**Input:**
+
+```typescript
+import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return (
+    <div>
+      <FontAwesomeIcon icon={["far", "envelope-open"]} />
+      <FontAwesomeIcon icon={["fas", "envelope"]} />
+      <FontAwesomeIcon icon={["fab", "twitter"]} />
+    </div>
+  );
+};
+```
+
+**Output:**
+
+```typescript
+import * as React from "react";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelopeOpen } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Component = () => {
+  return (
+    <div>
+      <FontAwesomeIcon icon={faEnvelopeOpen} />
+      <FontAwesomeIcon icon={faEnvelope} />
+      <FontAwesomeIcon icon={faTwitter} />
+    </div>
+  );
+};
+```
+
 ## Additional considerations
 
 - options
@@ -442,6 +557,9 @@ export default transform;
 - switching between pro vs free imports
 - de-duping imports
 - uniqifying imports
+
+All of these can be solved and are fully handled by the 
+[full transform](https://github.com/skovy/font-awesome-codemod/blob/master/transforms/implicit-icons-to-explicit-imports.ts).
 
 ## Conclusion
 
