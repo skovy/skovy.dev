@@ -583,12 +583,12 @@ This was again done with a command line option, `--type`.
 Finally, one of the more complex cases was handling the various scenarios for 
 imports. 
 
-1. If the same icon was imported from different packages it had to be aliased
+1. If the same icon was imported from different packages, it had to be aliased
 to avoid a naming collision (eg: `faUser as faUserFar`).
-1. If multiple icons were imported from the same package a single import should
+1. If multiple icons were imported from the same package, a single import should
 be used for all icons. This requires first checking for an existing import
 from a package before creating a new one.
-1. If the same icon was imported from the same package it should only be imported
+1. If the same icon was imported from the same package, it should only be imported
 once. This requires checking if the icon was already imported from the same package.
 
 All of these can be solved and are fully handled by the full transform.
