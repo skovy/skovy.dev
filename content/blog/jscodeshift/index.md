@@ -1,5 +1,5 @@
 ---
-date: 2019-10-06T00:11:00.000Z
+date: 2019-10-09T00:11:00.000Z
 title: "Creating a custom transform for jscodeshift"
 description: "Using a jscodeshift transform to update automatically Font Awesome imports to enable tree shaking."
 featuredImage: "./images/featured-image.jpg"
