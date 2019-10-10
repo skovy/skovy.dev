@@ -552,15 +552,50 @@ const Component = () => {
 
 ## Additional considerations
 
-- options
-- handling components with different names and dot notation
-- switching between pro vs free imports
-- de-duping imports
-- uniqifying imports
+The above examples mostly handle the core use cases. In some scenarios, this may
+be sufficient. However, I was surprised by the variety of usages and edge cases
+in a larger repository.
+
+First off, it's likely the `FontAwesomeIcon` is wrapped by another component
+and/or the `icon` prop is aliased or passed along from a parent to a child
+component. To handle these cases, the jscodeshift transform accepts options
+via the command line and those are passed as an object to the transform as the
+third argument. To solve this case, `--componentName` and `--iconProp` can be
+overridden and replace the hard-coded usages.
+
+One more slightly complex case for the component name are components that are
+referenced via [dot notation](/using-component-dot-notation-with-typescript-to-create-a-set-of-components).
+For example, `<Dot.Notation icon="user" />`. This requires a bit more complex
+AST traversal but 
+[can also be handled](https://github.com/skovy/font-awesome-codemod/blob/a7676bea53e1f0b30025373a7ae1398acc6b48fb/transforms/implicit-icons-to-explicit-imports.ts#L101-L105).
+
+Another edge case is that Font Awesome offers both free and pro fonts. So the
+`PACKAGES` constant and the transform needs to also account for this. This
+was again done with a command line option, `--type`.
+
+Finally, one of the more complex cases as handling the various scenarios for 
+imports. 
+
+1. If the same icon was imported from different packages it had to be aliased
+to avoid a naming collision (eg: `faUser as faUserFar`).
+1. If multiple icons were imported from the same package a single import should
+be used for all icons. This requires first checking for an existing import
+from a package before creating a new one.
+1. If the same icon was import from the same package it should only be imported
+once. This requires checking if the icon was already imported from the same package.
 
 All of these can be solved and are fully handled by the 
 [full transform](https://github.com/skovy/font-awesome-codemod/blob/master/transforms/implicit-icons-to-explicit-imports.ts).
 
 ## Conclusion
+
+Although this was a specific example for working with Font Awesome, the 
+flexibility and capabilities of jscodeshift can be a great tool to keep in mind.
+It's particularly useful making well-defined, "mechanical" changes in a large
+codebase. Even in this case, any icons that used variables had to be updated
+manually to fully understand the surrounding context.
+
+Codemods are a great tool to not only keep your sanity, but also reduce the risk
+of small mistakes.
 
 The completed source code for [this example is available here](https://github.com/skovy/font-awesome-codemod).
