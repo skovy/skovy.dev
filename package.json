@@ -48,13 +48,14 @@
     "styled-components": "^4.2.0",
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.75",
+    "typescript": "^3.7.2",
     "typography": "^0.16.19"
   },
   "devDependencies": {
-    "@graphql-codegen/introspection": "^1.0.6",
-    "@graphql-codegen/typescript": "1.7.0",
-    "@graphql-codegen/typescript-operations": "1.7.0",
-    "@graphql-codegen/typescript-react-apollo": "1.7.0",
+    "@graphql-codegen/introspection": "^1.8.3",
+    "@graphql-codegen/typescript": "^1.8.3",
+    "@graphql-codegen/typescript-operations": "^1.8.3",
+    "@graphql-codegen/typescript-react-apollo": "^1.8.3",
     "prettier": "^1.16.4"
   },
   "license": "MIT",
