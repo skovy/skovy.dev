@@ -4,9 +4,11 @@ import styled from "styled-components";
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { AnimatedCard } from "../../animated-card";
+import { SiteSiteMetadataTalks } from "../../../generated/graphql";
 
 const Container = styled.a`
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
   height: 100%;
   padding: 0;
@@ -21,11 +23,24 @@ const Container = styled.a`
     box-shadow: 0px ${rhythm(1)} ${rhythm(2)} -${rhythm(1 / 2)} rgba(0, 0, 0, 0.4);
     cursor: pointer;
   }
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+const Content = styled.div`
+  padding: ${rhythm(1)};
+`;
+
+const Description = styled.p`
+  margin: 0;
+  color: ${colors.muted};
 `;
 
 const Title = styled.h3`
-  margin: 0;
-  padding: ${rhythm(1)};
+  margin: 0 0 ${rhythm(1 / 2)};
   color: ${colors.text};
   text-align: left;
   ${scale(1 / 6)}
@@ -33,21 +48,36 @@ const Title = styled.h3`
 
 const Image = styled.img`
   margin: 0;
+  max-width: 50%;
+
+  @media screen and (max-width: ${rhythm(24)}) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
 `;
 
-// Simplecast seems to have stopped sending (or setting) the image for each
-// individual item.
-const FALLBACK_IMAGE =
-  "https://cdn.simplecast.com/images/47f7d3/47f7d3c6-b36d-49cf-b4e0-876d09a827e6/c5b394b9-eb7e-4483-a0f8-2a7e8a6b0b4a/1400x1400/1552160508artwork.jpg?aid=rss_feed";
-
 interface Props {
-  id: string;
+  talk: SiteSiteMetadataTalks;
 }
 
 export class TalksVideo extends React.Component<Props> {
   render() {
-    const { id } = this.props;
+    const { id, title, description } = this.props.talk;
 
-    return <AnimatedCard>{id}</AnimatedCard>;
+    return (
+      <AnimatedCard>
+        <Container href={`https://youtu.be/${id}`} target="_blank">
+          <Image
+            src={`https://img.youtube.com/vi/${id}/mqdefault.jpg`}
+            alt={`YouTube Screenshot for ${title}`}
+          />
+          <Content>
+            <Title>{title}</Title>
+            <Description>{description}</Description>
+          </Content>
+        </Container>
+      </AnimatedCard>
+    );
   }
 }

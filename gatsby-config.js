@@ -25,7 +25,13 @@ module.exports = {
         }
       }
     ],
-    talks: [{ id: "hDkcBC-vmgM" }]
+    talks: [
+      {
+        id: "hDkcBC-vmgM",
+        title: "Codemod-ing away 4MB of JavaScript",
+        description: "⚡ Lightning talk at React Conf 2019"
+      }
+    ]
   },
   plugins: [
     {

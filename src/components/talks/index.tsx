@@ -6,25 +6,16 @@ import { TalksVideo } from "./video";
 import { rhythm } from "../../utils/typography";
 import { ContentContainer } from "../content-container";
 import { SectionHeading } from "../section-heading";
-import { colors } from "../../config/colors";
 import { Query } from "../../generated/graphql";
 
-const TOTAL_EPISODES = 4;
-
 const Container = styled.div`
-  background-image: linear-gradient(135deg, #3b2667 10%, #bc78ec 100%);
   padding: ${rhythm(3)} 0;
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: ${rhythm(1)};
+  grid-template-columns: 1fr;
   grid-row-gap: ${rhythm(1)};
-
-  @media screen and (max-width: ${rhythm(24)}) {
-    grid-template-columns: 1fr;
-  }
 `;
 
 export class Talks extends React.Component {
@@ -38,10 +29,10 @@ export class Talks extends React.Component {
           return (
             <Container id="recent-talks">
               <ContentContainer>
-                <SectionHeading variant="light">Recent Talks</SectionHeading>
+                <SectionHeading>Recent Talks</SectionHeading>
                 <Grid>
-                  {talks.map(({ id }) => (
-                    <TalksVideo id={id} key={id} />
+                  {talks.map(talk => (
+                    <TalksVideo talk={talk} key={talk.id} />
                   ))}
                 </Grid>
               </ContentContainer>
@@ -59,6 +50,8 @@ const query = graphql`
       siteMetadata {
         talks {
           id
+          title
+          description
         }
       }
     }

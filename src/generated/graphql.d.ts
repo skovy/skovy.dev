@@ -19319,6 +19319,8 @@ export enum SiteFieldsEnum {
   SiteMetadataOtherPodcastsItunesImage = 'siteMetadata___otherPodcasts___itunes___image',
   SiteMetadataTalks = 'siteMetadata___talks',
   SiteMetadataTalksId = 'siteMetadata___talks___id',
+  SiteMetadataTalksTitle = 'siteMetadata___talks___title',
+  SiteMetadataTalksDescription = 'siteMetadata___talks___description',
   Port = 'port',
   Host = 'host',
   Polyfill = 'polyfill',
@@ -20107,10 +20109,14 @@ export type SiteSiteMetadataSocialFilterInput = {
 export type SiteSiteMetadataTalks = {
    __typename?: 'SiteSiteMetadataTalks',
   id?: Maybe<Scalars['String']>,
+  title?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
 };
 
 export type SiteSiteMetadataTalksFilterInput = {
   id?: Maybe<StringQueryOperatorInput>,
+  title?: Maybe<StringQueryOperatorInput>,
+  description?: Maybe<StringQueryOperatorInput>,
 };
 
 export type SiteSiteMetadataTalksFilterListInput = {
@@ -20409,7 +20415,7 @@ export type Unnamed_4_Query = (
       { __typename?: 'SiteSiteMetadata' }
       & { talks: Maybe<Array<Maybe<(
         { __typename?: 'SiteSiteMetadataTalks' }
-        & Pick<SiteSiteMetadataTalks, 'id'>
+        & Pick<SiteSiteMetadataTalks, 'id' | 'title' | 'description'>
       )>>> }
     )> }
   )> }
