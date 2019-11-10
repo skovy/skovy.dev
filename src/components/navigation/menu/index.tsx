@@ -8,14 +8,14 @@ import { rhythm, scale } from "../../../utils/typography";
 const Container = styled.nav``;
 
 const NavLink = styled(Link)`
-  font-family: 'Raleway';
+  font-family: "Raleway";
   font-weight: 700;
   color: ${colors.primary};
   text-decoration: none;
   transition: color 200ms ease;
 
   & + & {
-    margin-left: ${rhythm(1)};
+    margin-left: ${rhythm(2 / 3)};
   }
 
   &:hover,
@@ -30,6 +30,7 @@ export const NavigationMenu = () => {
       <NavLink to="/blog">blog</NavLink>
       <NavLink to="/#projects-and-packages">projects</NavLink>
       <NavLink to="/#recent-podcasts">podcasts</NavLink>
+      <NavLink to="/#newsletter">newsletter</NavLink>
     </Container>
   );
 };

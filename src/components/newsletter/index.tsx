@@ -66,6 +66,7 @@ export const Newsletter = () => {
       action="https://tinyletter.com/skovy"
       method="post"
       target="popupwindow"
+      id="newsletter"
       onSubmit={() => {
         window.open(
           TINYLETTER_URL,

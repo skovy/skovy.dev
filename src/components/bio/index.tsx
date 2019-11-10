@@ -5,7 +5,16 @@ import styled from "styled-components";
 
 import { rhythm } from "../../utils/typography";
 import { colors } from "../../config/colors";
-import { ContentContainer } from "../content-container";
+
+const Content = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: ${rhythm(2)};
+`;
+
+const Explanation = styled.p`
+  margin-bottom: 0;
+`;
 
 const Twitter = styled.a`
   color: ${colors.primary};
@@ -24,12 +33,7 @@ function Bio() {
       render={data => {
         const { author, social } = data.site.siteMetadata;
         return (
-          <div
-            style={{
-              display: `flex`,
-              marginBottom: rhythm(1),
-            }}
-          >
+          <Content>
             <Image
               fixed={data.avatar.childImageSharp.fixed}
               alt={author}
@@ -37,21 +41,22 @@ function Bio() {
                 marginRight: rhythm(1 / 2),
                 marginBottom: 0,
                 minWidth: 50,
-                borderRadius: `100%`,
+                borderRadius: `100%`
               }}
               imgStyle={{
                 borderRadius: `50%`,
+                marginBottom: 0
               }}
             />
-            <p>
+            <Explanation>
               Ramblings on React, TypeScript, Design Systems, frontend things,
-              and occassionally other stuff by{" "}
+              and occasionally other stuff by{" "}
               <Twitter href={`https://twitter.com/${social.twitter}`}>
                 {author}
               </Twitter>
               .
-            </p>
-          </div>
+            </Explanation>
+          </Content>
         );
       }}
     />
