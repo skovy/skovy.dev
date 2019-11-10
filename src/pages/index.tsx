@@ -10,6 +10,8 @@ import { GitHubProjects } from "../components/github/projects";
 import { Podcasts } from "../components/podcasts";
 import { Query } from "../generated/graphql";
 import { BlogRecentPosts } from "../components/blog/recent-posts";
+import { Talks } from "../components/talks";
+import { Separator } from "../components/separator";
 
 interface Props extends PageRendererProps {
   data: Query;
@@ -34,6 +36,8 @@ class BlogIndex extends React.Component<Props> {
         <BlogRecentPosts posts={posts.slice(1, 5)} />
         <GitHubProjects />
         <Podcasts />
+        <Talks />
+        <Separator />
       </Layout>
     );
   }

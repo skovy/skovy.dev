@@ -1,5 +1,5 @@
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${process.env.NODE_ENV}`
 });
 
 module.exports = {
@@ -21,25 +21,32 @@ module.exports = {
         title: `RRU 044: TypeScript with Spencer Miskoviak`,
         link: `https://devchat.tv/react-round-up/rru-044-typescript-with-spencer-miskoviak/`,
         itunes: {
-          image: `https://devchat.tv/images/podcasts/reactroundup-500.jpg`,
-        },
-      },
+          image: `https://devchat.tv/images/podcasts/reactroundup-500.jpg`
+        }
+      }
     ],
+    talks: [
+      {
+        id: "hDkcBC-vmgM",
+        title: "Codemod-ing away 4MB of JavaScript",
+        description: "⚡ Lightning talk at React Conf 2019"
+      }
+    ]
   },
   plugins: [
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content/blog`,
-        name: `blog`,
-      },
+        name: `blog`
+      }
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content/assets`,
-        name: `assets`,
-      },
+        name: `assets`
+      }
     },
     {
       resolve: `gatsby-transformer-remark`,
@@ -49,29 +56,29 @@ module.exports = {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 590,
-              backgroundColor: "#fafafa",
-            },
+              backgroundColor: "#fafafa"
+            }
           },
           {
             resolve: `gatsby-remark-responsive-iframe`,
             options: {
-              wrapperStyle: `margin-bottom: 1.0725rem`,
-            },
+              wrapperStyle: `margin-bottom: 1.0725rem`
+            }
           },
           `gatsby-remark-prismjs`,
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-smartypants`,
           `gatsby-remark-reading-time`
-        ],
-      },
+        ]
+      }
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
-        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
-      },
+        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID
+      }
     },
     `gatsby-plugin-feed`,
     {
@@ -83,16 +90,16 @@ module.exports = {
         background_color: `#ffffff`,
         theme_color: `#9448BC`,
         display: `minimal-ui`,
-        icon: `content/assets/icon.png`,
-      },
+        icon: `content/assets/icon.png`
+      }
     },
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-typography`,
       options: {
-        pathToConfigModule: `src/utils/typography`,
-      },
+        pathToConfigModule: `src/utils/typography`
+      }
     },
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-typescript`,
@@ -103,9 +110,9 @@ module.exports = {
         fieldName: "github",
         url: "https://api.github.com/graphql",
         headers: {
-          Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
-        },
-      },
+          Authorization: `bearer ${process.env.GITHUB_TOKEN}`
+        }
+      }
     },
     {
       resolve: `gatsby-source-rss-feed`,
@@ -114,10 +121,10 @@ module.exports = {
         name: `RubberDucking`,
         parserOption: {
           customFields: {
-            item: ["description"],
-          },
-        },
-      },
-    },
-  ],
+            item: ["description"]
+          }
+        }
+      }
+    }
+  ]
 };
