@@ -48,7 +48,7 @@ yarn upgrade react@experimental react-dom@experimental
 ```
 
 Now the proper packages are installed with the experimental features but they
-need to be enabled. To enable concurrent mode, the setup with `react-dom` needs 
+need to be enabled. To enable concurrent mode, the setup with `react-dom` needs
 to be changed to use the new `createRoot` method.
 
 ```tsx
@@ -81,11 +81,11 @@ ReactDOM.createRoot(root).render(<App />);
 
 This should now fix this type error. However, there is now a new type error:
 `Type 'null' is not assignable to type`. This is because `getElementById` returns
-an `HTMLElement` or `null` and the `createRoot` method expects only an 
+an `HTMLElement` or `null` and the `createRoot` method expects only an
 `HTMLElement` (not `null`). This was fixed in this example by casting the value
 to `HTMLElement`.
 
-Another option is to instead add a reference in the already existing type 
+Another option is to instead add a reference in the already existing type
 definition file.
 
 ```typescript{3-4}
@@ -95,16 +95,19 @@ definition file.
 /// <reference types="react/experimental" />
 ```
 
-All the other options to opt-in to the experimental types are documented in the 
+All the other options to opt-in to the experimental types are documented in the
 [`experimental.d.ts`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/cdf01cf33d2db0f25558413ce3ba98b472c4dd07/types/react/experimental.d.ts) file.
 
 ## Conclusion
 
 Now, concurrent mode is enabled with the proper type definitions. The new
-components and APIs such as `ReactDOM.createRoot` or `React.SuspenseList` should 
-be properly type-checked. You can avoid easy typos and instead focus on the 
+components and APIs such as `ReactDOM.createRoot` or `React.SuspenseList` should
+be properly type-checked. You can avoid easy typos and instead focus on the
 important parts!
 
 All of this code is available on GitHub if you'd like to explore it yourself
 in the [skovy/react-concurrent-mode-typescript-example](https://github.com/skovy/react-concurrent-mode-typescript-example)
 repository.
+
+If you'd like to see more examples working with concurrent mode features
+[check out the examples for the `react-suspense-img`](https://react-suspense-img.netlify.com/) package.
