@@ -6,6 +6,12 @@ import styled from "styled-components";
 import { rhythm } from "../../utils/typography";
 import { colors } from "../../config/colors";
 
+const Avatar = styled.div`
+  @media screen and (max-width: ${rhythm(24)}) {
+    display: none;
+  }
+`;
+
 const Content = styled.div`
   display: flex;
   align-items: center;
@@ -34,20 +40,22 @@ function Bio() {
         const { author, social } = data.site.siteMetadata;
         return (
           <Content>
-            <Image
-              fixed={data.avatar.childImageSharp.fixed}
-              alt={author}
-              style={{
-                marginRight: rhythm(1 / 2),
-                marginBottom: 0,
-                minWidth: 50,
-                borderRadius: `100%`
-              }}
-              imgStyle={{
-                borderRadius: `50%`,
-                marginBottom: 0
-              }}
-            />
+            <Avatar>
+              <Image
+                fixed={data.avatar.childImageSharp.fixed}
+                alt={author}
+                style={{
+                  marginRight: rhythm(1 / 2),
+                  marginBottom: 0,
+                  minWidth: 50,
+                  borderRadius: `100%`
+                }}
+                imgStyle={{
+                  borderRadius: `50%`,
+                  marginBottom: 0
+                }}
+              />
+            </Avatar>
             <Explanation>
               Ramblings on React, TypeScript, Design Systems, frontend things,
               and occasionally other stuff by{" "}

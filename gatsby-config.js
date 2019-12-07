@@ -125,6 +125,13 @@ module.exports = {
           }
         }
       }
+    },
+    {
+      resolve: "@jamesdanylik/gatsby-source-goodreads",
+      options: {
+        key: process.env.GOODREADS_API_KEY,
+        id: "64661635-spencer-miskoviak"
+      }
     }
   ]
 };

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "gatsby";
 
 import { colors } from "../../../config/colors";
-import { rhythm, scale } from "../../../utils/typography";
+import { rhythm } from "../../../utils/typography";
 
 const Container = styled.nav``;
 
@@ -22,6 +22,15 @@ const NavLink = styled(Link)`
   &:focus {
     color: ${colors.secondary};
   }
+
+  @media screen and (max-width: ${rhythm(18)}) {
+    display: block;
+    margin-top: ${rhythm(1/2)};
+
+    & + & {
+      margin-left: 0;      
+    }
+  }
 `;
 
 export const NavigationMenu = () => {
@@ -31,6 +40,7 @@ export const NavigationMenu = () => {
       <NavLink to="/#projects-and-packages">projects</NavLink>
       <NavLink to="/#recent-podcasts">podcasts</NavLink>
       <NavLink to="/#newsletter">newsletter</NavLink>
+      <NavLink to="/#books">books</NavLink>
     </Container>
   );
 };

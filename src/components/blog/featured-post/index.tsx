@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 
-import { rhythm, scale } from "../../../utils/typography";
+import { rhythm } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { MarkdownRemark } from "../../../generated/graphql";
 import { ContentContainer } from "../../content-container";
