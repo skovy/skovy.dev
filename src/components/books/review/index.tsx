@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { GoodreadsReview } from "../../../generated/graphql";
+import { AnimatedCard } from "../../animated-card";
 
 const Container = styled.a`
   text-decoration: none;
@@ -24,8 +25,10 @@ export const Review: React.FC<Props> = ({ review }) => {
   } = review;
 
   return (
-    <Container href={link} target="_blank" aria-label={title}>
-      <Img src={image_url} alt={title} title={title} />
-    </Container>
+    <AnimatedCard scale={1.2}>
+      <Container href={link} target="_blank" aria-label={title}>
+        <Img src={image_url} alt={title} title={title} />
+      </Container>
+    </AnimatedCard>
   );
 };
