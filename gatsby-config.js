@@ -125,6 +125,13 @@ module.exports = {
           }
         }
       }
+    },
+    {
+      resolve: "gatsby-source-goodreads",
+      options: {
+        developerKey: process.env.GOODREADS_API_KEY,
+        goodReadsUserId: "64661635-spencer-miskoviak"
+      }
     }
   ]
 };
