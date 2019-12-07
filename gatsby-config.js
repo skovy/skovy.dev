@@ -127,10 +127,10 @@ module.exports = {
       }
     },
     {
-      resolve: "gatsby-source-goodreads",
+      resolve: "@jamesdanylik/gatsby-source-goodreads",
       options: {
-        developerKey: process.env.GOODREADS_API_KEY,
-        goodReadsUserId: "64661635-spencer-miskoviak"
+        key: process.env.GOODREADS_API_KEY,
+        id: "64661635-spencer-miskoviak"
       }
     }
   ]
