@@ -2,7 +2,7 @@
 date: 2020-01-18T00:11:00.000Z
 title: "Thing that puts many small groupings of words into a single huge grouping of words"
 description: "A hard thing explained using only the ten hundred words people use the most often."
-featuredImage: "./images/thing-overview.jpg"
+featuredImage: "./images/thing-overview.png"
 tags:
   - webpack
   - illustrated
