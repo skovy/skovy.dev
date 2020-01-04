@@ -9,42 +9,67 @@ tags:
   - simple words
 ---
 
-_(Written using only the ten hundred words people use the most often, as stated by the funny black and white drawings computer place)_
+Thing that puts many small groupings of words into a single huge grouping of words.
 
-Today, there are a lot of big words used to explain things that could use simpler words that could be understood by a larger group of people. When I write I often fall into this situation myself. It's often easier to use the single big hairy word rather than several smaller but easier to understand words. These and the following words are a try to explain something I find hard to understand using only the ten hundred most often used words.
+_(Written using only the ten hundred words people use the most often, as stated by [the computer place with funny black and white drawings](https://xkcd.com/simplewriter))_
 
-If you are a person that puts words into a computer all day that then runs on a computer that any person around the world can see on another computer you probably use this thing every day. Often, you write a small group of words in one spot that needs another small group of words in a different spot. In a big company, this might be hundreds of hundreds of different small groups of words. It's often takes too long for the person on the other side of the world to save onto their computer. They usually only want to save a single grouping of words (or a few small groups, not hundreds and hundreds) because it's faster. But you don't want to write only a few groupings of words because those groupings of words may get hundreds of hundreds of lines long. That's way too long for any one person to hold in their head.
+Today, there are a lot of big words used to explain things that could be understood by a larger group of people if simpler words were used instead. 
 
-So how do we get from hundreds and hundreds of word groupings into only a few groupings of words? The thing that puts different groupings of words into a single grouping of words.
+When I write I often fall into this situation myself. It's often easier to use the single big hairy word rather than several smaller, but easier to understand words. These and the following words try to explain something using only the ten hundred most often used words.
+
+Every day, hundreds of hundreds of people visit pages on computers all around the world. These people want these pages to work quickly. This usually means saving as few things as possible when they visit a page. However, if you are the person that works on these pages and puts word into a computer all day that's probably not how you want to write those words.
+
+When writing and working on those words on the computer, you want probably would rather have many small groupings of words. This way it's easier to keep everything in your head when working on it. If every single word was in one grouping, it would be very hard to keep it all in your head. If other people are also making changes at the same time it can be hard to put those together if it's all in one spot. By having many different word groupings, another person is probably not also making changes in the same spot.
+
+For a computer place with many pages, there might be hundreds and hundreds of word groupings. But if a person on the other side of the world wants to visit this page, it would take a long time to save all of these different word groupings. 
+
+The people who write these words want to work with many small word groupings, but the people that view these pages want to save only a few large word groupings. So how do we get from hundreds and hundreds of word groupings into only a few groupings of words? 
+
+**The thing that puts different groupings of words into a single grouping of words.** For short, we'll call it the "Word Grouper."
 
 But this sounds really hard to do. How does it work?
 
-## Starting Line
+## Starting Point
 
-Well, to start, it needs a place to start. That's the starting line.
+To start, the thing itself needs a place to start. That's the starting point.
 
-It's possible to have more than one starting line but that's usually not needed. This starting line is where everything starts. The Thing finds all of the other word groupings it needs, then the word groupings those word groups need and so on. The "thing" can then build a huge map of what word grouping needs which word groupings. This can be any number of layers deep and by the finish line, it may have found hundreds of hundreds of word groupings.
+It's possible to have more than one starting point but that's usually not needed. This starting point is where everything starts. The Word Grouper finds all of the other word groupings that the starting point needs. Then the word groupings those word groups need and so on. As the Word Grouper jumps around it can then build a huge map of which word groupings need which word groupings. This can be any number of layers deep and by the finish point, it may have found hundreds of hundreds of word groupings.
 
 ![Starting Line](./images/starting-line.png)
 
-## Finish Line
+## Finish Point
 
-Once a huge map has been built between all of the word groupings it can then figure out which order they need to be put together and used. At the end, it saves this ending point and this is what people all over the world can save on their computer.
+Once the Word Grouper finishes building a huge map of all the word groupings it can then use the map to put all the different word groupings into a single big word grouping.
 
-So it starts with one word grouping, finds all the other word groupings, and then ends with a single huge grouping of words? A lot of other things happen between the start and end though.
+When it's done figuring this out, it then saves this finishing point and this is what people all around the world will then save on their computer when they visit.
 
-## Word Understand-ers
+To quickly go over, it starts with one word grouping, finds all the other word groupings, and then ends with a single huge grouping of words.
 
-There are many different kinds of word groupings. Some words run after a person has saved them, some make the thing they are looking at pretty, some show pictures, show change the way the words appear, or any number of other things. How is this thing supposed to understand so many different things?
+However, it's doing a lot of other things between the starting point and finish point.
 
-It has word understand-ers that can only understand one kind of word grouping. But the thing can have as many word understand-ers as you would like. If you only need to run the words, you only need the word understand-er for that. If you want to make things look pretty then you add the word understand-er for that. If you want to change how the words look then you change the thing understand-er for that.
+## Word Understanders
 
-## Word Change-ers
+As the Word Grouper jumps around between word groupings, it might find different kinds of word groupings. There can be any number of different kinds of word groupings, but there are a few that show up often:
 
-After understanding the words, you often want to change the words. Word Change-ers can be used to change one word for another, make the words smaller, remove extra words or completely change from one set of word to another. 
+- Words that run on the person's computer.
+- Words that make things look pretty.
+- Words that show pictures.
+- Words that change the way the real words appear when reading.
 
-## Word Size Change-er
+These are only a few, there are many more. How is the Word Grouper supposed to understand so many different things? 
 
-There are two different "sizes" you can use to control how much the words are changed. Changing the words a lot usually takes a lot more time to run, but it usually means less words for the person on the other side of the world to save so it's faster for them. Changing the words less means it runs faster but takes longer for the person to save. This means when you're making a lot of changes, you want to make less changes to the words. This means it's faster for you to make a lot of changes quickly. Then, when you are ready to share it with the world, you make a lot of word changes because you only have to do this once in a while and means the hundreds and hundreds of people that need to save the word grouping will be able to do so quickly.
+The short answer: it doesn't! Instead, it uses Word Understanders. Each different kind of word grouping has a special Word Understander that knows how to understand only that kind of word grouping. When using the Word Grouper, you can add as many Word Understanders as you want!
 
+If you need to run words, then a Running Word Understander is added. If you need to make things look pretty, then a Pretty Word Understander is added. If you need to show pictures, then a Picture Word Understander is added. 
 
+## Word Changers
+
+Once the words are understood, you sometimes want to change, add or remove words. Word Changers can be used to change one word for another, remove extra words and make them smaller, or move words to another spot.
+
+## Word Grouper Work Size
+
+There are different work sizes you can use to control how much work the Word Grouper, Understander, and Changers do.
+
+Changing the words a lot usually takes a lot more time to run, but it usually means fewer words for the person on the other side of the world to save so it's faster for them. Changing the words less means it runs faster but takes longer for the person to save. 
+
+This means when you're working on the words and making a lot of changes, you want to make fewer changes to the words. This means it's faster for you to make a lot of changes quickly. Then, when you are ready to share it with the world, you make a lot of word changes because you only have to do this once in a while and means the hundreds and hundreds of people that need to save the word grouping will be able to do so quickly.
