@@ -76,6 +76,8 @@ When it's done figuring this out, it then saves this
 [finishing point](https://webpack.js.org/concepts/output/) and this is 
 what people all around the world will then save on their computer when they visit.
 
+![Finish Point](./images/finish-point.png)
+
 To quickly go over, it starts with one word grouping, finds all the other word 
 groupings, figures out how to put those all together, and ends with a single 
 huge grouping of words.
@@ -103,6 +105,8 @@ kind of word grouping has a special Word Understander that knows how to
 understand only that kind of word grouping. When using the Word Grouper, you can 
 add as many Word Understanders as you want!
 
+**_TODO: Word Understander Illustration_**
+
 If you need to run words, then a Running Word Understander is added. If you need 
 to make things look pretty, then a Pretty Word Understander is added. If you 
 need to show pictures, then a Picture Word Understander is added.
@@ -114,6 +118,8 @@ Once the words are understood, you sometimes want to change, add or remove words
 [Word Changers](https://webpack.js.org/concepts/plugins/) can be used to change 
 one word for another, remove extra words and make them smaller, move words to 
 another spot, or any number of other things.
+
+**_TODO: Word Changer Illustration_**
 
 ## Work Size
 
