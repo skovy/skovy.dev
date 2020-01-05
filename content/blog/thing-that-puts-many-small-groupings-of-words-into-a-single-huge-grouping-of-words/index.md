@@ -150,5 +150,5 @@ It doesn't need to be taken this far but it can make you stop and think if you
 really understand the thing instead of repeating words.
 
 Do you have other ideas for things that you would like to see explained? 
-[Let me know on the computer place](https://twitter.com/spencerskovy) with two 
+[Let me know](https://twitter.com/spencerskovy) on the computer place with two 
 hundred and eight tens of letters.
