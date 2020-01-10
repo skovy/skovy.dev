@@ -108,7 +108,7 @@ Each different kind of direction grouping has a special Direction Understander
 that knows how to understand only that kind of direction grouping. When using 
 the Direction Grouper, you can add as many Direction Understanders as you want!
 
-**_TODO: Direction Understander Illustration_**
+![Direction Understanders](./images/direction-understanders.png)
 
 If you need to make things look pretty, then a Pretty Direction Understander is 
 added. If you need to show pictures, then a Picture Direction Understander is added.
@@ -121,7 +121,7 @@ Once the directions are understood, you sometimes want to change, add or remove 
 change one direction for another, remove extra directions and make them smaller, 
 move directions to another spot, or any number of other things.
 
-**_TODO: Direction Changer Illustration_**
+![Direction Changer](./images/direction-changer.png)
 
 ## Work Size
 
