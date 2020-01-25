@@ -85,17 +85,27 @@ const Shelf = styled.div`
   }
 `;
 
-function useWindowSize() {
-  const [size, setSize] = React.useState([0, 0]);
+function useBooksPerRow() {
+  const [booksPerRow, setBooksPerRow] = React.useState(BOOKS_PER_ROW.SMALL);
+
   React.useLayoutEffect(() => {
     function updateSize() {
-      setSize([window.innerWidth, window.innerHeight]);
+      const width = window.innerWidth;
+
+      if (width < convertRemToPixels(BREAKPOINTS.SMALL)) {
+        setBooksPerRow(BOOKS_PER_ROW.SMALL);
+      } else if (width < convertRemToPixels(BREAKPOINTS.MEDIUM)) {
+        setBooksPerRow(BOOKS_PER_ROW.MEDIUM);
+      } else {
+        setBooksPerRow(BOOKS_PER_ROW.LARGE);
+      }
     }
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, []);
-  return size;
+
+  return booksPerRow;
 }
 
 interface Props {
@@ -103,16 +113,7 @@ interface Props {
 }
 
 export const BookList: React.FC<Props> = ({ data }) => {
-  const [width] = useWindowSize();
-
-  let booksPerRow: number;
-  if (width < convertRemToPixels(BREAKPOINTS.SMALL)) {
-    booksPerRow = BOOKS_PER_ROW.SMALL;
-  } else if (width < convertRemToPixels(BREAKPOINTS.MEDIUM)) {
-    booksPerRow = BOOKS_PER_ROW.MEDIUM;
-  } else {
-    booksPerRow = BOOKS_PER_ROW.LARGE;
-  }
+  const booksPerRow = useBooksPerRow();
 
   const readShelf = getReviewsByShelf(data, "read");
 
