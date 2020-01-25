@@ -35,7 +35,7 @@ export const Review: React.FC<Props> = ({ review }) => {
     image_url.indexOf(`/nophoto/`) !== -1 &&
     isbn &&
     MISSING_ISBNS.indexOf(isbn) === -1
-      ? `http://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`
+      ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`
       : image_url;
 
   return (
