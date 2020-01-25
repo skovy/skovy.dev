@@ -27,7 +27,7 @@ const BOOKS_PER_ROW = {
 
 const convertRemToPixels = rem =>
   parseFloat(rem.replace("rem", "")) *
-  parseFloat(getComputedStyle(document.documentElement).fontSize);
+  parseFloat(window.getComputedStyle(document.documentElement).fontSize);
 
 const Content = styled.div`
   margin: ${rhythm(4)} ${rhythm(1)} 0;
