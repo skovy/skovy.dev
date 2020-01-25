@@ -53,6 +53,7 @@ export const pageQuery = graphql`
               small_image_url
               large_image_url
               link
+              isbn
             }
           }
         }
