@@ -45,6 +45,7 @@ const Grid = styled.div`
   grid-column-gap: ${rhythm(1)};
   grid-row-gap: ${SHELF_MARGIN}px;
   align-items: end;
+  -webkit-transform: rotate(0deg); // hack for hover effect in Safari
 
   @media screen and (max-width: ${BREAKPOINTS.MEDIUM}) {
     grid-template-columns: repeat(${BOOKS_PER_ROW.MEDIUM}, 1fr);
@@ -53,6 +54,11 @@ const Grid = styled.div`
   @media screen and (max-width: ${BREAKPOINTS.SMALL}) {
     grid-template-columns: repeat(${BOOKS_PER_ROW.SMALL}, 1fr);
   }
+`;
+
+const Shelves = styled.div`
+  position: relative;
+  z-index: -1;
 `;
 
 const Shelf = styled.div`
@@ -121,31 +127,30 @@ export const BookList: React.FC<Props> = ({ data }) => {
 
   const sortedReviews = sortReviewsByReadAtDesc(readShelf);
 
+  const shelves = [];
+  const reviews = sortedReviews.map((review, index) => {
+    const element = <Review review={review} key={review.id} />;
+
+    if (index % booksPerRow === 0) {
+      const shelfNumber = index / booksPerRow;
+      shelves.push(
+        <Shelf
+          key={review.id}
+          style={{
+            top: INITIAL_OFFSET + shelfNumber * SHELF_SPACING
+          }}
+        />
+      );
+    }
+
+    return element;
+  });
+
   return (
     <ContentContainer>
       <Content>
-        <Grid>
-          {sortedReviews.map((review, index) => {
-            const element = <Review review={review} key={review.id} />;
-
-            if (index % booksPerRow === 0) {
-              const shelfNumber = index / booksPerRow;
-
-              return (
-                <React.Fragment key={review.id}>
-                  <Shelf
-                    style={{
-                      top: INITIAL_OFFSET + shelfNumber * SHELF_SPACING
-                    }}
-                  />
-                  {element}
-                </React.Fragment>
-              );
-            }
-
-            return element;
-          })}
-        </Grid>
+        <Shelves>{shelves}</Shelves>
+        <Grid>{reviews}</Grid>
       </Content>
     </ContentContainer>
   );
