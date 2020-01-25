@@ -52,7 +52,7 @@ export class GitHubProjects extends React.Component {
                   )
                 )}
               </Grid>
-              <AllProjects href="https://github.com/skovy" target="_blank">
+              <AllProjects href="https://github.com/skovy" target="_blank" rel="noopener">
                 See all projects <FontAwesomeIcon icon={faArrowRight} />
               </AllProjects>
             </ContentContainer>

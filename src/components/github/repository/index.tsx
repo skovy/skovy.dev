@@ -12,7 +12,7 @@ const gradients = [
   [`FFF720`, `3CD500`],
   [`FCCF31`, `F55555`],
   [`FF96F9`, `C32BAC`],
-  [`ABDCFF`, `0396FF`],
+  [`ABDCFF`, `0396FF`]
 ];
 
 const gradient = (seed: number) => {
@@ -91,7 +91,12 @@ export class GitHubRepository extends React.Component<Props> {
 
     return (
       <AnimatedCard>
-        <Container index={index} href={repository.homepageUrl} target="_blank">
+        <Container
+          index={index}
+          href={repository.homepageUrl}
+          target="_blank"
+          rel="noopener"
+        >
           <Name>{repository.name}</Name>
           <div>
             <Description>{repository.description}</Description>
