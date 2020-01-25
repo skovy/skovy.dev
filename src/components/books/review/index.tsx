@@ -12,6 +12,8 @@ const Img = styled.img`
   display: block;
   width: 100%;
   max-width: 98px; // The max image size the Goodreads API returns :(
+  max-height: 80px;
+  object-fit: contain;
   margin: 0 auto;
 `;
 
@@ -25,7 +27,7 @@ export const Review: React.FC<Props> = ({ review }) => {
   } = review;
 
   return (
-    <AnimatedCard scale={1.2}>
+    <AnimatedCard scale={1.1}>
       <Container href={link} target="_blank" aria-label={title}>
         <Img src={image_url} alt={title} title={title} />
       </Container>
