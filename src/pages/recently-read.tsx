@@ -16,7 +16,7 @@ class RecentlyRead extends React.Component<Props> {
   render() {
     const { data } = this.props;
     const siteTitle = data.site.siteMetadata.title;
-    console.log(data);
+
     return (
       <Layout location={this.props.location} title={siteTitle}>
         <SEO title="Recently Read Books" keywords={[`recent`, `books`]} />
