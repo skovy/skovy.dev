@@ -6,6 +6,7 @@ import { AnimatedCard } from "../../animated-card";
 
 const Container = styled.a`
   text-decoration: none;
+  z-index: 1;
 `;
 
 const Img = styled.img`
