@@ -39,7 +39,7 @@ export const NavigationMenu = () => {
       <NavLink to="/blog">blog</NavLink>
       <NavLink to="/#projects-and-packages">projects</NavLink>
       <NavLink to="/#recent-podcasts">podcasts</NavLink>
-      <NavLink to="/#books">books</NavLink>
+      <NavLink to="/recently-read">reads</NavLink>
       <NavLink to="/#newsletter">newsletter</NavLink>
     </Container>
   );
