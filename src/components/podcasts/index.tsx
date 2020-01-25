@@ -57,7 +57,11 @@ export class Podcasts extends React.Component {
                     <PodcastsEpisode episode={episode} key={episode.guid} />
                   ))}
                 </Grid>
-                <AllPodcasts href="http://www.rubberducking.fm" target="_blank">
+                <AllPodcasts
+                  href="http://www.rubberducking.fm"
+                  target="_blank"
+                  rel="noopener"
+                >
                   See all episodes <FontAwesomeIcon icon={faArrowRight} />
                 </AllPodcasts>
               </ContentContainer>

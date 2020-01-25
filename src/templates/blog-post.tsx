@@ -201,11 +201,11 @@ class BlogPostTemplate extends React.Component<Props> {
           <Content dangerouslySetInnerHTML={{ __html: post.html }} />
           <PostFooter>
             <ActionLinks>
-              <ActionLink href={twitterUrl} target="_blank">
+              <ActionLink href={twitterUrl} target="_blank" rel="noopener">
                 <FontAwesomeIcon icon={faTwitter} /> Discuss on Twitter
               </ActionLink>{" "}
               &mdash;{" "}
-              <ActionLink href={githubUrl} target="_blank">
+              <ActionLink href={githubUrl} target="_blank" rel="noopener">
                 <FontAwesomeIcon icon={faGithub} /> Edit on GitHub
               </ActionLink>
             </ActionLinks>

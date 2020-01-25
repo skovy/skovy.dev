@@ -67,7 +67,11 @@ export class TalksVideo extends React.Component<Props> {
 
     return (
       <AnimatedCard>
-        <Container href={`https://youtu.be/${id}`} target="_blank">
+        <Container
+          href={`https://youtu.be/${id}`}
+          target="_blank"
+          rel="noopener"
+        >
           <Image
             src={`https://img.youtube.com/vi/${id}/mqdefault.jpg`}
             alt={`YouTube Screenshot for ${title}`}
