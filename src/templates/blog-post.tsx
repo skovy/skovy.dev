@@ -143,6 +143,12 @@ const Content = styled.div`
       border-radius: ${rhythm(1 / 4)};
     }
   }
+
+  // Custom styles for the principles blog post
+  .principle-number {
+    color: ${colors.primary};
+    ${scale(1)};
+  }
 `;
 
 interface PageQuery extends Query {
