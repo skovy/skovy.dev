@@ -55,13 +55,73 @@ if you find an incomplete or missing principle.
    engineers and designers each focused on their strengths. The important thing
    is to have a healthy balance with collaboration and effective communication
    with neither being the autocratic ruler of the system. However, each has
-   more ownership over certain aspects.
-    1. **Design has final say on styling (UI) and functionality (UX)**:
-    1. **Engineering has final say on implementation details**:
-    1. **Product**: ??? - if done well, the system should be fairly invisible,
-    mocks they see should match the system. something broken here indicates
-    something is broken in the engineering and design process (eg: one side has too much say,
-    they're not communicating clearly and components are being used in mocks that 
-    differ from what exists). Product should be aware of the system an understand
-    it's purpose and the importance of maintaing and prioriziatin the work but
-    that should be the extent of their involvement.
+   more ownership over certain aspects. 1. **Design has final say on styling (UI) and functionality (UX)**: ideally
+   this process is collaborative. But to avoid decision paralysis, design has
+   final say on anything related to styling or functionality of the system.
+   Related, this means design is also responsible for defining all of the
+   "atoms" in the system: colors, spacings, typographies, etc. Often these
+   are manifested as variables within a system that are combined to create
+   specific components. 1. **Engineering has final say on implementation details**: again, hopefully
+   this entire process is collaborative. But when it comes to the technical
+   decisions engineering has final say. For example, whether to use vanilla
+   CSS or CSS-in-JS. Related, this means engineering is responsible for the final
+   "public" API. With React, this is the props and components. Even though
+   design may define a single component, engineering can define it's actual
+   API as multiple components (eg: tables, dropdowns) as long as it meets the
+   style and functional specifications. 1. **Product should be informed**: this one may be controversial but one of
+   the challenges I had faced was wanting product to be more involved. If done
+   well, the design system should be invisible to everyone except design and
+   engineering since they're the ones working with it day-to-day. Everyone
+   else should only see symptoms of the system: more consistency, more velocity
+   when developing, more documentation, etc. This includes product. Product
+   should be aware of the system, understand it's purpose, and the importance
+   of investing time to maintain and evolve the system. Beyond that, they
+   shouldn't need to care about the atoms, if it's CSS-in-JS, or what the API
+   is. When product starts to become more heavily involved in smaller decisions
+   I believe this indicates some part of the system is broken. This might mean
+   communication has stalled, mocks don't match the system, there isn't a clear
+   process for evolving the system, or any other number of issues.
+   1 **The design system is built in "isolation"**: this can have a lot of meanings
+   and differs on the circumstances. Concrete examples of this may mean the system
+   is built in a separate repository or it's in a separate directory/package if
+   working in a monorepo.
+    1. **Invest in design system specific tooling**: part of the advantage of
+    isolating the system is that tooling can be optimized for the system such
+    as automating releases or documentation deployments.
+    1. **Open source it**: or get as close as possible. The point isn't that it
+    is open source, but rather the journey to open sourcing it can help
+    encourage good practices. Would you put business critical (or sensitive)
+    logic in something open source? Would you open source something without 
+    proper test coverage? Would you open source something without proper 
+    documentation? Hopefully all of the answers are no. It's probably unlikely
+    others will actually use it but it encourages good practices and separation
+    of the system and actual business logic. If done well, it can also benefit
+    your design and engineering credibility.
+1. **Be specific and intentional about the public API**: there should be a finite
+  number of combinations of props and components and 
+  [impossible states](https://kentcdodds.com/blog/make-impossible-states-impossible)
+  should be impossible. 
+  1. **This means no `className`**: What's
+  the total number of combinations? It's the number of all possible unique
+  CSS classes, which may as well be infinite. Trying to build and maintain a 
+  component to handle an infinite number of cases is impossible. It _will_ 
+  eventually break. This also applies to accepting any arbitrary attributes.
+  One common response is "but the system is too constraining." Yes, it is. 
+  That's the point. When a new use case is presented, the system should be 
+  evolved, it shouldn't be one-offed by overriding styles with a `className`
+  (or decided the new use case is invalid). Violating this principle leads to 
+  inconsistencies and maintenance nightmares. For example, say you need to
+  adjust the text color for a component but it also accepts a class. Now, you
+  need to audit every single usage and see if it's overriding the background 
+  color and verify the new text color is still accessible on the random background
+  color. Now imagine this is a button component. For a while, it's possible
+  to manually check every single usage. In a large app this could take weeks,
+  all for a single line of code to adjust text color. Does the short term 
+  benefit of adding a `className` prop warrant the long term maintenance cost?
+  1. **Be explicit with attributes**: this also applies to other attributes.
+  Think critically when adding a new prop whether or not it could result in the
+  component having infinite combinations.
+1. **Have a well defined process for adding new components**:
+  1. **Avoid adding new components directly to the system**:
+  1. **Develop components in feature specific context**:
+  1. **The wrong abstraction is worse than no abstraction**:
