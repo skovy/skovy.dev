@@ -1,6 +1,6 @@
 ---
-date: 2020-01-18T00:11:00.000Z
-title: "Thing that puts many small groupings of directions into a single huge grouping of directions"
+date: 2020-01-23T00:11:00.000Z
+title: "The Hard Thing About Simple Words"
 description: "A hard thing explained using only the ten hundred words people use the most often."
 featuredImage: "./images/thing-overview.png"
 tags:
@@ -10,7 +10,9 @@ tags:
 ---
 
 _(Written using only the ten hundred words people use the most often, as stated
-by [the computer place with funny black and white drawings](https://xkcd.com/simplewriter))_
+by [the computer place with funny black and white drawings](https://xkcd.com/simplewriter).
+This post was originally published as part of 
+[JavaScript January](https://www.javascriptjanuary.com/blog/the-hard-thing-about-simple-words))_
 
 Today, there are a lot of big words used to explain things that could be
 understood by a larger group of people if instead simpler words were used.
