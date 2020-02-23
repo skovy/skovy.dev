@@ -6,6 +6,7 @@ export const colors = {
   white: "#FFF",
   text: "#242423",
   background: "#fafafa",
+  red: "#f72c25",
   code: {
     inlineBackground: "#DDD",
     inlineColor: "#2B061E",

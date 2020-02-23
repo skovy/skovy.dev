@@ -21,13 +21,13 @@ but the path to create and maintain an effective design system can be
 challenging. There are countless variables that need to be taken into account to
 define what an effective design system is, such as the audience, application,
 company, or brand it's intended to serve. Despite these differences, they're
-often peripheral and at the core there are a shared set of principles that can
+often peripheral. At the core there are a shared set of principles that can
 guide any design system.
 
 Before diving in, please note these are principles that are distilled from my
 experience and is a snapshot of my current thinking and understanding.
-Inevitably, these will evolve: becoming more detailed, new principles getting
-added, or maybe removed.
+Inevitably, these will evolve: becoming more detailed, getting
+added, or being removed.
 
 # Principles
 

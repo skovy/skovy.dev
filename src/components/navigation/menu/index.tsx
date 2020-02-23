@@ -4,11 +4,12 @@ import { Link } from "gatsby";
 
 import { colors } from "../../../config/colors";
 import { rhythm } from "../../../utils/typography";
+import { fonts } from "../../../config/fonts";
 
 const Container = styled.nav``;
 
 const NavLink = styled(Link)`
-  font-family: "Raleway";
+  font-family: ${fonts.primary};
   font-weight: 700;
   color: ${colors.primary};
   text-decoration: none;
