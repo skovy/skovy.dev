@@ -121,7 +121,31 @@ if you find an incomplete or missing principle.
   1. **Be explicit with attributes**: this also applies to other attributes.
   Think critically when adding a new prop whether or not it could result in the
   component having infinite combinations.
-1. **Have a well defined process for adding new components**:
-  1. **Avoid adding new components directly to the system**:
-  1. **Develop components in feature specific context**:
-  1. **The wrong abstraction is worse than no abstraction**:
+1. **Have a well defined process for adding new components**: this again depends
+  on the environment but it's important to clearly define how the system can
+  evolve. It's important to define so it's clear to engineers and designers
+  how to introduce components and evolve the system. The following principles 
+  can be used as a starting point as an approach for evolving a system. These
+  principles can help keep the system "clean." Meaning only truly reusable,
+  robust, and flexible components exist and the system isn't littered with 
+  components that are used in only one place or developed with a specific
+  feature in mind.
+  1. **Avoid adding new components directly to the system**: it's very hard
+  _(often impossible)_ to predict every possible usage of a component with a 
+  sample size of one. This makes it hard to optimize the API for flexibility,
+  understandability, and maintainability without knowing the end state (the 
+  possible usages). Remember, 
+  [AHA (Avoid Hasty Abstractions)](https://kentcdodds.com/blog/aha-programming).
+  1. **Develop components in feature specific context**: keep the scope as
+  narrow as possible. Even though "we know this component will eventually be 
+  used a lot", priorities shift, designs change, and the product fluctuates.
+  Once the component has been used in at least three unique features then it
+  can be considered eligible to get "promoted" to the system (but doesn't have
+  to be). This can help improve confidence that the API and implementation will
+  properly handle multiple use cases.
+  1. **The wrong abstraction is worse than no abstraction**: this isn't unique 
+  to design systems but is worth repeating. Why not add components directly to
+  the system? Because the cost of adding a new component, guessing all of the
+  possible use cases, implementing something that will inevitably need 
+  refactoring, or finding out it's no longer needed and removing is likely
+  higher than developing within feature specific context.
