@@ -18,45 +18,41 @@ a fairly straightforward concept; simply systemize your design patterns.
 On the contrary, I've found working with design systems to be unexpectedly
 complex and nuanced. This doesn't mean the end result is necessarily complex,
 but the path to create and maintain an effective design system can be
-challenging. There are countless variables that need to be taken into account to
-define what an effective design system is, such as the audience, application,
-company, or brand it's intended to serve. Despite these differences, they're
-often peripheral. At the core there are a shared set of principles that can
-guide any design system.
+challenging.
+
+There are hundreds of tiny decisions: how should the colors be defined and
+structured? who do I need to talk to to make this change? what API should be
+used? It's critical all of these day-to-day decisions are made using a shared
+set of principles so the system evolves in a predictable way.
+
+At the core, I believe there are a shared set of principles that can help guide
+any design system. These are principles that are distilled from my experience
+and a snapshot of my current understanding of what leads to a successful design
+system.
 
 # Principles
 
-When working on or with a design system it can be easy to lose sight of the
-"big picture." There are hundreds of tiny decisions: how should the colors be
-defined and structured? who do I need to talk to to make this change? what props
-should be used?
-
-It's critical all of these day-to-day decisions are made using a shared set of
-principles so the system evolves in a predictable way. These are principles that
-are distilled from my experience and are a snapshot of my current understanding
-of what leads to a successful design system.
-
-1. **There is only _one_ design system**: this may seem intuitive but when
-   focused on the day-to-day tasks of working on
-   an application it can be easy to lose sight of this. What if I'm building
-   multiple apps or have multiple "types" of users _(eg: consumers, enterprises,
-   administrators)_? Some level of customization is acceptable to tailor the
-   experience but that's likely done in the last mile _(eg: props, themes)_.
-   There is still a single core. It's important to define what the core of your
-   system is. Maybe it's the entire system if there is a single type of user and
-   application. Maybe it's only a set of fundamental building blocks. Regardless,
-   at the core there is only a single system.
+1. **There is only _one core_ design system**: this may seem intuitive but when
+   focused on the day-to-day tasks of working on an application it can be easy
+   to lose sight of this. What if I'm building multiple apps or have multiple
+   "types" of users _(eg: consumers, enterprises, administrators)_? What is
+   defined as the core of the system can differ based on needs, but it needs to
+   be defined. For example, if you need to support apps with many different
+   frameworks the core may be vanilla CSS and the API are the classnames.
+   If needing to support only a React app, the core and public API would be the
+   React components. Regardless, it's important that there is a single core
+   defined. If in doubt, the entire system is the core. Having more than one
+   system leads to unintentional inconsistencies. This not only results in a
+   confusing experience for users, but also a confusing experience for designers
+   and engineers who need to use, maintain, and evolve the system. It's best to
+   evolve the current system so any given point there is always a single system.
+   This ensures consistency for users and eliminates confusion for designers and
+   engineers during any type of transition.
    1. **Be cautious of the "hard fork", "re-write", or the like**: it may be
       tempting to fork or start from scratch after a recent redesign. However,
       that means there are now two systems. Do changes to button functionality need
       to be made in both forks? Is one being deprecated? Is it feasible to swiftly
-      replace all existing usages to return to a single system? Having more than
-      a single system can lead to unintentional inconsistencies. This not only
-      results in a confusing experience for users, but also a confusing experience
-      for designers and engineers who need to use, maintain, and evolve the system.
-      It's best to evolve the current system so any given point there is
-      always a single system. This ensures consistency for users and eliminates
-      confusion for designers and engineers during any type of transition.
+      replace all existing usages to return to a single system?
 1. **Ownership is evenly split between design and engineering**: this can
    manifest itself in a number of ways and doesn't imply a specific team organization.
    For example, this may be a single individual whose skill set is a nice balance
@@ -77,27 +73,37 @@ of what leads to a successful design system.
       whether to use vanilla CSS or CSS-in-JS. Related, this means engineering
       is responsible for the final "public" API. With React, this is the props
       and components. Even though design may define a single UI component,
-      engineering can define it's actual API as multiple components (eg: tables,
+      engineering can define the actual API as multiple components (eg: tables,
       dropdowns) as long as it meets the style and functional specifications.
-   1. **Product should be informed**: this one may be controversial. One of
-      the challenges I've in the past was wanting product to be more involved. If done
-      well, the design system should be invisible to everyone except design and
-      engineering since they're the ones working with it day-to-day. Everyone
+   1. **Use a unified language**: design and engineering should use the same
+      words to refer to the same things. It's also important the language
+      reflects the actual components or API. This leads to clearer communication
+      with fewer misunderstandings and allows new designs and engineers quickly
+      ramp up without learning translations between design and engineering.
+   1. **Product only needs to be informed**: when done well, the implementation
+      details of the design system should be invisible to everyone except design
+      and engineering. Everyone
       else should only see positive symptoms of the system: more consistency,
       more velocity when developing, more accurate documentation, etc. This
       includes product. Product should be aware of the system, understand it's
       purpose, and the importance of investing time to maintain and evolve the
       system. Beyond that, they shouldn't need to care about the atoms, if it's
       CSS-in-JS, or what the API is. When product starts to become more involved
-      in system related decisions I believe this indicates some part of the
-      system is broken. It might mean communication has stalled, mocks don't
-      match the actual system, there isn't a clear process for evolving the
-      system, or any other number of issues.
+      in system related decisions this indicates some part of the system is
+      broken. It might mean communication has stalled, mocks don't match the
+      actual system, there isn't a clear process for evolving the system, or any
+      other number of issues.
 1. **The design system is built in isolation**: this can have a lot of meanings
    and depends on the circumstances. Concrete examples of this may mean the system
    is built in a separate repository or it's in a separate directory/package if
-   working in a monorepo. The intent is to establish clear, physical boundaries.
-   1. **Invest in design system specific tooling**: part of the advantage of
+   working in a monorepo. The intent is to establish clear, physical boundaries
+   between the system and the application. This is important to avoid the system
+   blending with the application. For example, business logic may start to blend
+   into the system and make it hard to make changes and limits the reusability
+   when the system is aware of a specific data model. An avatar component should
+   not be aware of the user data model and it's fields or where the avatar image
+   is hosted.
+   1. **Invest in design system specific tooling**: one of the advantages to
       isolating the system is that tooling can be optimized for the system.
       For example, releases can be automated or documentation can automatically
       deploy when changed.
@@ -113,14 +119,14 @@ of what leads to a successful design system.
 1. **Be specific and intentional about the public API**: there should be a finite
    number of combinations of props and components. If there are an infinite number
    of combinations or [impossible states](https://kentcdodds.com/blog/make-impossible-states-impossible)
-   it leads to confusing APIs and likely unexpected bugs.
+   it leads to confusing APIs and unexpected bugs.
    1. **This means no `className`**: What's the total number of unique values?
       It's the number of all possible unique CSS classes, which may as well be
       infinite. Trying to build and maintain a component to handle an infinite
       number of styles is impossible. It _will_ eventually break. One common
       response is "but the system is too constraining." Yes, it is.
       That's the point. When a new use case is presented, the system should
-      evolve to handle the new case but constraint against anything else. It
+      evolve to handle the new case but constrain against anything else. It
       shouldn't be one-offed by overriding styles with a `className`. Violating
       this principle leads to inconsistency and maintenance nightmares. For
       example, say you need to adjust the text color for a component but it also
@@ -135,17 +141,25 @@ of what leads to a successful design system.
    1. **Be explicit with attributes**: this also applies to any other attributes.
       Think critically when adding a new prop whether or not it could result in the
       component having infinite combinations. For example, instead of accepting
-      any arbitrary values, maybe [inverting control](https://kentcdodds.com/blog/inversion-of-control)
-      provides the flexibility you need but keeps the internals simple and bounded
+      any arbitrary values, maybe [invert control](https://kentcdodds.com/blog/inversion-of-control)
+      to provide the flexibility you need but keep the internals simple and bounded
       by offloading to the consumer.
-1. **Have a well defined process for adding new components**: this again depends
-   on the circumstances but it's important to clearly define so engineers and
-   designers know how to introduce components and evolve the system. The
-   following principles can be used as a starting point as an approach for
-   evolving a system. These principles can help keep the system "clean." Meaning
-   only truly reusable, robust, and flexible components exist. This helps avoid
-   littering the system with components that are used in only one place or 
-   developed with one specific feature in mind.
+   1. **Define usage guidelines**: the intended use cases for components should
+      be well documented and communicated. This helps new folks quickly
+      understand when a component (or color, shadow, etc.) should or shouldn't
+      be used. It also helps avoids incorrect usages that can make it hard to
+      make changes. Finally, it's easier to understand and communicate why a
+      component needs to evolve when a new usage presents itself that has not
+      yet been documented.
+1. **Have a well defined process for adding new components**: it's important to
+   clearly define so engineers and designers know how to introduce components
+   and evolve the system. Without this, it can be frustrating when new designers
+   or engineers want to make changes. The following principles can be used as a
+   starting point as an approach for evolving a system. These principles can
+   help keep the system "clean." Meaning only truly reusable, robust, and
+   flexible components exist. This helps avoid littering the system with
+   components that are used in only one place or developed with one specific
+   feature in mind.
    1. **Avoid adding new components directly to the system**: it's very hard
       _(often impossible)_ to predict every possible usage of a component with a
       sample size of one. This makes it hard to optimize the API for flexibility,
@@ -166,8 +180,8 @@ of what leads to a successful design system.
 # Conclusion
 
 These are principles that are distilled from my experience. Inevitably, these
-will evolve with principles becoming more detailed, getting added, or being 
-removed. 
+will evolve with principles becoming more detailed, getting added, or being
+removed.
 
 Do you have additional supporting evidence or counter examples?
 [I would love to hear your thoughts](https://twitter.com/spencerskovy) on these
