@@ -1,5 +1,5 @@
 ---
-date: 2020-03-07T08:00:00.000Z
+date: 2020-03-15T08:00:00.000Z
 title: "Design System Principles"
 description: "General principles for building and maintaining a design system."
 featuredImage: "./images/featured-image.jpg"
@@ -26,7 +26,7 @@ used?_ It's critical all of these day-to-day decisions are made using a shared
 set of principles so the system evolves along a predictable, sustainable path.
 
 At the core, I believe there are a set of shared principles that can help guide
-any design system. These principles that are distilled from my experience
+any design system. These principles are distilled from my experience
 and a snapshot of my current understanding of what leads to a successful design
 system.
 
@@ -35,15 +35,15 @@ system.
 1. **There is only one core design system**: this may seem intuitive but when
    focusing on the day-to-day tasks of working on an application it can be easy
    to lose sight. What is defined as the core of the system can differ based on 
-   needs, but needs to be defined. For example, if you need to support apps 
+   needs, but must be defined. For example, if you need to support apps 
    with many different frameworks the core may be vanilla CSS and the API 
    the class names. If needing to support only a React app, the core and public 
    API would be the React components. Regardless, it's important that there is a 
-   single core defined. If in doubt, the entire system is the core. Having more 
+   single core. If in doubt, the entire system is the core. Having more 
    than one system leads to unintentional inconsistencies. This not only results 
    in a confusing experience for users, but also a confusing experience for designers
    and engineers who need to use, maintain, and evolve the system. It's best to
-   evolve the current system so at any given point there is always a single system.
+   evolve the current system in place so at any given point there is always a single system.
    This ensures consistency for users and eliminates confusion for designers and
    engineers during any type of transition.
    1. **Be cautious of the "hard fork", "re-write", or the like**: it may be
@@ -60,19 +60,20 @@ system.
    While neither is the autocratic ruler of the system, each has ownership over
    certain aspects to streamline development and avoid decision paralysis.
    Ideally, this is a very collaborative process.
-   1. **Design has final say on styling (UI) and functionality (UX)**: design has
+   1. **Design has final say on styling (UI) and functionality (UX)**: after
+      taking into account all relevant information such as user research, design has
       final say on anything related to styling or functionality for the system.
       Related, this means design is also responsible for defining all of the
       "atoms" in the system: colors, spacings, typographies, etc. Often these
       are manifested as variables within a system that are combined to create
       specific components.
-   1. **Engineering has final say on implementation details**: engineering has
-      final say when it comes to the implementation details. For example,
+   1. **Engineering has final say on implementation details**: for example,
       whether to use vanilla CSS or CSS-in-JS. Related, this means engineering
       is responsible for the final "public" API. With React, this is the props
       and components. Even though design may define a single UI component,
-      engineering can define the actual API as multiple components (eg: tables,
-      dropdowns) as long as it meets the style and functional specifications.
+      engineering may define the API as multiple components (eg: tables,
+      dropdowns) to optimize the maintainability and experience for other 
+      engineers.
    1. **Use a unified language**: design and engineering should use the same
       words to refer to the same things. It's also important the language
       reflects the actual components or API. This leads to clearer communication
@@ -94,7 +95,7 @@ system.
       other number of issues.
 1. **The design system is built in isolation**: this can have a lot of meanings
    and depends on the circumstances. Concrete examples of this may mean the system
-   is built in a separate repository or it's in a separate directory/package if
+   is built in a separate repository or it's in a separate package if
    working in a monorepo. The intent is to establish clear, physical boundaries
    between the system and the application. This is important to avoid the system
    blending with the application. If business logic starts to blend into the 
@@ -104,7 +105,7 @@ system.
    1. **Invest in design system specific tooling**: one of the advantages to
       isolating the system is that tooling can be optimized for the system.
       For example, releases can be automated or documentation can automatically
-      deploy when changed.
+      deploy when changed without worrying about the rest of the application.
    1. **Open source it**: or get as close as possible. The point isn't that it
       is open source, but rather the journey to open sourcing it can help
       encourage good practices. _Would you put business critical (or sensitive)
@@ -144,14 +145,14 @@ system.
    1. **Define usage guidelines**: the intended use cases for components should
       be well documented and communicated. This helps new folks quickly
       understand when a component (or color, shadow, etc.) should or shouldn't
-      be used. It also helps avoids incorrect usages that can make it harder to
+      be used. It also helps avoid incorrect usages that can make it harder to
       make changes in the future. Finally, it's easier to understand and 
       communicate why a component needs to evolve when a new usage presents 
       itself that has not yet been documented.
 1. **Have a well defined process for adding new components**: it's important to
    clearly define so engineers and designers know how to introduce components
    and evolve the system. Without this, it can be a frustrating experience. 
-   The following principles can be used as a starting point as an approach for 
+   The following principles can be used as a starting point for 
    evolving a system. These principles can help keep the system "clean." Meaning 
    only truly reusable, robust, and flexible components exist. This helps avoid 
    littering the system with components that are used in only one place or 
@@ -164,7 +165,7 @@ system.
       [AHA (Avoid Hasty Abstractions)](https://kentcdodds.com/blog/aha-programming).
    1. **Develop components in feature specific context**: keep the scope as
       narrow as possible. Even though "we know this component will eventually be
-      used a lot", priorities shift, designs change, and the product fluctuates.
+      used a lot," priorities shift, designs change, and the product fluctuates.
       Once the component has been used in at least three unique features then it
       can be considered eligible to get "promoted" to the system (but doesn't have
       to be). This can help improve confidence that the API and implementation will
