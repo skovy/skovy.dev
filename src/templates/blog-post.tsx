@@ -1,8 +1,7 @@
 import React from "react";
-import { Link, graphql, PageRendererProps, useStaticQuery } from "gatsby";
+import { graphql, PageRendererProps } from "gatsby";
 import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
-import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -13,6 +12,7 @@ import { rhythm, scale } from "../utils/typography";
 import { Query } from "../generated/graphql";
 import { ContentContainer } from "../components/content-container";
 import { colors } from "../config/colors";
+import { fonts } from "../config/fonts";
 import { BlogPost } from "../components/blog/post";
 
 const GITHUB_USERNAME = "skovy";
@@ -143,6 +143,52 @@ const Content = styled.div`
       border-radius: ${rhythm(1 / 4)};
     }
   }
+
+  // Custom styles for the design system principles blog post
+  &.post-design-system-principles {
+    ol {
+      list-style: none;
+      counter-reset: principle;
+      margin-left: ${rhythm(3 / 2)};
+    }
+
+    ol ol {
+      counter-reset: sub-principle;
+    }
+
+    li {
+      position: relative;
+      counter-increment: principle;
+
+      strong {
+        ${fonts.primary}
+      }
+
+      &:before {
+        content: counter(principle) ".";
+        left: -${rhythm(3 / 2)};
+        top: 0;
+        position: absolute;
+        color: ${colors.red};
+        font-size: 2rem;
+        line-height: 2rem;
+      }
+    }
+
+    li + li {
+      margin-top: ${rhythm(2)};
+    }
+
+    li li {
+      counter-increment: sub-principle;
+      margin-top: ${rhythm(1)};
+
+      &:before {
+        content: counter(principle) counter(sub-principle, lower-alpha) ".";
+        ${scale(1 / 3)}
+      }
+    }
+  }
 `;
 
 interface PageQuery extends Query {
@@ -198,7 +244,10 @@ class BlogPostTemplate extends React.Component<Props> {
           {!!featuredImageCredit && (
             <FeaturedImageCredit>{featuredImageCredit}</FeaturedImageCredit>
           )}
-          <Content dangerouslySetInnerHTML={{ __html: post.html }} />
+          <Content
+            className={`post-${slug.replace(/\//g, "")}`}
+            dangerouslySetInnerHTML={{ __html: post.html }}
+          />
           <PostFooter>
             <ActionLinks>
               <ActionLink href={twitterUrl} target="_blank" rel="noopener">
