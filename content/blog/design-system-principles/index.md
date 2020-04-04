@@ -25,7 +25,7 @@ structured? who do I need to talk to to make this change? what API should be
 used?_ It's critical all of these day-to-day decisions are made using a shared
 set of principles so the system evolves along a predictable, sustainable path.
 
-At the core, I believe there are a set of shared principles that can help guide
+At the core, I believe there is a set of shared principles that can help guide
 any design system. These principles are distilled from my experience
 and a snapshot of my current understanding of what leads to a successful design
 system.
