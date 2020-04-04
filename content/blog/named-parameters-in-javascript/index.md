@@ -25,7 +25,7 @@ definition to know the significance of a parameter's value and avoid passing
 a bunch of `null` (or `false`, `undefined`, `{}` etc) values only to get to the
 n<sup>th</sup> argument?
 
-Ruby supports this functionality with what they call keyword arguments:
+Ruby supports this functionality with what it calls keyword arguments:
 
 ```ruby
 def perform(one: nil, two: nil, skip_something: false)
