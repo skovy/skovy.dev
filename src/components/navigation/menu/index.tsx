@@ -6,7 +6,15 @@ import { colors } from "../../../config/colors";
 import { rhythm } from "../../../utils/typography";
 import { fonts } from "../../../config/fonts";
 
-const Container = styled.nav``;
+const BREAKPOINT = rhythm(24);
+
+const Container = styled.nav<{ open: boolean }>`
+  display: block;
+
+  @media screen and (max-width: ${BREAKPOINT}) {
+    display: ${({ open }) => (open ? "block" : "none")};
+  }
+`;
 
 const NavLink = styled(Link)`
   font-family: ${fonts.primary};
@@ -24,19 +32,19 @@ const NavLink = styled(Link)`
     color: ${colors.secondary};
   }
 
-  @media screen and (max-width: ${rhythm(18)}) {
+  @media screen and (max-width: ${BREAKPOINT}) {
     display: block;
-    margin-top: ${rhythm(1/2)};
+    margin-top: ${rhythm(1 / 2)};
 
     & + & {
-      margin-left: 0;      
+      margin-left: 0;
     }
   }
 `;
 
-export const NavigationMenu = () => {
+export const NavigationMenu = ({ open }) => {
   return (
-    <Container>
+    <Container open={open}>
       <NavLink to="/blog">blog</NavLink>
       <NavLink to="/#projects-and-packages">projects</NavLink>
       <NavLink to="/#recent-podcasts">podcasts</NavLink>
