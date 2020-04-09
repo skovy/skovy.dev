@@ -132,6 +132,9 @@ module.exports = {
         key: process.env.GOODREADS_API_KEY,
         id: "64661635-spencer-miskoviak"
       }
+    },
+    {
+      resolve: "gatsby-plugin-sitemap"
     }
   ]
 };
