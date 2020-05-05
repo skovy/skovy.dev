@@ -42,7 +42,7 @@ export class GitHubProjects extends React.Component {
             <ContentContainer>
               <SectionHeading>Projects & Packages</SectionHeading>
               <Grid>
-                {data.github.viewer.pinnedRepositories.nodes.map(
+                {data.github.viewer.pinnedItems.nodes.map(
                   (repository, index) => (
                     <GitHubRepository
                       repository={repository}
@@ -52,7 +52,11 @@ export class GitHubProjects extends React.Component {
                   )
                 )}
               </Grid>
-              <AllProjects href="https://github.com/skovy" target="_blank" rel="noopener">
+              <AllProjects
+                href="https://github.com/skovy"
+                target="_blank"
+                rel="noopener"
+              >
                 See all projects <FontAwesomeIcon icon={faArrowRight} />
               </AllProjects>
             </ContentContainer>
@@ -67,20 +71,17 @@ const query = graphql`
   query {
     github {
       viewer {
-        pinnedRepositories(
-          privacy: PUBLIC
-          orderBy: { field: STARGAZERS, direction: DESC }
-          ownerAffiliations: OWNER
-          first: 6
-        ) {
+        pinnedItems(types: REPOSITORY, first: 6) {
           nodes {
-            id
-            name
-            description
-            homepageUrl
-            forkCount
-            stargazers {
-              totalCount
+            ... on GitHub_Repository {
+              id
+              name
+              description
+              homepageUrl
+              forkCount
+              stargazers {
+                totalCount
+              }
             }
           }
         }
