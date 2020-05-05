@@ -14916,8 +14916,8 @@ export type QuerySitePageArgs = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  internalComponentName?: Maybe<StringQueryOperatorInput>,
   path?: Maybe<StringQueryOperatorInput>,
+  internalComponentName?: Maybe<StringQueryOperatorInput>,
   component?: Maybe<StringQueryOperatorInput>,
   componentChunkName?: Maybe<StringQueryOperatorInput>,
   isCreatedByStatefulCreatePages?: Maybe<BooleanQueryOperatorInput>,
@@ -15127,8 +15127,8 @@ export type SitePage = Node & {
   parent?: Maybe<Node>,
   children: Array<Node>,
   internal: Internal,
-  internalComponentName?: Maybe<Scalars['String']>,
   path?: Maybe<Scalars['String']>,
+  internalComponentName?: Maybe<Scalars['String']>,
   component?: Maybe<Scalars['String']>,
   componentChunkName?: Maybe<Scalars['String']>,
   isCreatedByStatefulCreatePages?: Maybe<Scalars['Boolean']>,
@@ -15267,8 +15267,8 @@ export enum SitePageFieldsEnum {
   InternalMediaType = 'internal___mediaType',
   InternalOwner = 'internal___owner',
   InternalType = 'internal___type',
-  InternalComponentName = 'internalComponentName',
   Path = 'path',
+  InternalComponentName = 'internalComponentName',
   Component = 'component',
   ComponentChunkName = 'componentChunkName',
   IsCreatedByStatefulCreatePages = 'isCreatedByStatefulCreatePages',
@@ -15346,15 +15346,15 @@ export enum SitePageFieldsEnum {
   PluginCreatorPluginOptionsDisplay = 'pluginCreator___pluginOptions___display',
   PluginCreatorPluginOptionsIcon = 'pluginCreator___pluginOptions___icon',
   PluginCreatorPluginOptionsPathToConfigModule = 'pluginCreator___pluginOptions___pathToConfigModule',
-  PluginCreatorPluginOptionsTypeName = 'pluginCreator___pluginOptions___typeName',
-  PluginCreatorPluginOptionsFieldName = 'pluginCreator___pluginOptions___fieldName',
   PluginCreatorPluginOptionsUrl = 'pluginCreator___pluginOptions___url',
-  PluginCreatorPluginOptionsHeadersAuthorization = 'pluginCreator___pluginOptions___headers___Authorization',
   PluginCreatorPluginOptionsParserOptionMaxRedirects = 'pluginCreator___pluginOptions___parserOption___maxRedirects',
   PluginCreatorPluginOptionsParserOptionTimeout = 'pluginCreator___pluginOptions___parserOption___timeout',
   PluginCreatorPluginOptionsKey = 'pluginCreator___pluginOptions___key',
   PluginCreatorPluginOptionsId = 'pluginCreator___pluginOptions___id',
   PluginCreatorPluginOptionsPathCheck = 'pluginCreator___pluginOptions___pathCheck',
+  PluginCreatorPluginOptionsTypeName = 'pluginCreator___pluginOptions___typeName',
+  PluginCreatorPluginOptionsFieldName = 'pluginCreator___pluginOptions___fieldName',
+  PluginCreatorPluginOptionsHeadersAuthorization = 'pluginCreator___pluginOptions___headers___Authorization',
   PluginCreatorNodeApIs = 'pluginCreator___nodeAPIs',
   PluginCreatorBrowserApIs = 'pluginCreator___browserAPIs',
   PluginCreatorSsrApIs = 'pluginCreator___ssrAPIs',
@@ -15384,8 +15384,8 @@ export type SitePageFilterInput = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  internalComponentName?: Maybe<StringQueryOperatorInput>,
   path?: Maybe<StringQueryOperatorInput>,
+  internalComponentName?: Maybe<StringQueryOperatorInput>,
   component?: Maybe<StringQueryOperatorInput>,
   componentChunkName?: Maybe<StringQueryOperatorInput>,
   isCreatedByStatefulCreatePages?: Maybe<BooleanQueryOperatorInput>,
@@ -15589,16 +15589,16 @@ export enum SitePluginFieldsEnum {
   PluginOptionsDisplay = 'pluginOptions___display',
   PluginOptionsIcon = 'pluginOptions___icon',
   PluginOptionsPathToConfigModule = 'pluginOptions___pathToConfigModule',
-  PluginOptionsTypeName = 'pluginOptions___typeName',
-  PluginOptionsFieldName = 'pluginOptions___fieldName',
   PluginOptionsUrl = 'pluginOptions___url',
-  PluginOptionsHeadersAuthorization = 'pluginOptions___headers___Authorization',
   PluginOptionsParserOptionCustomFieldsItem = 'pluginOptions___parserOption___customFields___item',
   PluginOptionsParserOptionMaxRedirects = 'pluginOptions___parserOption___maxRedirects',
   PluginOptionsParserOptionTimeout = 'pluginOptions___parserOption___timeout',
   PluginOptionsKey = 'pluginOptions___key',
   PluginOptionsId = 'pluginOptions___id',
   PluginOptionsPathCheck = 'pluginOptions___pathCheck',
+  PluginOptionsTypeName = 'pluginOptions___typeName',
+  PluginOptionsFieldName = 'pluginOptions___fieldName',
+  PluginOptionsHeadersAuthorization = 'pluginOptions___headers___Authorization',
   NodeApIs = 'nodeAPIs',
   BrowserApIs = 'browserAPIs',
   SsrApIs = 'ssrAPIs',
@@ -15744,14 +15744,14 @@ export type SitePluginPluginOptions = {
   display?: Maybe<Scalars['String']>,
   icon?: Maybe<Scalars['String']>,
   pathToConfigModule?: Maybe<Scalars['String']>,
-  typeName?: Maybe<Scalars['String']>,
-  fieldName?: Maybe<Scalars['String']>,
   url?: Maybe<Scalars['String']>,
-  headers?: Maybe<SitePluginPluginOptionsHeaders>,
   parserOption?: Maybe<SitePluginPluginOptionsParserOption>,
   key?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['String']>,
   pathCheck?: Maybe<Scalars['Boolean']>,
+  typeName?: Maybe<Scalars['String']>,
+  fieldName?: Maybe<Scalars['String']>,
+  headers?: Maybe<SitePluginPluginOptionsHeaders>,
 };
 
 export type SitePluginPluginOptionsFilterInput = {
@@ -15778,14 +15778,14 @@ export type SitePluginPluginOptionsFilterInput = {
   display?: Maybe<StringQueryOperatorInput>,
   icon?: Maybe<StringQueryOperatorInput>,
   pathToConfigModule?: Maybe<StringQueryOperatorInput>,
-  typeName?: Maybe<StringQueryOperatorInput>,
-  fieldName?: Maybe<StringQueryOperatorInput>,
   url?: Maybe<StringQueryOperatorInput>,
-  headers?: Maybe<SitePluginPluginOptionsHeadersFilterInput>,
   parserOption?: Maybe<SitePluginPluginOptionsParserOptionFilterInput>,
   key?: Maybe<StringQueryOperatorInput>,
   id?: Maybe<StringQueryOperatorInput>,
   pathCheck?: Maybe<BooleanQueryOperatorInput>,
+  typeName?: Maybe<StringQueryOperatorInput>,
+  fieldName?: Maybe<StringQueryOperatorInput>,
+  headers?: Maybe<SitePluginPluginOptionsHeadersFilterInput>,
 };
 
 export type SitePluginPluginOptionsHeaders = {
@@ -16206,9 +16206,9 @@ export type Unnamed_2_Query = (
     { __typename?: 'GitHub' }
     & { viewer: (
       { __typename?: 'GitHub_User' }
-      & { pinnedRepositories: (
-        { __typename?: 'GitHub_RepositoryConnection' }
-        & { nodes: Maybe<Array<Maybe<(
+      & { pinnedItems: (
+        { __typename?: 'GitHub_PinnableItemConnection' }
+        & { nodes: Maybe<Array<Maybe<{ __typename?: 'GitHub_Gist' } | (
           { __typename?: 'GitHub_Repository' }
           & Pick<GitHub_Repository, 'id' | 'name' | 'description' | 'homepageUrl' | 'forkCount'>
           & { stargazers: (
