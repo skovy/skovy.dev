@@ -34,13 +34,13 @@ system.
 
 1. **There is only one core design system**: this may seem intuitive but when
    focusing on the day-to-day tasks of working on an application it can be easy
-   to lose sight. What is defined as the core of the system can differ based on 
-   needs, but must be defined. For example, if you need to support apps 
-   with many different frameworks the core may be vanilla CSS and the API 
-   the class names. If needing to support only a React app, the core and public 
-   API would be the React components. Regardless, it's important that there is a 
-   single core. If in doubt, the entire system is the core. Having more 
-   than one system leads to unintentional inconsistencies. This not only results 
+   to lose sight. What is defined as the core of the system can differ based on
+   needs, but must be defined. For example, if you need to support apps
+   with many different frameworks the core may be vanilla CSS and the API
+   the class names. If needing to support only a React app, the core and public
+   API would be the React components. Regardless, it's important that there is a
+   single core. If in doubt, the entire system is the core. Having more
+   than one system leads to unintentional inconsistencies. This not only results
    in a confusing experience for users, but also a confusing experience for designers
    and engineers who need to use, maintain, and evolve the system. It's best to
    evolve the current system in place so at any given point there is always a single system.
@@ -72,13 +72,13 @@ system.
       is responsible for the final "public" API. With React, this is the props
       and components. Even though design may define a single UI component,
       engineering may define the API as multiple components (eg: tables,
-      dropdowns) to optimize the maintainability and experience for other 
+      dropdowns) to optimize the maintainability and experience for other
       engineers.
    1. **Use a unified language**: design and engineering should use the same
       words to refer to the same things. It's also important the language
       reflects the actual components or API. This leads to clearer communication
       with fewer misunderstandings and allows new designers and engineers to
-      quickly ramp up without learning translations between design and 
+      quickly ramp up without learning translations between design and
       engineering terminology.
    1. **Product only needs to be informed**: when done well, the implementation
       details of the design system should be invisible to everyone except design
@@ -98,9 +98,9 @@ system.
    is built in a separate repository or it's in a separate package if
    working in a monorepo. The intent is to establish clear, physical boundaries
    between the system and the application. This is important to avoid the system
-   blending with the application. If business logic starts to blend into the 
+   blending with the application. If business logic starts to blend into the
    system it gets harder to make changes and limits the reusability. For
-   example, an avatar component should not be aware of any user data model or 
+   example, an avatar component should not be aware of any user data model or
    where the avatar image is hosted.
    1. **Invest in design system specific tooling**: one of the advantages to
       isolating the system is that tooling can be optimized for the system.
@@ -112,7 +112,7 @@ system.
       logic in something open source? Would you open source something without
       proper test coverage? Would you open source something without proper
       documentation?_ Hopefully all of the answers are no. It's probably unlikely
-      others will actually use it but it encourages good practices. If done well, 
+      others will actually use it but it encourages good practices. If done well,
       it can also benefit your design and engineering credibility in the community.
 1. **Be specific and intentional about the public API**: there should be a finite
    number of combinations of props and components. If there are an infinite number
@@ -146,16 +146,16 @@ system.
       be well documented and communicated. This helps new folks quickly
       understand when a component (or color, shadow, etc.) should or shouldn't
       be used. It also helps avoid incorrect usages that can make it harder to
-      make changes in the future. Finally, it's easier to understand and 
-      communicate why a component needs to evolve when a new usage presents 
+      make changes in the future. Finally, it's easier to understand and
+      communicate why a component needs to evolve when a new usage presents
       itself that has not yet been documented.
 1. **Have a well defined process for adding new components**: it's important to
    clearly define so engineers and designers know how to introduce components
-   and evolve the system. Without this, it can be a frustrating experience. 
-   The following principles can be used as a starting point for 
-   evolving a system. These principles can help keep the system "clean." Meaning 
-   only truly reusable, robust, and flexible components exist. This helps avoid 
-   littering the system with components that are used in only one place or 
+   and evolve the system. Without this, it can be a frustrating experience.
+   The following principles can be used as a starting point for
+   evolving a system. These principles can help keep the system "clean." Meaning
+   only truly reusable, robust, and flexible components exist. This helps avoid
+   littering the system with components that are used in only one place or
    developed with one specific feature in mind.
    1. **Avoid adding new components directly to the system**: it's very hard
       _(often impossible)_ to predict every possible usage of a component with a
@@ -173,12 +173,31 @@ system.
    1. **The wrong abstraction is worse than no abstraction**: this isn't unique
       to design systems but is worth repeating. Are they _really_ the same
       component?
+1. **Components are layout isolated**: generally speaking, this means a component
+   [should not have any margin baked-in](https://mxstbr.com/thoughts/margin).
+   This also includes other attributes such as [`align-self`](https://visly.app/blog/layout-isolated-components) that can affect a component's layout differently
+   depending on it's parent's styles. Layout isolated components are more 
+   composable and less complex because they don't have to support all the 
+   different contexts and exposing a way to override those styles.
+   1. **Well, how does this actually look in practice?**: for the longest time,
+      I've struggled with this question. This was something I went back and forth
+      on often. I've been a proponent of both the custom elements with custom
+      styles approach and the baked-in margin approach. The custom element is
+      nice because it keeps the components clean and layout agnostic, but it
+      requires a lot of random `div`s and one-off CSS classes with a single
+      `margin-top: 16px;`. On the other side of the spectrum, baking-in the
+      margin or other layout attributes makes it really nice for the 80%
+      use case but in cases where you don't want that spacing or layout it
+      requires disabling that styling or overriding. Recently, I discovered
+      [the `Stack` and `Inline` components](https://youtu.be/xxbc3wAztl0). These
+      and other similar layout components are great for most use cases. Any
+      remaining one-off needs can be done with custom styles.
 
 # Conclusion
 
 These are principles that are distilled from my experience. Inevitably, these
 will evolve with principles becoming more detailed, getting added, or being
-removed. 
+removed.
 
 Hopefully these are useful to you and your team as a starting point. If you
 don't agree with everything, that's fine. The important thing is that you and
