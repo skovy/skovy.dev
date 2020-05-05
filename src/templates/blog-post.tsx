@@ -212,6 +212,7 @@ class BlogPostTemplate extends React.Component<Props> {
       description,
       date,
       featuredImageCredit,
+      lastUpdated,
       featuredImage,
       tags
     } = post.frontmatter;
@@ -235,7 +236,8 @@ class BlogPostTemplate extends React.Component<Props> {
         <ContentContainer>
           <Title>{title}</Title>
           <Date>
-            {date} &mdash; {readingTime.text}
+            {date} &bull; {readingTime.text}
+            {lastUpdated && <span> &bull; Last updated on {lastUpdated}</span>}
           </Date>
           <FeaturedImage
             fluid={featuredImage.childImageSharp.fluid as FluidObject}
@@ -300,6 +302,7 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        lastUpdated(formatString: "MMMM DD, YYYY")
         description
         featuredImageCredit
         tags

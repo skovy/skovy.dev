@@ -1,5 +1,6 @@
 ---
 date: 2020-03-15T08:00:00.000Z
+lastUpdated: 2020-05-04T08:00:00.000Z
 title: "Design System Principles"
 description: "General principles for building and maintaining a design system."
 featuredImage: "./images/featured-image.jpg"
