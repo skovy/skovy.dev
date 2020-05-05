@@ -174,10 +174,10 @@ system.
    1. **The wrong abstraction is worse than no abstraction**: this isn't unique
       to design systems but is worth repeating. Are they _really_ the same
       component?
-1. **Components are layout isolated**: generally speaking, this means a component
+1. **Components are layout-isolated**: generally speaking, this means a component
    [should not have any margin baked-in](https://mxstbr.com/thoughts/margin).
    This also includes other attributes such as [`align-self`](https://visly.app/blog/layout-isolated-components) that can affect a component's layout differently
-   depending on it's parent's styles. Layout isolated components are more 
+   depending on it's parent's styles. Layout-isolated components are more 
    composable and less complex because they don't have to support all the 
    different contexts and exposing a way to override those styles.
    1. **Well, how does this actually look in practice?**: for the longest time,
