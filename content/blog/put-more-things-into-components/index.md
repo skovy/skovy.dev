@@ -11,20 +11,33 @@ tags:
 
 One of the great features of React is the encapsulation and reusability of
 components. It not only allows consistency across the codebase and product,
-but allows easily reading and understanding a component tree because of the
-declarative nature. But what about the code and logic that isn't in those
-components? This logic is often scattered across the codebase in React
-lifecycle methods or in `render` before returning the component tree. Why
-isn't more of this code encapsulated in components?
+but allows easily reading and understanding a component tree because of it's
+declarative nature.
 
-I believe **we often overlook these non-visual components**. Things like
-layout, tracking, experimentation, or data-fetching logic can be duplicated
-across hundreds of components in lifecyle methods. This fit perfectly into
-the component paradigm.
+What about the code and logic that isn't in those components? This logic is
+often scattered across the codebase in React render methods, lifecycle methods
+or maybe component state. Why isn't more of this code encapsulated in components?
 
-Let's look at a few examples.
+Often, this **non-visual logic is overlooked and not put into reusable
+components**. Things like layout, tracking, experimentation, or data-fetching
+logic can be duplicated across hundreds of components in lifecyle methods. This
+fits perfectly into the component paradigm and offers a handful of advantages.
+
+Let's look at a few simplified examples.
 
 ## Layout
+
+For the most part, many elements such as buttons, avatars, or cards are
+components added early on, maybe as part of a design system. However, there
+are plenty of non-visual (in the sense they don't render anything visual
+themselves) aspects particularly around layout.
+
+For example, grids, spacing, or stacking that help position the other visual
+elements like buttons and avatars. One common need is to vertical align two
+elements, or push two elements to opposite sides of their container. Both of
+these problems can be easily solved with CSS flex attributes. However, these
+needs are so common that something like the following code may be in dozens
+of components.
 
 ```typescript
 <div
@@ -38,6 +51,10 @@ Let's look at a few examples.
   <div style={{ background: "blue", height: 100 }}>Blue Content</div>
 </div>
 ```
+
+Even if using another CSS-in-JS solution, vanilla CSS, or CSS Modules it
+requires a custom component or class. What if this pattern was encapsulated
+as part of a component?
 
 ```typescript
 import * as React from "react";
@@ -53,6 +70,11 @@ export const Flex: React.FC<Props> = ({
 );
 ```
 
+This component achieves the same thing, but now this same layout can be quickly
+achieved with the `Flex` component. Now, these styles are all in one component
+and this CSS can be reused across all of these components reducing the overall
+size of your CSS bundle.
+
 ```typescript
 <Flex alignItems="center" justifyContent="space-between">
   <div style={{ background: "red" }}>Red Content</div>
@@ -60,13 +82,27 @@ export const Flex: React.FC<Props> = ({
 </Flex>
 ```
 
+At a glance, it's easier to determine this component's job is to provide a flex
+layout. The earlier example required looking the `style` prop and understanding
+what attributes are being applied to understand it's purpose.
+
 ## Tracking
+
+Another common pattern is the need to implement some type of tracking to
+understand how people are using an application. The two popular ones are
+impression and click tracking to understand what someone is seeing and what
+they are interacting with.
+
+Assuming `track` is actually sending this information somewhere, a simple
+implementation may look like the following.
 
 ```typescript
 export const track = (event: object) => console.log(event);
 
 const TrackExample = () => {
   React.useEffect(() => {
+    // It's probably preferable to use something like react-visibility-sensor
+    // to only track impressions for things someone could have actually seen.
     track({ name: "track-example", type: "impression" });
   }, []);
 
@@ -77,6 +113,20 @@ const TrackExample = () => {
   return <button onClick={handleClick}>Plz Track Me</button>;
 };
 ```
+
+When this component mounts an impression will be tracked, and when someone
+clicks the button that will also be tracked. This approach may require adding
+this `useEffect` and `handleClick` in dozens of components.
+
+What if you want to swap out `track` for another method or change it's API? Now
+all of these components need to be updated. Or, what if you originally wrote
+these all as components within `componentDidMount`? If you want to use a hook
+all these components would need to be refactored. What if you want to track
+the impression at a more specific component in the tree? That would require a
+new component to isolate that part of the tree with it's own `useEffect` hook.
+
+Instead, what if all this logic around `track` and mounting was only written
+once as reusable components?
 
 ```typescript
 import * as React from "react";
@@ -106,6 +156,13 @@ export const Track = {
 };
 ```
 
+Now, all of the above problems are solved. These components can be added to
+any part of the tree. Your entire app could be a single huge component and still
+have fine grain control over impression tracking. Now, it doesn't matter if
+`Track.Impression` is using `componentDidMount` or `useEffect`. And if it did
+matter, there's only one place it needs to be updated. Finally, if the `track`
+method needs to be swapped out, it only needs to be done in one place.
+
 ```typescript
 <Track.Impression name="track-example">
   <Track.Click name="track-example">
@@ -114,10 +171,12 @@ export const Track = {
 </Track.Impression>
 ```
 
-hooks:
-
-- still requires a new component if you want fine detail over which section is impressed
-- click tracking doesn't make sense has a hook so i'd rather have consistent APIs
+Since the impression tracking is really only a hook, you make consider using
+a custom `useImpressionTracking` instead. However, this still has the problem
+of needing to create a new component anytime you need to track an impression
+at a specific point in the tree. Additionally, click tracking doesn't make
+as much sense as a hook so I'd prefer to keep consistent APIs between the two
+(components).
 
 This can also easily extend and apply to experimentation or feature toggling.
 It can also reuse these tracking components within since you likely want to
@@ -214,4 +273,12 @@ export const Fetch: React.FC<Props> = ({ url, children }) => {
 </Fetch>
 ```
 
+Again, you may consider creating a `useFetch` hook instead. It's achieving
+the same goal as putting more logic into components.
+
+There are plenty of existing packages that already use an API like this such
+as `react-apollo`'s `Query` component and `useQuery` hook.
+
 ## Conclusion
+
+Let's look at this all put together before and after.
