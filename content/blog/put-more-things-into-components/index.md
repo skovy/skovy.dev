@@ -10,34 +10,35 @@ tags:
 ---
 
 One of the great features of React is the encapsulation and reusability of
-components. It not only allows consistency across the codebase and product,
-but allows easily reading and understanding a component tree because of it's
-declarative nature.
+components. It not only allows consistency across a codebase and product, but 
+also allows easily reading and understanding a component tree because of it's 
+declarative nature without needing to understand all of the implementation details.
 
-What about the code and logic that isn't in those components? This logic is
-often scattered across the codebase in React render methods, lifecycle methods
-or maybe component state. Why isn't more of this code encapsulated in components?
+What about the code and logic that isn't encapsulated in those components? This 
+logic is often scattered and duplicated across the codebase in component's render 
+methods, lifecycle methods or state. Why isn't more of this code encapsulated in 
+components?
 
-Often, this **non-visual logic is overlooked and not put into reusable
-components**. Things like layout, tracking, experimentation, or data-fetching
-logic can be duplicated across hundreds of components in lifecyle methods. This
-fits perfectly into the component paradigm and offers a handful of advantages.
+The most commonly overlooked examples are non-visual things like data-fetching, 
+tracking, experimentation, or layout logic that can be duplicated across hundreds 
+of components. However, the needs for these can fit perfectly into the 
+component paradigm and it offers a handful of advantages.
 
 Let's look at a few simplified examples.
 
 ## Layout
 
-For the most part, many elements such as buttons, avatars, or cards are
-components added early on, maybe as part of a design system. However, there
-are plenty of non-visual (in the sense they don't render anything visual
-themselves) aspects particularly around layout.
+Common patterns such as buttons and avatars are components that are often added 
+early on in many projects, maybe as part of a design system. However, there
+are plenty of equally important non-visual _(in the sense they don't render anything visual
+themselves)_ aspects particularly around layout and spacing that are often ignored.
 
-For example, grids, spacing, or stacking that help position the other visual
-elements like buttons and avatars. One common need is to vertical align two
+For example, grids, spacing, or stacking that help position other visual
+elements like buttons and avatars. One common need is to vertically align two
 elements, or push two elements to opposite sides of their container. Both of
 these problems can be easily solved with CSS flex attributes. However, these
-needs are so common that something like the following code may be in dozens
-of components.
+needs are so common that something like the following code with a few tweaks 
+may be in dozens of components.
 
 ```typescript
 <div
@@ -52,9 +53,12 @@ of components.
 </div>
 ```
 
-Even if using another CSS-in-JS solution, vanilla CSS, or CSS Modules it
-requires a custom component or class. What if this pattern was encapsulated
-as part of a component?
+Whether you're using CSS-in-JS, vanilla CSS, or CSS Modules it this can lead to
+a lof one-off elements and styles. Additionally, to understand what's happening 
+it requires mentally parsing all of the CSS attributes or even follow a class to 
+another file to see the what CSS attributes are applied to understand what's
+happening. What if this pattern of providing a basic flex layout was 
+encapsulated as part of a component?
 
 ```typescript
 import * as React from "react";
@@ -70,10 +74,12 @@ export const Flex: React.FC<Props> = ({
 );
 ```
 
-This component achieves the same thing, but now this same layout can be quickly
-achieved with the `Flex` component. Now, these styles are all in one component
-and this CSS can be reused across all of these components reducing the overall
-size of your CSS bundle.
+This component achieves the same thing, but now it gives a name to the concept: `Flex`.
+These styles are all in one component and this CSS can be reused across all of 
+these components reducing the overall size of your CSS bundle (assuming the
+one-off CSS above was duplicated in varying forms across the codebase). 
+Lastly, now when reading the component tree, it's immediately clear all this
+component is doing is providing some flex layout.
 
 ```typescript
 <Flex alignItems="center" justifyContent="space-between">
@@ -82,9 +88,10 @@ size of your CSS bundle.
 </Flex>
 ```
 
-At a glance, it's easier to determine this component's job is to provide a flex
-layout. The earlier example required looking the `style` prop and understanding
-what attributes are being applied to understand it's purpose.
+This is a simplified example, but the idea can apply to any layout related
+concepts: grids, spacing, etc. For example, how often is there a need to apply
+margin between two component? Is this achieved with one-off CSS, or is it 
+encapsulated in components?
 
 ## Tracking
 
