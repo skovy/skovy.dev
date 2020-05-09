@@ -10,25 +10,25 @@ tags:
 ---
 
 One of the great features of React is the encapsulation and reusability of
-components. It not only allows consistency across a codebase and product, but 
-also allows easily reading and understanding a component tree because of it's 
+components. It not only allows consistency across a codebase and product, but
+also allows easily reading and understanding a component tree because of it's
 declarative nature without needing to understand all of the implementation details.
 
-What about the code and logic that isn't encapsulated in those components? This 
-logic is often scattered and duplicated across the codebase in component's render 
-methods, lifecycle methods or state. Why isn't more of this code encapsulated in 
+What about the code and logic that isn't encapsulated in those components? This
+logic is often scattered and duplicated across the codebase in component's render
+methods, lifecycle methods or state. Why isn't more of this code encapsulated in
 components?
 
-The most commonly overlooked examples are non-visual things like data-fetching, 
-tracking, experimentation, or layout logic that can be duplicated across hundreds 
-of components. However, the needs for these can fit perfectly into the 
+The most commonly overlooked examples are non-visual things like data-fetching,
+tracking, experimentation, or layout logic that can be duplicated across hundreds
+of components. However, the needs for these can fit perfectly into the
 component paradigm and it offers a handful of advantages.
 
 Let's look at a few simplified examples.
 
 ## Layout
 
-Common patterns such as buttons and avatars are components that are often added 
+Common patterns such as buttons and avatars are components that are often added
 early on in many projects, maybe as part of a design system. However, there
 are plenty of equally important non-visual _(in the sense they don't render anything visual
 themselves)_ aspects particularly around layout and spacing that are often ignored.
@@ -37,7 +37,7 @@ For example, grids, spacing, or stacking that help position other visual
 elements like buttons and avatars. One common need is to vertically align two
 elements, or push two elements to opposite sides of their container. Both of
 these problems can be easily solved with CSS flex attributes. However, these
-needs are so common that something like the following code with a few tweaks 
+needs are so common that something like the following code with a few tweaks
 may be in dozens of components.
 
 ```typescript
@@ -54,10 +54,10 @@ may be in dozens of components.
 ```
 
 Whether you're using CSS-in-JS, vanilla CSS, or CSS Modules it this can lead to
-a lof one-off elements and styles. Additionally, to understand what's happening 
-it requires mentally parsing all of the CSS attributes or even follow a class to 
+a lof one-off elements and styles. Additionally, to understand what's happening
+it requires mentally parsing all of the CSS attributes or even follow a class to
 another file to see the what CSS attributes are applied to understand what's
-happening. What if this pattern of providing a basic flex layout was 
+happening. What if this pattern of providing a basic flex layout was
 encapsulated as part of a component?
 
 ```typescript
@@ -75,9 +75,9 @@ export const Flex: React.FC<Props> = ({
 ```
 
 This component achieves the same thing, but now it gives a name to the concept: `Flex`.
-These styles are all in one component and this CSS can be reused across all of 
+These styles are all in one component and this CSS can be reused across all of
 these components reducing the overall size of your CSS bundle (assuming the
-one-off CSS above was duplicated in varying forms across the codebase). 
+one-off CSS above was duplicated in varying forms across the codebase).
 Lastly, now when reading the component tree, it's immediately clear all this
 component is doing is providing some flex layout.
 
@@ -90,7 +90,7 @@ component is doing is providing some flex layout.
 
 This is a simplified example, but the idea can apply to any layout related
 concepts: grids, spacing, etc. For example, how often is there a need to apply
-margin between two component? Is this achieved with one-off CSS, or is it 
+margin between two component? Is this achieved with one-off CSS, or is it
 encapsulated in components?
 
 ## Tracking
@@ -191,6 +191,12 @@ impression tracking anytime and experiment is (or isn't) rendered.
 
 ## Data-Fetching
 
+Another nearly universal product need is some form of data-fetching. This can
+manifest itself in many ways, but let's say we're fetching some JSON from a
+REST API. We probably need a status for while that request is in-flight to
+show a loading state, a status if an error occurs, and finally a success
+status along with the data.
+
 ```typescript
 const FetchExample = () => {
   const [state, setState] = React.useState<
@@ -226,6 +232,16 @@ const FetchExample = () => {
   }
 };
 ```
+
+This feature's code is likely similar to dozen's of other components. Those
+components are likely fetching data in a similar way and likely have the same
+needs for the different loading statuses. What if we wanted to add a fourth
+loading status? What if we wanted to swap `fetch` for something else? All of
+the different components will need to be updated. Additionally, this too takes
+a fair amount of reading to understand how all the different pieces work
+together. As a reader, what we really care about is that we want to fetch
+some data from a given url, and given that data, render something. Or,
+translated into React...
 
 ```typescript
 import * as React from "react";
@@ -265,23 +281,29 @@ export const Fetch: React.FC<Props> = ({ url, children }) => {
 };
 ```
 
+And using that, the component usage is an exact translation: we want
+to `Fetch` something given a `url`, and given that `data`, render something.
+we want to fetch some data from a given url, and given that data, render
+something:
+
 ```typescript
 <Fetch url="https://jsonplaceholder.typicode.com/posts/4">
-  {state => {
-    switch (state.status) {
+  {data => {
+    switch (data.status) {
       case "error":
         return <div>An error occurred.</div>;
       case "loading":
         return <div>Loading...</div>;
       default:
-        return <div>{JSON.stringify(state.response)}</div>;
+        return <div>{JSON.stringify(data.response)}</div>;
     }
   }}
 </Fetch>
 ```
 
-Again, you may consider creating a `useFetch` hook instead. It's achieving
-the same goal as putting more logic into components.
+You may consider creating a `useFetch` hook for something like this instead.
+It's achieving the same goal as putting more logic into components but each
+approach has slight tradeoffs.
 
 There are plenty of existing packages that already use an API like this such
 as `react-apollo`'s `Query` component and `useQuery` hook.
@@ -289,3 +311,11 @@ as `react-apollo`'s `Query` component and `useQuery` hook.
 ## Conclusion
 
 Let's look at this all put together before and after.
+
+```typescript
+// BEFORE
+```
+
+```typescript
+// AFTER
+```
