@@ -1797,6 +1797,7 @@ export type GitHub_CloneTemplateRepositoryInput = {
   ownerId: Scalars['ID'],
   description?: Maybe<Scalars['String']>,
   visibility: GitHub_RepositoryVisibility,
+  includeAllBranches?: Maybe<Scalars['Boolean']>,
   clientMutationId?: Maybe<Scalars['String']>,
 };
 
@@ -2210,13 +2211,8 @@ export type GitHub_ContributionCalendarWeek = {
 };
 
 export type GitHub_ContributionOrder = {
-  field?: Maybe<GitHub_ContributionOrderField>,
   direction: GitHub_OrderDirection,
 };
-
-export enum GitHub_ContributionOrderField {
-  OccurredAt = 'OCCURRED_AT'
-}
 
 export type GitHub_ContributionsCollection = {
    __typename?: 'GitHub_ContributionsCollection',
@@ -2374,6 +2370,16 @@ export type GitHub_ConvertProjectCardNoteToIssuePayload = {
    __typename?: 'GitHub_ConvertProjectCardNoteToIssuePayload',
   clientMutationId?: Maybe<Scalars['String']>,
   projectCard?: Maybe<GitHub_ProjectCard>,
+};
+
+export type GitHub_ConvertToDraftEvent = GitHub_Node & GitHub_UniformResourceLocatable & {
+   __typename?: 'GitHub_ConvertToDraftEvent',
+  actor?: Maybe<GitHub_Actor>,
+  createdAt: Scalars['GitHub_DateTime'],
+  id: Scalars['ID'],
+  pullRequest: GitHub_PullRequest,
+  resourcePath: Scalars['GitHub_URI'],
+  url: Scalars['GitHub_URI'],
 };
 
 export type GitHub_CreateBranchProtectionRuleInput = {
@@ -4857,7 +4863,6 @@ export type GitHub_MarketplaceListing = GitHub_Node & {
   extendedDescriptionHTML: Scalars['GitHub_HTML'],
   fullDescription: Scalars['String'],
   fullDescriptionHTML: Scalars['GitHub_HTML'],
-  hasApprovalBeenRequested: Scalars['Boolean'],
   hasPublishedFreeTrialPlans: Scalars['Boolean'],
   hasTermsOfService: Scalars['Boolean'],
   howItWorks?: Maybe<Scalars['String']>,
@@ -4865,9 +4870,7 @@ export type GitHub_MarketplaceListing = GitHub_Node & {
   id: Scalars['ID'],
   installationUrl?: Maybe<Scalars['GitHub_URI']>,
   installedForViewer: Scalars['Boolean'],
-  isApproved: Scalars['Boolean'],
   isArchived: Scalars['Boolean'],
-  isDelisted: Scalars['Boolean'],
   isDraft: Scalars['Boolean'],
   isPaid: Scalars['Boolean'],
   isPublic: Scalars['Boolean'],
@@ -5358,7 +5361,6 @@ export type GitHub_Organization = GitHub_Node & GitHub_Actor & GitHub_RegistryPa
   pinnableItems: GitHub_PinnableItemConnection,
   pinnedItems: GitHub_PinnableItemConnection,
   pinnedItemsRemaining: Scalars['Int'],
-  pinnedRepositories: GitHub_RepositoryConnection,
   project?: Maybe<GitHub_Project>,
   projects: GitHub_ProjectConnection,
   projectsResourcePath: Scalars['GitHub_URI'],
@@ -5445,19 +5447,6 @@ export type GitHub_OrganizationPinnableItemsArgs = {
 
 export type GitHub_OrganizationPinnedItemsArgs = {
   types?: Maybe<Array<GitHub_PinnableItemType>>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type GitHub_OrganizationPinnedRepositoriesArgs = {
-  privacy?: Maybe<GitHub_RepositoryPrivacy>,
-  orderBy?: Maybe<GitHub_RepositoryOrder>,
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>,
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>,
-  isLocked?: Maybe<Scalars['Boolean']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
@@ -6157,7 +6146,8 @@ export enum GitHub_OrgRemoveMemberAuditEntryMembershipType {
 export enum GitHub_OrgRemoveMemberAuditEntryReason {
   TwoFactorRequirementNonCompliance = 'TWO_FACTOR_REQUIREMENT_NON_COMPLIANCE',
   SamlExternalIdentityMissing = 'SAML_EXTERNAL_IDENTITY_MISSING',
-  SamlSsoEnforcementRequiresExternalIdentity = 'SAML_SSO_ENFORCEMENT_REQUIRES_EXTERNAL_IDENTITY'
+  SamlSsoEnforcementRequiresExternalIdentity = 'SAML_SSO_ENFORCEMENT_REQUIRES_EXTERNAL_IDENTITY',
+  UserAccountDeleted = 'USER_ACCOUNT_DELETED'
 }
 
 export type GitHub_OrgRemoveOutsideCollaboratorAuditEntry = GitHub_Node & GitHub_AuditEntry & GitHub_OrganizationAuditEntryData & {
@@ -7349,7 +7339,7 @@ export type GitHub_PullRequestTimelineItemEdge = {
   node?: Maybe<GitHub_PullRequestTimelineItem>,
 };
 
-export type GitHub_PullRequestTimelineItems = GitHub_AddedToProjectEvent | GitHub_AssignedEvent | GitHub_BaseRefChangedEvent | GitHub_BaseRefForcePushedEvent | GitHub_ClosedEvent | GitHub_CommentDeletedEvent | GitHub_ConnectedEvent | GitHub_ConvertedNoteToIssueEvent | GitHub_CrossReferencedEvent | GitHub_DemilestonedEvent | GitHub_DeployedEvent | GitHub_DeploymentEnvironmentChangedEvent | GitHub_DisconnectedEvent | GitHub_HeadRefDeletedEvent | GitHub_HeadRefForcePushedEvent | GitHub_HeadRefRestoredEvent | GitHub_IssueComment | GitHub_LabeledEvent | GitHub_LockedEvent | GitHub_MarkedAsDuplicateEvent | GitHub_MentionedEvent | GitHub_MergedEvent | GitHub_MilestonedEvent | GitHub_MovedColumnsInProjectEvent | GitHub_PinnedEvent | GitHub_PullRequestCommit | GitHub_PullRequestCommitCommentThread | GitHub_PullRequestReview | GitHub_PullRequestReviewThread | GitHub_PullRequestRevisionMarker | GitHub_ReadyForReviewEvent | GitHub_ReferencedEvent | GitHub_RemovedFromProjectEvent | GitHub_RenamedTitleEvent | GitHub_ReopenedEvent | GitHub_ReviewDismissedEvent | GitHub_ReviewRequestRemovedEvent | GitHub_ReviewRequestedEvent | GitHub_SubscribedEvent | GitHub_TransferredEvent | GitHub_UnassignedEvent | GitHub_UnlabeledEvent | GitHub_UnlockedEvent | GitHub_UnmarkedAsDuplicateEvent | GitHub_UnpinnedEvent | GitHub_UnsubscribedEvent | GitHub_UserBlockedEvent;
+export type GitHub_PullRequestTimelineItems = GitHub_AddedToProjectEvent | GitHub_AssignedEvent | GitHub_BaseRefChangedEvent | GitHub_BaseRefForcePushedEvent | GitHub_ClosedEvent | GitHub_CommentDeletedEvent | GitHub_ConnectedEvent | GitHub_ConvertToDraftEvent | GitHub_ConvertedNoteToIssueEvent | GitHub_CrossReferencedEvent | GitHub_DemilestonedEvent | GitHub_DeployedEvent | GitHub_DeploymentEnvironmentChangedEvent | GitHub_DisconnectedEvent | GitHub_HeadRefDeletedEvent | GitHub_HeadRefForcePushedEvent | GitHub_HeadRefRestoredEvent | GitHub_IssueComment | GitHub_LabeledEvent | GitHub_LockedEvent | GitHub_MarkedAsDuplicateEvent | GitHub_MentionedEvent | GitHub_MergedEvent | GitHub_MilestonedEvent | GitHub_MovedColumnsInProjectEvent | GitHub_PinnedEvent | GitHub_PullRequestCommit | GitHub_PullRequestCommitCommentThread | GitHub_PullRequestReview | GitHub_PullRequestReviewThread | GitHub_PullRequestRevisionMarker | GitHub_ReadyForReviewEvent | GitHub_ReferencedEvent | GitHub_RemovedFromProjectEvent | GitHub_RenamedTitleEvent | GitHub_ReopenedEvent | GitHub_ReviewDismissedEvent | GitHub_ReviewRequestRemovedEvent | GitHub_ReviewRequestedEvent | GitHub_SubscribedEvent | GitHub_TransferredEvent | GitHub_UnassignedEvent | GitHub_UnlabeledEvent | GitHub_UnlockedEvent | GitHub_UnmarkedAsDuplicateEvent | GitHub_UnpinnedEvent | GitHub_UnsubscribedEvent | GitHub_UserBlockedEvent;
 
 export type GitHub_PullRequestTimelineItemsConnection = {
    __typename?: 'GitHub_PullRequestTimelineItemsConnection',
@@ -7386,6 +7376,7 @@ export enum GitHub_PullRequestTimelineItemsItemType {
   ReviewRequestedEvent = 'REVIEW_REQUESTED_EVENT',
   ReviewRequestRemovedEvent = 'REVIEW_REQUEST_REMOVED_EVENT',
   ReadyForReviewEvent = 'READY_FOR_REVIEW_EVENT',
+  ConvertToDraftEvent = 'CONVERT_TO_DRAFT_EVENT',
   IssueComment = 'ISSUE_COMMENT',
   CrossReferencedEvent = 'CROSS_REFERENCED_EVENT',
   AddedToProjectEvent = 'ADDED_TO_PROJECT_EVENT',
@@ -9239,7 +9230,6 @@ export type GitHub_RepositoryOwner = {
   avatarUrl: Scalars['GitHub_URI'],
   id: Scalars['ID'],
   login: Scalars['String'],
-  pinnedRepositories: GitHub_RepositoryConnection,
   repositories: GitHub_RepositoryConnection,
   repository?: Maybe<GitHub_Repository>,
   resourcePath: Scalars['GitHub_URI'],
@@ -9249,19 +9239,6 @@ export type GitHub_RepositoryOwner = {
 
 export type GitHub_RepositoryOwnerAvatarUrlArgs = {
   size?: Maybe<Scalars['Int']>
-};
-
-
-export type GitHub_RepositoryOwnerPinnedRepositoriesArgs = {
-  privacy?: Maybe<GitHub_RepositoryPrivacy>,
-  orderBy?: Maybe<GitHub_RepositoryOrder>,
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>,
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>,
-  isLocked?: Maybe<Scalars['Boolean']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
 };
 
 
@@ -9376,16 +9353,11 @@ export type GitHub_RepositoryVisibilityChangeEnableAuditEntry = GitHub_Node & Gi
 
 export type GitHub_RepositoryVulnerabilityAlert = GitHub_Node & GitHub_RepositoryNode & {
    __typename?: 'GitHub_RepositoryVulnerabilityAlert',
-  affectedRange: Scalars['String'],
   createdAt: Scalars['GitHub_DateTime'],
   dismissReason?: Maybe<Scalars['String']>,
   dismissedAt?: Maybe<Scalars['GitHub_DateTime']>,
   dismisser?: Maybe<GitHub_User>,
-  externalIdentifier?: Maybe<Scalars['String']>,
-  externalReference: Scalars['String'],
-  fixedIn?: Maybe<Scalars['String']>,
   id: Scalars['ID'],
-  packageName: Scalars['String'],
   repository: GitHub_Repository,
   securityAdvisory?: Maybe<GitHub_SecurityAdvisory>,
   securityVulnerability?: Maybe<GitHub_SecurityVulnerability>,
@@ -9768,6 +9740,8 @@ export type GitHub_SmimeSignature = GitHub_GitSignature & {
   wasSignedByGitHub: Scalars['Boolean'],
 };
 
+export type GitHub_Sponsor = GitHub_Organization | GitHub_User;
+
 export type GitHub_Sponsorable = {
   sponsorsListing?: Maybe<GitHub_SponsorsListing>,
   sponsorshipsAsMaintainer: GitHub_SponsorshipConnection,
@@ -9800,6 +9774,7 @@ export type GitHub_Sponsorship = GitHub_Node & {
   maintainer: GitHub_User,
   privacyLevel: GitHub_SponsorshipPrivacy,
   sponsor?: Maybe<GitHub_User>,
+  sponsorEntity?: Maybe<GitHub_Sponsor>,
   sponsorable: GitHub_Sponsorable,
   tier?: Maybe<GitHub_SponsorsTier>,
 };
@@ -11424,11 +11399,11 @@ export type GitHub_User = GitHub_Node & GitHub_Actor & GitHub_RegistryPackageOwn
   login: Scalars['String'],
   name?: Maybe<Scalars['String']>,
   organization?: Maybe<GitHub_Organization>,
+  organizationVerifiedDomainEmails: Array<Scalars['String']>,
   organizations: GitHub_OrganizationConnection,
   pinnableItems: GitHub_PinnableItemConnection,
   pinnedItems: GitHub_PinnableItemConnection,
   pinnedItemsRemaining: Scalars['Int'],
-  pinnedRepositories: GitHub_RepositoryConnection,
   project?: Maybe<GitHub_Project>,
   projects: GitHub_ProjectConnection,
   projectsResourcePath: Scalars['GitHub_URI'],
@@ -11553,6 +11528,11 @@ export type GitHub_UserOrganizationArgs = {
 };
 
 
+export type GitHub_UserOrganizationVerifiedDomainEmailsArgs = {
+  login: Scalars['String']
+};
+
+
 export type GitHub_UserOrganizationsArgs = {
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -11572,19 +11552,6 @@ export type GitHub_UserPinnableItemsArgs = {
 
 export type GitHub_UserPinnedItemsArgs = {
   types?: Maybe<Array<GitHub_PinnableItemType>>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type GitHub_UserPinnedRepositoriesArgs = {
-  privacy?: Maybe<GitHub_RepositoryPrivacy>,
-  orderBy?: Maybe<GitHub_RepositoryOrder>,
-  affiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>,
-  ownerAffiliations?: Maybe<Array<Maybe<GitHub_RepositoryAffiliation>>>,
-  isLocked?: Maybe<Scalars['Boolean']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
@@ -13082,12 +13049,12 @@ export type GoodreadsShelf = Node & {
   parent?: Maybe<Node>,
   children: Array<Node>,
   internal: Internal,
-  name?: Maybe<Scalars['String']>,
   exclusive?: Maybe<Scalars['String']>,
+  name?: Maybe<Scalars['String']>,
   review_shelf_id?: Maybe<Scalars['String']>,
+  sortable?: Maybe<Scalars['String']>,
   goodreadsId?: Maybe<Scalars['String']>,
   reviews?: Maybe<Array<Maybe<GoodreadsReview>>>,
-  sortable?: Maybe<Scalars['String']>,
 };
 
 export type GoodreadsShelfConnection = {
@@ -13206,9 +13173,10 @@ export enum GoodreadsShelfFieldsEnum {
   InternalMediaType = 'internal___mediaType',
   InternalOwner = 'internal___owner',
   InternalType = 'internal___type',
-  Name = 'name',
   Exclusive = 'exclusive',
+  Name = 'name',
   ReviewShelfId = 'review_shelf_id',
+  Sortable = 'sortable',
   GoodreadsId = 'goodreadsId',
   Reviews = 'reviews',
   ReviewsId = 'reviews___id',
@@ -13336,8 +13304,7 @@ export enum GoodreadsShelfFieldsEnum {
   ReviewsBookAuthorsRatingsCount = 'reviews___book___authors___ratings_count',
   ReviewsBookAuthorsTextReviewsCount = 'reviews___book___authors___text_reviews_count',
   ReviewsBookAuthorsGoodreadsId = 'reviews___book___authors___goodreadsId',
-  ReviewsBookAuthorsBooks = 'reviews___book___authors___books',
-  Sortable = 'sortable'
+  ReviewsBookAuthorsBooks = 'reviews___book___authors___books'
 }
 
 export type GoodreadsShelfFilterInput = {
@@ -13345,12 +13312,12 @@ export type GoodreadsShelfFilterInput = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  name?: Maybe<StringQueryOperatorInput>,
   exclusive?: Maybe<StringQueryOperatorInput>,
+  name?: Maybe<StringQueryOperatorInput>,
   review_shelf_id?: Maybe<StringQueryOperatorInput>,
+  sortable?: Maybe<StringQueryOperatorInput>,
   goodreadsId?: Maybe<StringQueryOperatorInput>,
   reviews?: Maybe<GoodreadsReviewFilterListInput>,
-  sortable?: Maybe<StringQueryOperatorInput>,
 };
 
 export type GoodreadsShelfGroupConnection = {
@@ -14700,12 +14667,12 @@ export type QueryGoodreadsShelfArgs = {
   parent?: Maybe<NodeFilterInput>,
   children?: Maybe<NodeFilterListInput>,
   internal?: Maybe<InternalFilterInput>,
-  name?: Maybe<StringQueryOperatorInput>,
   exclusive?: Maybe<StringQueryOperatorInput>,
+  name?: Maybe<StringQueryOperatorInput>,
   review_shelf_id?: Maybe<StringQueryOperatorInput>,
+  sortable?: Maybe<StringQueryOperatorInput>,
   goodreadsId?: Maybe<StringQueryOperatorInput>,
-  reviews?: Maybe<GoodreadsReviewFilterListInput>,
-  sortable?: Maybe<StringQueryOperatorInput>
+  reviews?: Maybe<GoodreadsReviewFilterListInput>
 };
 
 
@@ -15165,12 +15132,14 @@ export type SitePageContext = {
   slug?: Maybe<Scalars['String']>,
   previousId?: Maybe<Scalars['String']>,
   nextId?: Maybe<Scalars['String']>,
+  relatedPostIds?: Maybe<Array<Maybe<Scalars['String']>>>,
 };
 
 export type SitePageContextFilterInput = {
   slug?: Maybe<StringQueryOperatorInput>,
   previousId?: Maybe<StringQueryOperatorInput>,
   nextId?: Maybe<StringQueryOperatorInput>,
+  relatedPostIds?: Maybe<StringQueryOperatorInput>,
 };
 
 export type SitePageEdge = {
@@ -15275,6 +15244,7 @@ export enum SitePageFieldsEnum {
   ContextSlug = 'context___slug',
   ContextPreviousId = 'context___previousId',
   ContextNextId = 'context___nextId',
+  ContextRelatedPostIds = 'context___relatedPostIds',
   PluginCreatorId = 'pluginCreator___id',
   PluginCreatorParentId = 'pluginCreator___parent___id',
   PluginCreatorParentParentId = 'pluginCreator___parent___parent___id',
@@ -15328,17 +15298,7 @@ export enum SitePageFieldsEnum {
   PluginCreatorPluginOptionsName = 'pluginCreator___pluginOptions___name',
   PluginCreatorPluginOptionsMaxWidth = 'pluginCreator___pluginOptions___maxWidth',
   PluginCreatorPluginOptionsBackgroundColor = 'pluginCreator___pluginOptions___backgroundColor',
-  PluginCreatorPluginOptionsPathPrefix = 'pluginCreator___pluginOptions___pathPrefix',
   PluginCreatorPluginOptionsWrapperStyle = 'pluginCreator___pluginOptions___wrapperStyle',
-  PluginCreatorPluginOptionsLinkImagesToOriginal = 'pluginCreator___pluginOptions___linkImagesToOriginal',
-  PluginCreatorPluginOptionsShowCaptions = 'pluginCreator___pluginOptions___showCaptions',
-  PluginCreatorPluginOptionsMarkdownCaptions = 'pluginCreator___pluginOptions___markdownCaptions',
-  PluginCreatorPluginOptionsWithWebp = 'pluginCreator___pluginOptions___withWebp',
-  PluginCreatorPluginOptionsTracedSvg = 'pluginCreator___pluginOptions___tracedSVG',
-  PluginCreatorPluginOptionsLoading = 'pluginCreator___pluginOptions___loading',
-  PluginCreatorPluginOptionsDisableBgImageOnAlpha = 'pluginCreator___pluginOptions___disableBgImageOnAlpha',
-  PluginCreatorPluginOptionsDisableBgImage = 'pluginCreator___pluginOptions___disableBgImage',
-  PluginCreatorPluginOptionsIgnoreFileExtensions = 'pluginCreator___pluginOptions___ignoreFileExtensions',
   PluginCreatorPluginOptionsShortName = 'pluginCreator___pluginOptions___short_name',
   PluginCreatorPluginOptionsStartUrl = 'pluginCreator___pluginOptions___start_url',
   PluginCreatorPluginOptionsBackgroundColor = 'pluginCreator___pluginOptions___background_color',
@@ -15346,15 +15306,15 @@ export enum SitePageFieldsEnum {
   PluginCreatorPluginOptionsDisplay = 'pluginCreator___pluginOptions___display',
   PluginCreatorPluginOptionsIcon = 'pluginCreator___pluginOptions___icon',
   PluginCreatorPluginOptionsPathToConfigModule = 'pluginCreator___pluginOptions___pathToConfigModule',
+  PluginCreatorPluginOptionsTypeName = 'pluginCreator___pluginOptions___typeName',
+  PluginCreatorPluginOptionsFieldName = 'pluginCreator___pluginOptions___fieldName',
   PluginCreatorPluginOptionsUrl = 'pluginCreator___pluginOptions___url',
+  PluginCreatorPluginOptionsHeadersAuthorization = 'pluginCreator___pluginOptions___headers___Authorization',
   PluginCreatorPluginOptionsParserOptionMaxRedirects = 'pluginCreator___pluginOptions___parserOption___maxRedirects',
   PluginCreatorPluginOptionsParserOptionTimeout = 'pluginCreator___pluginOptions___parserOption___timeout',
   PluginCreatorPluginOptionsKey = 'pluginCreator___pluginOptions___key',
   PluginCreatorPluginOptionsId = 'pluginCreator___pluginOptions___id',
   PluginCreatorPluginOptionsPathCheck = 'pluginCreator___pluginOptions___pathCheck',
-  PluginCreatorPluginOptionsTypeName = 'pluginCreator___pluginOptions___typeName',
-  PluginCreatorPluginOptionsFieldName = 'pluginCreator___pluginOptions___fieldName',
-  PluginCreatorPluginOptionsHeadersAuthorization = 'pluginCreator___pluginOptions___headers___Authorization',
   PluginCreatorNodeApIs = 'pluginCreator___nodeAPIs',
   PluginCreatorBrowserApIs = 'pluginCreator___browserAPIs',
   PluginCreatorSsrApIs = 'pluginCreator___ssrAPIs',
@@ -15553,17 +15513,7 @@ export enum SitePluginFieldsEnum {
   PluginOptionsPluginsVersion = 'pluginOptions___plugins___version',
   PluginOptionsPluginsPluginOptionsMaxWidth = 'pluginOptions___plugins___pluginOptions___maxWidth',
   PluginOptionsPluginsPluginOptionsBackgroundColor = 'pluginOptions___plugins___pluginOptions___backgroundColor',
-  PluginOptionsPluginsPluginOptionsPathPrefix = 'pluginOptions___plugins___pluginOptions___pathPrefix',
   PluginOptionsPluginsPluginOptionsWrapperStyle = 'pluginOptions___plugins___pluginOptions___wrapperStyle',
-  PluginOptionsPluginsPluginOptionsLinkImagesToOriginal = 'pluginOptions___plugins___pluginOptions___linkImagesToOriginal',
-  PluginOptionsPluginsPluginOptionsShowCaptions = 'pluginOptions___plugins___pluginOptions___showCaptions',
-  PluginOptionsPluginsPluginOptionsMarkdownCaptions = 'pluginOptions___plugins___pluginOptions___markdownCaptions',
-  PluginOptionsPluginsPluginOptionsWithWebp = 'pluginOptions___plugins___pluginOptions___withWebp',
-  PluginOptionsPluginsPluginOptionsTracedSvg = 'pluginOptions___plugins___pluginOptions___tracedSVG',
-  PluginOptionsPluginsPluginOptionsLoading = 'pluginOptions___plugins___pluginOptions___loading',
-  PluginOptionsPluginsPluginOptionsDisableBgImageOnAlpha = 'pluginOptions___plugins___pluginOptions___disableBgImageOnAlpha',
-  PluginOptionsPluginsPluginOptionsDisableBgImage = 'pluginOptions___plugins___pluginOptions___disableBgImage',
-  PluginOptionsPluginsPluginOptionsIgnoreFileExtensions = 'pluginOptions___plugins___pluginOptions___ignoreFileExtensions',
   PluginOptionsPluginsNodeApIs = 'pluginOptions___plugins___nodeAPIs',
   PluginOptionsPluginsBrowserApIs = 'pluginOptions___plugins___browserAPIs',
   PluginOptionsPluginsPluginFilepath = 'pluginOptions___plugins___pluginFilepath',
@@ -15571,17 +15521,7 @@ export enum SitePluginFieldsEnum {
   PluginOptionsName = 'pluginOptions___name',
   PluginOptionsMaxWidth = 'pluginOptions___maxWidth',
   PluginOptionsBackgroundColor = 'pluginOptions___backgroundColor',
-  PluginOptionsPathPrefix = 'pluginOptions___pathPrefix',
   PluginOptionsWrapperStyle = 'pluginOptions___wrapperStyle',
-  PluginOptionsLinkImagesToOriginal = 'pluginOptions___linkImagesToOriginal',
-  PluginOptionsShowCaptions = 'pluginOptions___showCaptions',
-  PluginOptionsMarkdownCaptions = 'pluginOptions___markdownCaptions',
-  PluginOptionsWithWebp = 'pluginOptions___withWebp',
-  PluginOptionsTracedSvg = 'pluginOptions___tracedSVG',
-  PluginOptionsLoading = 'pluginOptions___loading',
-  PluginOptionsDisableBgImageOnAlpha = 'pluginOptions___disableBgImageOnAlpha',
-  PluginOptionsDisableBgImage = 'pluginOptions___disableBgImage',
-  PluginOptionsIgnoreFileExtensions = 'pluginOptions___ignoreFileExtensions',
   PluginOptionsShortName = 'pluginOptions___short_name',
   PluginOptionsStartUrl = 'pluginOptions___start_url',
   PluginOptionsBackgroundColor = 'pluginOptions___background_color',
@@ -15589,16 +15529,16 @@ export enum SitePluginFieldsEnum {
   PluginOptionsDisplay = 'pluginOptions___display',
   PluginOptionsIcon = 'pluginOptions___icon',
   PluginOptionsPathToConfigModule = 'pluginOptions___pathToConfigModule',
+  PluginOptionsTypeName = 'pluginOptions___typeName',
+  PluginOptionsFieldName = 'pluginOptions___fieldName',
   PluginOptionsUrl = 'pluginOptions___url',
+  PluginOptionsHeadersAuthorization = 'pluginOptions___headers___Authorization',
   PluginOptionsParserOptionCustomFieldsItem = 'pluginOptions___parserOption___customFields___item',
   PluginOptionsParserOptionMaxRedirects = 'pluginOptions___parserOption___maxRedirects',
   PluginOptionsParserOptionTimeout = 'pluginOptions___parserOption___timeout',
   PluginOptionsKey = 'pluginOptions___key',
   PluginOptionsId = 'pluginOptions___id',
   PluginOptionsPathCheck = 'pluginOptions___pathCheck',
-  PluginOptionsTypeName = 'pluginOptions___typeName',
-  PluginOptionsFieldName = 'pluginOptions___fieldName',
-  PluginOptionsHeadersAuthorization = 'pluginOptions___headers___Authorization',
   NodeApIs = 'nodeAPIs',
   BrowserApIs = 'browserAPIs',
   SsrApIs = 'ssrAPIs',
@@ -15726,17 +15666,7 @@ export type SitePluginPluginOptions = {
   name?: Maybe<Scalars['String']>,
   maxWidth?: Maybe<Scalars['Int']>,
   backgroundColor?: Maybe<Scalars['String']>,
-  pathPrefix?: Maybe<Scalars['String']>,
   wrapperStyle?: Maybe<Scalars['String']>,
-  linkImagesToOriginal?: Maybe<Scalars['Boolean']>,
-  showCaptions?: Maybe<Scalars['Boolean']>,
-  markdownCaptions?: Maybe<Scalars['Boolean']>,
-  withWebp?: Maybe<Scalars['Boolean']>,
-  tracedSVG?: Maybe<Scalars['Boolean']>,
-  loading?: Maybe<Scalars['String']>,
-  disableBgImageOnAlpha?: Maybe<Scalars['Boolean']>,
-  disableBgImage?: Maybe<Scalars['Boolean']>,
-  ignoreFileExtensions?: Maybe<Array<Maybe<Scalars['String']>>>,
   short_name?: Maybe<Scalars['String']>,
   start_url?: Maybe<Scalars['String']>,
   background_color?: Maybe<Scalars['String']>,
@@ -15744,14 +15674,14 @@ export type SitePluginPluginOptions = {
   display?: Maybe<Scalars['String']>,
   icon?: Maybe<Scalars['String']>,
   pathToConfigModule?: Maybe<Scalars['String']>,
+  typeName?: Maybe<Scalars['String']>,
+  fieldName?: Maybe<Scalars['String']>,
   url?: Maybe<Scalars['String']>,
+  headers?: Maybe<SitePluginPluginOptionsHeaders>,
   parserOption?: Maybe<SitePluginPluginOptionsParserOption>,
   key?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['String']>,
   pathCheck?: Maybe<Scalars['Boolean']>,
-  typeName?: Maybe<Scalars['String']>,
-  fieldName?: Maybe<Scalars['String']>,
-  headers?: Maybe<SitePluginPluginOptionsHeaders>,
 };
 
 export type SitePluginPluginOptionsFilterInput = {
@@ -15760,17 +15690,7 @@ export type SitePluginPluginOptionsFilterInput = {
   name?: Maybe<StringQueryOperatorInput>,
   maxWidth?: Maybe<IntQueryOperatorInput>,
   backgroundColor?: Maybe<StringQueryOperatorInput>,
-  pathPrefix?: Maybe<StringQueryOperatorInput>,
   wrapperStyle?: Maybe<StringQueryOperatorInput>,
-  linkImagesToOriginal?: Maybe<BooleanQueryOperatorInput>,
-  showCaptions?: Maybe<BooleanQueryOperatorInput>,
-  markdownCaptions?: Maybe<BooleanQueryOperatorInput>,
-  withWebp?: Maybe<BooleanQueryOperatorInput>,
-  tracedSVG?: Maybe<BooleanQueryOperatorInput>,
-  loading?: Maybe<StringQueryOperatorInput>,
-  disableBgImageOnAlpha?: Maybe<BooleanQueryOperatorInput>,
-  disableBgImage?: Maybe<BooleanQueryOperatorInput>,
-  ignoreFileExtensions?: Maybe<StringQueryOperatorInput>,
   short_name?: Maybe<StringQueryOperatorInput>,
   start_url?: Maybe<StringQueryOperatorInput>,
   background_color?: Maybe<StringQueryOperatorInput>,
@@ -15778,14 +15698,14 @@ export type SitePluginPluginOptionsFilterInput = {
   display?: Maybe<StringQueryOperatorInput>,
   icon?: Maybe<StringQueryOperatorInput>,
   pathToConfigModule?: Maybe<StringQueryOperatorInput>,
+  typeName?: Maybe<StringQueryOperatorInput>,
+  fieldName?: Maybe<StringQueryOperatorInput>,
   url?: Maybe<StringQueryOperatorInput>,
+  headers?: Maybe<SitePluginPluginOptionsHeadersFilterInput>,
   parserOption?: Maybe<SitePluginPluginOptionsParserOptionFilterInput>,
   key?: Maybe<StringQueryOperatorInput>,
   id?: Maybe<StringQueryOperatorInput>,
   pathCheck?: Maybe<BooleanQueryOperatorInput>,
-  typeName?: Maybe<StringQueryOperatorInput>,
-  fieldName?: Maybe<StringQueryOperatorInput>,
-  headers?: Maybe<SitePluginPluginOptionsHeadersFilterInput>,
 };
 
 export type SitePluginPluginOptionsHeaders = {
@@ -15850,33 +15770,13 @@ export type SitePluginPluginOptionsPluginsPluginOptions = {
    __typename?: 'SitePluginPluginOptionsPluginsPluginOptions',
   maxWidth?: Maybe<Scalars['Int']>,
   backgroundColor?: Maybe<Scalars['String']>,
-  pathPrefix?: Maybe<Scalars['String']>,
   wrapperStyle?: Maybe<Scalars['String']>,
-  linkImagesToOriginal?: Maybe<Scalars['Boolean']>,
-  showCaptions?: Maybe<Scalars['Boolean']>,
-  markdownCaptions?: Maybe<Scalars['Boolean']>,
-  withWebp?: Maybe<Scalars['Boolean']>,
-  tracedSVG?: Maybe<Scalars['Boolean']>,
-  loading?: Maybe<Scalars['String']>,
-  disableBgImageOnAlpha?: Maybe<Scalars['Boolean']>,
-  disableBgImage?: Maybe<Scalars['Boolean']>,
-  ignoreFileExtensions?: Maybe<Array<Maybe<Scalars['String']>>>,
 };
 
 export type SitePluginPluginOptionsPluginsPluginOptionsFilterInput = {
   maxWidth?: Maybe<IntQueryOperatorInput>,
   backgroundColor?: Maybe<StringQueryOperatorInput>,
-  pathPrefix?: Maybe<StringQueryOperatorInput>,
   wrapperStyle?: Maybe<StringQueryOperatorInput>,
-  linkImagesToOriginal?: Maybe<BooleanQueryOperatorInput>,
-  showCaptions?: Maybe<BooleanQueryOperatorInput>,
-  markdownCaptions?: Maybe<BooleanQueryOperatorInput>,
-  withWebp?: Maybe<BooleanQueryOperatorInput>,
-  tracedSVG?: Maybe<BooleanQueryOperatorInput>,
-  loading?: Maybe<StringQueryOperatorInput>,
-  disableBgImageOnAlpha?: Maybe<BooleanQueryOperatorInput>,
-  disableBgImage?: Maybe<BooleanQueryOperatorInput>,
-  ignoreFileExtensions?: Maybe<StringQueryOperatorInput>,
 };
 
 export type SitePluginSortInput = {
@@ -16327,7 +16227,7 @@ export type Unnamed_7_Query = (
           & Pick<MarkdownRemarkFields, 'slug'>
         )>, frontmatter: Maybe<(
           { __typename?: 'MarkdownRemarkFrontmatter' }
-          & Pick<MarkdownRemarkFrontmatter, 'title' | 'description'>
+          & Pick<MarkdownRemarkFrontmatter, 'title' | 'description' | 'tags'>
           & { featuredImage: Maybe<(
             { __typename?: 'File' }
             & { childImageSharp: Maybe<(
@@ -16401,7 +16301,8 @@ export type Unnamed_9_Query = (
 export type BlogPostBySlugQueryVariables = {
   slug: Scalars['String'],
   nextId: Scalars['String'],
-  previousId: Scalars['String']
+  previousId: Scalars['String'],
+  relatedPostIds: Array<Scalars['String']>
 };
 
 
@@ -16419,7 +16320,16 @@ export type BlogPostBySlugQuery = (
   )>, next: Maybe<(
     { __typename?: 'MarkdownRemark' }
     & BlogPostDataFragment
-  )>, markdownRemark: Maybe<(
+  )>, relatedPosts: (
+    { __typename?: 'MarkdownRemarkConnection' }
+    & { edges: Array<(
+      { __typename?: 'MarkdownRemarkEdge' }
+      & { node: (
+        { __typename?: 'MarkdownRemark' }
+        & BlogPostDataFragment
+      ) }
+    )> }
+  ), markdownRemark: Maybe<(
     { __typename?: 'MarkdownRemark' }
     & Pick<MarkdownRemark, 'id' | 'excerpt' | 'html'>
     & { fields: Maybe<(

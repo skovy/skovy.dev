@@ -26,20 +26,31 @@ const Container = styled(Link)`
   }
 `;
 
+const Content = styled.div`
+  padding: ${rhythm(1)};
+`;
+
 const Title = styled.h3`
   margin: 0;
-  padding: ${rhythm(1)};
   color: ${colors.text};
   text-align: left;
   ${scale(1 / 6)}
 `;
 
+const Subtext = styled.p`
+  margin: 0 0 ${rhythm(1 / 4)};
+  padding: 0;
+  color: ${colors.muted};
+  ${scale(-1 / 4)}
+`;
+
 interface Props {
   post: MarkdownRemark;
+  subtext?: React.ReactNode;
 }
 
-export const BlogPost = (props: Props) => {
-  const { frontmatter, fields } = props.post;
+export const BlogPost = ({ post, subtext }: Props) => {
+  const { frontmatter, fields } = post;
 
   return (
     <AnimatedCard>
@@ -47,7 +58,10 @@ export const BlogPost = (props: Props) => {
         <Image
           fluid={frontmatter.featuredImage.childImageSharp.fluid as FluidObject}
         />
-        <Title>{frontmatter.title}</Title>
+        <Content>
+          {subtext && <Subtext>{subtext}</Subtext>}
+          <Title>{frontmatter.title}</Title>
+        </Content>
       </Container>
     </AnimatedCard>
   );
@@ -63,6 +77,7 @@ export const query = graphql`
       date(formatString: "MMMM DD, YYYY")
       title
       description
+      tags
       featuredImage {
         childImageSharp {
           fluid(maxWidth: 400, maxHeight: 250) {
