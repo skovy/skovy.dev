@@ -129,7 +129,7 @@ needs to be tracked.
 
 What if you want to swap out `track` for another method or change it's API? Now
 all of these components need to be updated. Or, what if you originally wrote
-these all as components within `componentDidMount`? If you want to use a hook
+all these components as classes with `componentDidMount`? If you want to use a hook
 all these components would need to be refactored. What if you want to track
 the impression at a more specific component in the tree? That would require a
 new component to isolate that part of the tree with it's own `useEffect` hook.
@@ -188,8 +188,8 @@ as much sense as a hook so I'd prefer to keep consistent APIs between the two
 (components).
 
 This can also easily extend and apply to experimentation or feature toggling
-to dynamically show content depending on a toggle's value. It likely could
-event reuse these tracking components within since you likely want to
+to dynamically show content depending on a toggle's value. It could
+even reuse these tracking components within since it's likely we want to
 track impressions anytime someone sees an experiment.
 
 ## Data-Fetching
@@ -236,7 +236,7 @@ const FetchExample = () => {
 ```
 
 This feature's code is likely similar to dozens of other components. Those
-components are likely fetching data in a similar way and likely have the same
+components are likely fetching data in a similar way and have the same
 needs for the different loading statuses. What if we wanted to add a fourth
 loading status? What if we wanted to swap `fetch` for something else? All of
 the different components will need to be updated. Additionally, this too takes
@@ -317,12 +317,12 @@ experienced while working with React? Keep your eyes open for opportunities
 where logic could be better represented as a component. It can offer a number of
 advantages:
 
-- More declarative, readable component trees.
+- More declarative, readable component trees by giving a name to concepts.
 - Less duplication of logic which leads to easier maintenance and increased consistency.
-- More flexible since they can be added anywhere in the tree (eg: impression tracking).
+- More flexible since they can be added anywhere in the tree (eg: impression tracking) and composed as needed.
 
 Duplication isn't inherently bad and there are cases where it may be better
 to have a little duplication than trying to force a single component to handle
 all of the possible use cases and edge cases. However, there are often
-common themes throughout a codebase that are overlooked that are better
+common themes throughout a codebase that are overlooked that can be better
 represented as components.
