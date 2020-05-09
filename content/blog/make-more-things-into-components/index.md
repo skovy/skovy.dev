@@ -1,7 +1,7 @@
 ---
-date: 2020-05-06T10:00:00.000Z
-title: "Put more things into Components"
-description: "Capture more logic and concepts into components."
+date: 2020-05-09T10:00:00.000Z
+title: "Make more things into Components"
+description: "Encapsulating more logic and concepts into components."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Frank Mckenna"
 tags:
@@ -16,13 +16,13 @@ declarative nature without needing to understand all of the implementation detai
 
 What about the code and logic that isn't encapsulated in those components? This
 logic is often scattered and duplicated across the codebase in component's render
-methods, lifecycle methods or state. Why isn't more of this code encapsulated in
+methods, lifecycle methods, or state. Why isn't more of this code encapsulated in
 components?
 
 The most commonly overlooked examples are non-visual things like data-fetching,
 tracking, experimentation, or layout logic that can be duplicated across hundreds
 of components. However, the needs for these can fit perfectly into the
-component paradigm and it offers a handful of advantages.
+component paradigm and it can offer a handful of advantages.
 
 Let's look at a few simplified examples.
 
@@ -53,9 +53,9 @@ may be in dozens of components.
 </div>
 ```
 
-Whether you're using CSS-in-JS, vanilla CSS, or CSS Modules it this can lead to
+Whether you're using CSS-in-JS, vanilla CSS, or CSS Modules this can lead to
 a lof one-off elements and styles. Additionally, to understand what's happening
-it requires mentally parsing all of the CSS attributes or even follow a class to
+it requires mentally parsing all of the CSS attributes or following a class to
 another file to see the what CSS attributes are applied to understand what's
 happening. What if this pattern of providing a basic flex layout was
 encapsulated as part of a component?
@@ -74,12 +74,13 @@ export const Flex: React.FC<Props> = ({
 );
 ```
 
-This component achieves the same thing, but now it gives a name to the concept: `Flex`.
-These styles are all in one component and this CSS can be reused across all of
-these components reducing the overall size of your CSS bundle (assuming the
-one-off CSS above was duplicated in varying forms across the codebase).
-Lastly, now when reading the component tree, it's immediately clear all this
-component is doing is providing some flex layout.
+This component achieves the same thing, but now it gives a name to the concept:
+`Flex`. Since all possible variations are in one component the styles only
+need to be defined once which can help reduce the overall size of the CSS
+_(or JavaScript)_ bundle _(assuming the one-off CSS above was duplicated in
+varying forms across the codebase)_. Lastly, now when reading the component
+tree, it's immediately clear all this component is doing is providing some flex
+layout with a few flex-specific options.
 
 ```typescript
 <Flex alignItems="center" justifyContent="space-between">
@@ -90,18 +91,18 @@ component is doing is providing some flex layout.
 
 This is a simplified example, but the idea can apply to any layout related
 concepts: grids, spacing, etc. For example, how often is there a need to apply
-margin between two component? Is this achieved with one-off CSS, or is it
-encapsulated in components?
+margin between two component? Is this achieved with one-off CSS, a custom
+element, or is it encapsulated in components?
 
 ## Tracking
 
 Another common pattern is the need to implement some type of tracking to
-understand how people are using an application. The two popular ones are
-impression and click tracking to understand what someone is seeing and what
-they are interacting with.
+understand how people are using an application. Two popular things to track are
+impressions and clicks to understand what someone is seeing and what they are
+interacting with.
 
-Assuming `track` is actually sending this information somewhere, a simple
-implementation may look like the following.
+A simple implementation to handle these needs may look like the following,
+assuming `track` is actually sending this information somewhere useful.
 
 ```typescript
 export const track = (event: object) => console.log(event);
@@ -123,7 +124,8 @@ const TrackExample = () => {
 
 When this component mounts an impression will be tracked, and when someone
 clicks the button that will also be tracked. This approach may require adding
-this `useEffect` and `handleClick` in dozens of components.
+this `useEffect` and `handleClick` in dozens of components depending on what
+needs to be tracked.
 
 What if you want to swap out `track` for another method or change it's API? Now
 all of these components need to be updated. Or, what if you originally wrote
@@ -164,11 +166,11 @@ export const Track = {
 ```
 
 Now, all of the above problems are solved. These components can be added to
-any part of the tree. Your entire app could be a single huge component and still
-have fine grain control over impression tracking. Now, it doesn't matter if
+any part of the tree. Your entire feature could be a single huge component and
+still have fine grain control over impression tracking. Now, it doesn't matter if
 `Track.Impression` is using `componentDidMount` or `useEffect`. And if it did
 matter, there's only one place it needs to be updated. Finally, if the `track`
-method needs to be swapped out, it only needs to be done in one place.
+method needs to be swapped out, it also only needs to be done in one place.
 
 ```typescript
 <Track.Impression name="track-example">
@@ -179,23 +181,23 @@ method needs to be swapped out, it only needs to be done in one place.
 ```
 
 Since the impression tracking is really only a hook, you make consider using
-a custom `useImpressionTracking` instead. However, this still has the problem
+a custom `useImpressionTracking` hook instead. However, this still has the problem
 of needing to create a new component anytime you need to track an impression
 at a specific point in the tree. Additionally, click tracking doesn't make
 as much sense as a hook so I'd prefer to keep consistent APIs between the two
 (components).
 
-This can also easily extend and apply to experimentation or feature toggling.
-It can also reuse these tracking components within since you likely want to
-impression tracking anytime and experiment is (or isn't) rendered.
+This can also easily extend and apply to experimentation or feature toggling
+to dynamically show content depending on a toggle's value. It likely could
+event reuse these tracking components within since you likely want to
+track impressions anytime someone sees an experiment.
 
 ## Data-Fetching
 
-Another nearly universal product need is some form of data-fetching. This can
+A nearly universal product need is some form of data-fetching. This can
 manifest itself in many ways, but let's say we're fetching some JSON from a
-REST API. We probably need a status for while that request is in-flight to
-show a loading state, a status if an error occurs, and finally a success
-status along with the data.
+REST API. We probably need a way to differentiate statuses while the request is
+in-flight, if an error occurs, or when it's successful.
 
 ```typescript
 const FetchExample = () => {
@@ -233,14 +235,14 @@ const FetchExample = () => {
 };
 ```
 
-This feature's code is likely similar to dozen's of other components. Those
+This feature's code is likely similar to dozens of other components. Those
 components are likely fetching data in a similar way and likely have the same
 needs for the different loading statuses. What if we wanted to add a fourth
 loading status? What if we wanted to swap `fetch` for something else? All of
 the different components will need to be updated. Additionally, this too takes
 a fair amount of reading to understand how all the different pieces work
 together. As a reader, what we really care about is that we want to fetch
-some data from a given url, and given that data, render something. Or,
+some data from a url, and given that data, render something. Or,
 translated into React...
 
 ```typescript
@@ -282,9 +284,7 @@ export const Fetch: React.FC<Props> = ({ url, children }) => {
 ```
 
 And using that, the component usage is an exact translation: we want
-to `Fetch` something given a `url`, and given that `data`, render something.
-we want to fetch some data from a given url, and given that data, render
-something:
+to `Fetch` some data from a `url`, and given that `data`, render something.
 
 ```typescript
 <Fetch url="https://jsonplaceholder.typicode.com/posts/4">
@@ -301,21 +301,28 @@ something:
 </Fetch>
 ```
 
-You may consider creating a `useFetch` hook for something like this instead.
+You could also consider creating a `useFetch` hook for something like this instead.
 It's achieving the same goal as putting more logic into components but each
-approach has slight tradeoffs.
+approach has slight tradeoffs. Either way, if the underlying API changes it
+can now easily be swapped out. Or, it's easy to add error handling for all
+network requests in one place.
 
 There are plenty of existing packages that already use an API like this such
 as `react-apollo`'s `Query` component and `useQuery` hook.
 
 ## Conclusion
 
-Let's look at this all put together before and after.
+With these examples in mind, maybe you can think of a few other examples you've
+experienced while working with React? Keep your eyes open for opportunities
+where logic could be better represented as a component. It can offer a number of
+advantages:
 
-```typescript
-// BEFORE
-```
+- More declarative, readable component trees.
+- Less duplication of logic which leads to easier maintenance and increased consistency.
+- More flexible since they can be added anywhere in the tree (eg: impression tracking).
 
-```typescript
-// AFTER
-```
+Duplication isn't inherently bad and there are cases where it may be better
+to have a little duplication than trying to force a single component to handle
+all of the possible use cases and edge cases. However, there are often
+common themes throughout a codebase that are overlooked that are better
+represented as components.
