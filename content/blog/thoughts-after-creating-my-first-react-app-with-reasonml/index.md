@@ -5,10 +5,9 @@ description: "My initial impressions after making a small web app written in Rea
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Jean Wimmerlin"
 tags:
-  - javascript
   - reasonml
+  - javascript
   - react
-  - first-impressions
 ---
 
 I set out to build a basic sudoku board. It’s straightforward but has enough complexity that would require learning a spectrum of Reason and ReasonReact features such as components, state management, styling, and basics of data structures for preloaded state for various boards and validation. The [full source is on GitHub](https://github.com/Skovy/sudoku-reasonml), and [a demo of the sudoku board is here](https://skovy.github.io/sudoku-reasonml/).

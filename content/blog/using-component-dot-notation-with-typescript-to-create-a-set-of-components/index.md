@@ -6,9 +6,9 @@ featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by The Creative Exchange on Unsplash"
 tags:
   - react
-  - typescript
   - components
-  - dot-notation
+  - dot notation
+  - typescript
 ---
 
 In a [previous post](https://democratizeopportunity.com/building-the-next-generation-of-search-at-handshake-67b69ffacecb) and [React meetup talk](https://www.meetup.com/ReactJS-San-Francisco/events/243663563/), I shared several patterns and tools for managing complex features with React and TypeScript. Many of the code samples were using component dot notation, and I briefly mentioned it but did not go in depth about the advantages of using this approach. This post will dive into the advantages of using component dot notation, highlight a few gotchas and provide some examples.

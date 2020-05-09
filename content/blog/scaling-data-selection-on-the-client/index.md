@@ -7,6 +7,7 @@ featuredImageCredit: "Photo by Ander Burdain"
 tags:
   - react
   - redux
+  - reselect
 ---
 
 ## What is a Selector?

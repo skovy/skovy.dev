@@ -8,8 +8,7 @@ tags:
   - podcast
   - react
   - typescript
-  - frontend-development
-  - design-systems
+  - design systems
 ---
 
 ## 🤔 Why “YATP?”

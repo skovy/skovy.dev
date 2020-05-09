@@ -6,9 +6,7 @@ featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Steven Wright"
 tags:
   - webpack plugin
-  - yarn check
-  - yarn install
-  - typescript errors
+  - yarn
 ---
 
 When working in a codebase with a large number of contributors, it's likely

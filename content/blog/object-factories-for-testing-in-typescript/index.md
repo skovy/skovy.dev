@@ -5,9 +5,8 @@ description: "Introducing cooky-cutter, an object factory package written to be 
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo from Unsplash"
 tags:
-  - javascript
+  - object factory
   - typescript
-  - object-factory
   - testing
 ---
 

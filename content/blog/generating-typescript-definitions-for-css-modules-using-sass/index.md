@@ -6,7 +6,7 @@ featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by ariel sion"
 tags:
   - react
-  - css-modules
+  - css modules
   - typescript
   - sass
 ---

@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "gatsby";
 import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTag } from "@fortawesome/free-solid-svg-icons";
 
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
@@ -15,8 +17,8 @@ const Container = styled(Link)`
   color: ${colors.text};
   transition: color 200ms ease;
 
-  &:hover,
-  &:focus {
+  &:hover h3,
+  &:focus h3 {
     color: ${colors.secondary};
   }
 
@@ -51,7 +53,7 @@ const Content = styled.div`
 const Title = styled.h3`
   flex-grow: 1;
   flex-shrink: 1;
-  margin: 0 0 ${rhythm(1 / 2)};
+  margin: 0;
   padding: 0;
   ${scale(1 / 6)}
 
@@ -61,8 +63,21 @@ const Title = styled.h3`
 `;
 
 const Excerpt = styled.p`
-  margin: 0;
+  margin: ${rhythm(1 / 2)} 0;
   ${scale(-1 / 4)}
+`;
+
+const Tags = styled.p`
+  margin: 0;
+  color: ${colors.muted};
+  display: flex;
+  align-items: center;
+  ${scale(-1 / 2)}
+
+  .icon {
+    color: ${colors.primary};
+    margin-right: ${rhythm(1 / 3)};
+  }
 `;
 
 interface Props {
@@ -81,6 +96,10 @@ export const BlogInlinePost = (props: Props) => {
       <Content>
         <Title>{frontmatter.title}</Title>
         <Excerpt>{frontmatter.description || excerpt}</Excerpt>
+        <Tags>
+          <FontAwesomeIcon icon={faTag} className="icon" size="lg" />
+          <span>{frontmatter.tags.join(", ")}</span>
+        </Tags>
       </Content>
     </Container>
   );

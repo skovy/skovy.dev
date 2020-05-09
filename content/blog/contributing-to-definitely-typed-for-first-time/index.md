@@ -7,8 +7,8 @@ featuredImageCredit: "Photo by Aaron Burden"
 tags:
   - typescript
   - definitely typed
+  - "@types"
   - first time contributing
-  - missing @types
 ---
 
 Some packages in the JavaScript ecosystem, such as
