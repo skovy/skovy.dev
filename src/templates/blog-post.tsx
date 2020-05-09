@@ -250,8 +250,8 @@ class BlogPostTemplate extends React.Component<Props> {
     };
 
     const relatedPostsCopy = [...relatedPosts.edges];
-    const relatedPostOne = getRandomElementAndRemove(relatedPostsCopy);
-    const relatedPostTwo = getRandomElementAndRemove(relatedPostsCopy);
+    const relatedPostOne = getRandomElementAndRemove(relatedPostsCopy)?.node;
+    const relatedPostTwo = getRandomElementAndRemove(relatedPostsCopy)?.node;
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -289,29 +289,37 @@ class BlogPostTemplate extends React.Component<Props> {
               </ActionLink>
             </ActionLinks>
             <Bio />
-            <OtherPostsTitle>Related Posts</OtherPostsTitle>
-            <OtherPosts>
-              <BlogPost
-                key={relatedPostOne.node.fields.slug}
-                post={relatedPostOne.node}
-                subtext={
-                  <>
-                    <FontAwesomeIcon icon={faTag} /> Also related to{" "}
-                    {findMatchingTagsToString(relatedPostOne.node)}
-                  </>
-                }
-              />
-              <BlogPost
-                key={relatedPostTwo.node.fields.slug}
-                post={relatedPostTwo.node}
-                subtext={
-                  <>
-                    <FontAwesomeIcon icon={faTag} /> Also related to{" "}
-                    {findMatchingTagsToString(relatedPostTwo.node)}
-                  </>
-                }
-              />
-            </OtherPosts>
+            {(relatedPostOne || relatedPostTwo) && (
+              <>
+                <OtherPostsTitle>Related Posts</OtherPostsTitle>
+                <OtherPosts>
+                  {relatedPostOne && (
+                    <BlogPost
+                      key={relatedPostOne.fields.slug}
+                      post={relatedPostOne}
+                      subtext={
+                        <>
+                          <FontAwesomeIcon icon={faTag} /> Also related to{" "}
+                          {findMatchingTagsToString(relatedPostOne)}
+                        </>
+                      }
+                    />
+                  )}
+                  {relatedPostTwo && (
+                    <BlogPost
+                      key={relatedPostTwo.fields.slug}
+                      post={relatedPostTwo}
+                      subtext={
+                        <>
+                          <FontAwesomeIcon icon={faTag} /> Also related to{" "}
+                          {findMatchingTagsToString(relatedPostTwo)}
+                        </>
+                      }
+                    />
+                  )}
+                </OtherPosts>
+              </>
+            )}
             <OtherPostsTitle>Other Posts</OtherPostsTitle>
             <OtherPosts>
               <BlogPost
