@@ -6,11 +6,8 @@ featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Faye Cornish"
 tags:
   - webpack
-  - font awesome
-  - icons
   - tree shaking
-  - tree shake
-  - dead code elimination
+  - font awesome
 ---
 
 Tree shaking: a word that at first sounds like another convoluted

@@ -5,9 +5,9 @@ description: "A few patterns for effectively using object factories for testing.
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Andrik Langfield"
 tags:
-  - typescript
+  - object factory
   - testing
-  - object factories
+  - typescript
   - best practices
 ---
 

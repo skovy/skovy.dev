@@ -6,7 +6,7 @@ description: "General principles for building and maintaining a design system."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Hans-Peter Gauster"
 tags:
-  - design system
+  - design systems
   - principles
   - rules
 ---

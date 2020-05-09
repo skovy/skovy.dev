@@ -9,6 +9,7 @@ tags:
   - react suspense
   - typescript
   - type definitions
+  - "@types"
 ---
 
 An experimental release of React Concurrent Mode was

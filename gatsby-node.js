@@ -15,6 +15,9 @@ exports.createPages = ({ graphql, actions }) => {
           edges {
             node {
               id
+              frontmatter {
+                tags
+              }
               fields {
                 slug
               }
@@ -51,13 +54,26 @@ exports.createPages = ({ graphql, actions }) => {
         next = posts[index - 1].node;
       }
 
+      const { tags } = post.node.frontmatter;
+
+      const relatedPostIds = posts
+        .filter(p => {
+          // The same post shouldn't be considered related to itself.
+          if (p.node.id === post.node.id) return false;
+
+          // Consider it a match if at least one tag is common.
+          return tags.find(tag => p.node.frontmatter.tags.includes(tag));
+        })
+        .map(p => p.node.id);
+
       createPage({
         path: post.node.fields.slug,
         component: blogPost,
         context: {
           slug: post.node.fields.slug,
           previousId: previous.id,
-          nextId: next.id
+          nextId: next.id,
+          relatedPostIds
         }
       });
     });

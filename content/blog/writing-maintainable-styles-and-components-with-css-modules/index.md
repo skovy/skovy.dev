@@ -7,7 +7,7 @@ featuredImageCredit: "Photo by russn_fckr on Unsplash"
 tags:
   - css
   - styling
-  - css-modules
+  - css modules
 ---
 
 ### 📦 What are CSS Modules?

@@ -5,10 +5,9 @@ description: "An overview of the benefits, general patterns, and tooling for mai
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Ray Hennessy"
 tags:
-  - javascript
-  - design-systems
-  - semantic-release
+  - design systems
   - react
+  - semantic-release
   - typescript
 ---
 

@@ -8,7 +8,6 @@ tags:
   - react
   - hooks
   - typescript
-  - react-hook
 ---
 
 The next version of React (`16.7.0-alpha.0`) was recently released with added support for [React Hooks](https://reactjs.org/docs/hooks-intro.html). Hooks bring many of the features that were only available with class components to function components and can help solve other problems, like “[wrapper hell](https://reactjs.org/docs/hooks-intro.html#its-hard-to-reuse-stateful-logic-between-components).”

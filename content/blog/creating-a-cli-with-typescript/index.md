@@ -5,10 +5,10 @@ description: "The tooling and steps to create a command-line npm package written
 featuredImage: "./images/featured-image.jpeg"
 featuredImageCredit: "Photo by Anders Jildén"
 tags:
-  - javascript
   - typescript
+  - command line interface
   - npm
-  - command-line-interface
+  - yarn
 ---
 
 Recently, I shared [typed-scss-modules](https://github.com/skovy/typed-scss-modules), a command-line interface (CLI) for [generating type definitions for CSS Modules using SASS](/generating-typescript-definitions-for-css-modules-using-sass). I’ve used many npm packages that provide executable commands, such as `tsc` from TypeScript, or `apollo` for [Apollo GraphQL tooling](https://github.com/apollographql/apollo-tooling), but have never created a package with an executable.

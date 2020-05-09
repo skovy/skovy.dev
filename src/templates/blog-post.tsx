@@ -4,16 +4,18 @@ import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 import Bio from "../components/bio";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import { rhythm, scale } from "../utils/typography";
-import { Query } from "../generated/graphql";
+import { Query, MarkdownRemark } from "../generated/graphql";
 import { ContentContainer } from "../components/content-container";
 import { colors } from "../config/colors";
 import { fonts } from "../config/fonts";
 import { BlogPost } from "../components/blog/post";
+import { faTag } from "@fortawesome/free-solid-svg-icons";
 
 const GITHUB_USERNAME = "skovy";
 const GITHUB_REPO_NAME = "skovy.dev";
@@ -45,7 +47,7 @@ const FeaturedImageCredit = styled.p`
 const PostFooter = styled.div`
   border-top: 2px solid ${colors.lightGray};
   border-bottom: 2px solid ${colors.lightGray};
-  padding: ${rhythm(3)} 0;
+  padding: ${rhythm(3)} 0 ${rhythm(1)};
   margin: ${rhythm(3)} 0 0;
 `;
 
@@ -56,6 +58,7 @@ const OtherPosts = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-column-gap: ${rhythm(1)};
   grid-row-gap: ${rhythm(1)};
+  margin-bottom: ${rhythm(2)};
 
   @media screen and (max-width: ${rhythm(24)}) {
     grid-template-columns: 1fr;
@@ -191,9 +194,14 @@ const Content = styled.div`
   }
 `;
 
+function getRandomElementAndRemove<T>(arr: T[]): T {
+  return arr.splice(Math.floor(Math.random() * arr.length), 1)[0];
+}
+
 interface PageQuery extends Query {
   previous: Query["markdownRemark"];
   next: Query["markdownRemark"];
+  relatedPosts: Query["allMarkdownRemark"];
 }
 
 interface Props extends PageRendererProps {
@@ -201,6 +209,7 @@ interface Props extends PageRendererProps {
   pageContext: {
     previous: any;
     next: any;
+    relatedPosts: any;
   };
 }
 
@@ -217,13 +226,32 @@ class BlogPostTemplate extends React.Component<Props> {
       tags
     } = post.frontmatter;
     const siteTitle = this.props.data.site.siteMetadata.title;
-    const { previous, next } = this.props.data;
+    const { previous, next, relatedPosts } = this.props.data;
     const { slug, readingTime } = post.fields;
 
     const githubUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog${slug}index.md`;
     const twitterUrl = `https://mobile.twitter.com/search?q=${encodeURIComponent(
       `https://skovy.dev${slug}`
     )}`;
+
+    const findMatchingTagsToString = (relatedPost: MarkdownRemark): string => {
+      const matchingTags = relatedPost.frontmatter.tags.filter(tag =>
+        tags.includes(tag)
+      );
+
+      if (matchingTags.length > 1) {
+        const rest = [...matchingTags.sort()];
+        const last = rest.pop();
+
+        return `${rest.join(", ")} and ${last}`;
+      } else {
+        return matchingTags[0];
+      }
+    };
+
+    const relatedPostsCopy = [...relatedPosts.edges];
+    const relatedPostOne = getRandomElementAndRemove(relatedPostsCopy)?.node;
+    const relatedPostTwo = getRandomElementAndRemove(relatedPostsCopy)?.node;
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -261,10 +289,55 @@ class BlogPostTemplate extends React.Component<Props> {
               </ActionLink>
             </ActionLinks>
             <Bio />
-            <OtherPostsTitle>More Posts</OtherPostsTitle>
+            {(relatedPostOne || relatedPostTwo) && (
+              <>
+                <OtherPostsTitle>Related Posts</OtherPostsTitle>
+                <OtherPosts>
+                  {relatedPostOne && (
+                    <BlogPost
+                      key={relatedPostOne.fields.slug}
+                      post={relatedPostOne}
+                      subtext={
+                        <>
+                          <FontAwesomeIcon icon={faTag} /> Also related to{" "}
+                          {findMatchingTagsToString(relatedPostOne)}
+                        </>
+                      }
+                    />
+                  )}
+                  {relatedPostTwo && (
+                    <BlogPost
+                      key={relatedPostTwo.fields.slug}
+                      post={relatedPostTwo}
+                      subtext={
+                        <>
+                          <FontAwesomeIcon icon={faTag} /> Also related to{" "}
+                          {findMatchingTagsToString(relatedPostTwo)}
+                        </>
+                      }
+                    />
+                  )}
+                </OtherPosts>
+              </>
+            )}
+            <OtherPostsTitle>Other Posts</OtherPostsTitle>
             <OtherPosts>
-              <BlogPost post={previous} />
-              <BlogPost post={next} />
+              <BlogPost
+                post={previous}
+                subtext={
+                  <>
+                    <FontAwesomeIcon icon={faClock} /> Previous post
+                  </>
+                }
+              />
+              <BlogPost
+                post={next}
+                subtext={
+                  <>
+                    <FontAwesomeIcon icon={faClock} /> Next post
+                  </>
+                }
+              />
             </OtherPosts>
           </PostFooter>
         </ContentContainer>
@@ -276,7 +349,12 @@ class BlogPostTemplate extends React.Component<Props> {
 export default BlogPostTemplate;
 
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!, $nextId: String!, $previousId: String!) {
+  query BlogPostBySlug(
+    $slug: String!
+    $nextId: String!
+    $previousId: String!
+    $relatedPostIds: [String!]!
+  ) {
     site {
       siteMetadata {
         title
@@ -288,6 +366,13 @@ export const pageQuery = graphql`
     }
     next: markdownRemark(id: { eq: $nextId }) {
       ...BlogPostData
+    }
+    relatedPosts: allMarkdownRemark(filter: { id: { in: $relatedPostIds } }) {
+      edges {
+        node {
+          ...BlogPostData
+        }
+      }
     }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       id
