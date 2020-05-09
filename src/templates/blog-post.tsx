@@ -296,7 +296,7 @@ class BlogPostTemplate extends React.Component<Props> {
                 post={relatedPostOne.node}
                 subtext={
                   <>
-                    <FontAwesomeIcon icon={faTag} /> Related to{" "}
+                    <FontAwesomeIcon icon={faTag} /> Also related to{" "}
                     {findMatchingTagsToString(relatedPostOne.node)}
                   </>
                 }
@@ -306,7 +306,7 @@ class BlogPostTemplate extends React.Component<Props> {
                 post={relatedPostTwo.node}
                 subtext={
                   <>
-                    <FontAwesomeIcon icon={faTag} /> Related to{" "}
+                    <FontAwesomeIcon icon={faTag} /> Also related to{" "}
                     {findMatchingTagsToString(relatedPostTwo.node)}
                   </>
                 }
