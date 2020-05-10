@@ -22,10 +22,10 @@ const Subtext = styled.p`
 const EmailInput = styled.input`
   display: block;
   width: 100%;
-  padding: ${rhythm(1 / 3)};
-  margin: ${rhythm(1 / 4)} 0;
+  padding: ${rhythm(1 / 2)};
+  margin: ${rhythm(1 / 2)} 0;
   border-radius: ${rhythm(1 / 4)};
-  border: 2px solid ${colors.lightGray};
+  border: 2px solid ${colors.gray};
   transition: border-color 200ms ease;
 
   &:hover {
@@ -34,6 +34,7 @@ const EmailInput = styled.input`
 
   &:focus {
     border-color: ${colors.primary};
+    box-shadow: 0 0 8px ${colors.primary};
     outline: none;
   }
 `;
@@ -41,18 +42,18 @@ const EmailInput = styled.input`
 const Subscribe = styled.input`
   display: block;
   width: 100%;
-  padding: ${rhythm(1 / 3)};
+  padding: ${rhythm(1 / 2)};
   margin: 0 0 ${rhythm(1)};
   border-radius: ${rhythm(1 / 4)};
   border: none;
   color: ${colors.white};
   background-color: ${colors.primary};
-  transition: background-color 200ms ease;
+  transition: box-shadow 200ms ease;
 
   &:hover,
   &:focus {
     cursor: pointer;
-    background-color: ${colors.secondary};
+    box-shadow: 0 0 8px ${colors.primary};
   }
 `;
 
@@ -84,6 +85,7 @@ export const Newsletter = () => {
         name="email"
         placeholder="Your email address"
         aria-label="Your emaila address"
+        autoComplete="email"
       />
       <input type="hidden" value="1" name="embed" />
       <Subscribe type="submit" value="Subscribe" />
