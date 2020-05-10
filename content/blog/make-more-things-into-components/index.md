@@ -54,9 +54,9 @@ may be in dozens of components.
 ```
 
 Whether you're using CSS-in-JS, vanilla CSS, or CSS Modules this can lead to
-a lof one-off elements and styles. Additionally, to understand what's happening
+a lot of one-off elements and styles. Additionally, to understand what's happening
 it requires mentally parsing all of the CSS attributes or following a class to
-another file to see the what CSS attributes are applied to understand what's
+another file to see what CSS attributes are applied to understand what's
 happening. What if this pattern of providing a basic flex layout was
 encapsulated as part of a component?
 
@@ -180,7 +180,7 @@ method needs to be swapped out, it also only needs to be done in one place.
 </Track.Impression>
 ```
 
-Since the impression tracking is really only a hook, you make consider using
+Since the impression tracking is really only a hook, you may consider using
 a custom `useImpressionTracking` hook instead. However, this still has the problem
 of needing to create a new component anytime you need to track an impression
 at a specific point in the tree. Additionally, click tracking doesn't make

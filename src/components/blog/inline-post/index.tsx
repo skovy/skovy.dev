@@ -75,7 +75,6 @@ const Tags = styled.p`
   ${scale(-1 / 2)}
 
   .icon {
-    color: ${colors.primary};
     margin-right: ${rhythm(1 / 3)};
   }
 `;
