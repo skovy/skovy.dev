@@ -1,7 +1,7 @@
 ---
 date: 2020-04-04T10:00:00.000Z
 title: "Named Parameters in JavaScript"
-description: "An quick look at how to use named parameters and the benefits."
+description: "A quick look at how to use named parameters and the benefits."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Allie Smith on Unsplash"
 tags:
