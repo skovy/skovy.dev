@@ -58,6 +58,7 @@
     "@graphql-codegen/typescript": "^1.8.3",
     "@graphql-codegen/typescript-operations": "^1.8.3",
     "@graphql-codegen/typescript-react-apollo": "^1.8.3",
+    "hygen": "^5.0.3",
     "prettier": "^1.16.4"
   },
   "license": "MIT",
@@ -69,6 +70,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
-    "graphql-types": "graphql-codegen --config codegen.yml"
+    "graphql-types": "graphql-codegen --config codegen.yml",
+    "new-blog-post": "yarn hygen blog-post new"
   }
 }
