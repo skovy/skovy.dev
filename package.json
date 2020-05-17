@@ -14,7 +14,7 @@
     "@types/react-helmet": "^5.0.8",
     "@types/styled-components": "^4.1.12",
     "babel-plugin-styled-components": "^1.10.0",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "gatsby": "^2.13.58",
     "gatsby-image": "^2.2.8",
     "gatsby-plugin-feed": "^2.3.6",
@@ -58,6 +58,8 @@
     "@graphql-codegen/typescript": "^1.8.3",
     "@graphql-codegen/typescript-operations": "^1.8.3",
     "@graphql-codegen/typescript-react-apollo": "^1.8.3",
+    "hygen": "^5.0.3",
+    "node-fetch": "^2.6.0",
     "prettier": "^1.16.4"
   },
   "license": "MIT",
@@ -69,6 +71,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
-    "graphql-types": "graphql-codegen --config codegen.yml"
+    "graphql-types": "graphql-codegen --config codegen.yml",
+    "new-blog-post": "yarn hygen blog-post new"
   }
 }
