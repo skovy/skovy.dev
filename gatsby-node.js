@@ -73,7 +73,8 @@ exports.createPages = ({ graphql, actions }) => {
           slug: post.node.fields.slug,
           previousId: previous.id,
           nextId: next.id,
-          relatedPostIds
+          relatedPostIds,
+          mostRecentPost
         }
       });
     });

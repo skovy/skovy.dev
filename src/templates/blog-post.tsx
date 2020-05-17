@@ -210,6 +210,7 @@ interface Props extends PageRendererProps {
     previous: any;
     next: any;
     relatedPosts: any;
+    mostRecentPost: boolean;
   };
 }
 
@@ -228,6 +229,7 @@ class BlogPostTemplate extends React.Component<Props> {
     const siteTitle = this.props.data.site.siteMetadata.title;
     const { previous, next, relatedPosts } = this.props.data;
     const { slug, readingTime } = post.fields;
+    const { mostRecentPost } = this.props.pageContext;
 
     const githubUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog${slug}index.md`;
     const twitterUrl = `https://mobile.twitter.com/search?q=${encodeURIComponent(
@@ -334,7 +336,9 @@ class BlogPostTemplate extends React.Component<Props> {
                 post={next}
                 subtext={
                   <>
-                    <FontAwesomeIcon icon={faClock} /> Next post
+                    <FontAwesomeIcon icon={faClock} />{" "}
+                    {/* When it's the most recent post, the two previous posts are shown */}
+                    {mostRecentPost ? "Previous Post" : "Next post"}
                   </>
                 }
               />
