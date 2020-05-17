@@ -128,7 +128,7 @@ console.log(getProperty(user, "middleName"));
 // Argument of type '"middleName"' is not assignable to parameter of type '"firstName" | "lastName"'
 ```
 
-## Technical Definition
+## Definition
 
 Now that we have a rough analogy of behavior, what's the formal definition?
 
