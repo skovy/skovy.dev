@@ -1,7 +1,7 @@
 ---
 date: 2020-05-10T10:00:00.000Z
 title: "TypeScript explained in JavaScript: keyof"
-description: "Exploring different aspects of TypeScript using JavaScript."
+description: "Exploring TypeScript's keyof operator using JavaScript."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Samantha Lam"
 tags:
