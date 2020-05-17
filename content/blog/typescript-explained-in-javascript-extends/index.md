@@ -1,7 +1,7 @@
 ---
 date: 2020-05-17T10:00:00.000Z
 title: "Typescript explained in Javascript: extends"
-description: "Exploring TypeScript's extend keyword using JavaScript."
+description: "Exploring TypeScript's extends keyword using JavaScript."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Oliver Dumoulin"
 tags:
