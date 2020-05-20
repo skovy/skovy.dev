@@ -107,7 +107,7 @@ As discussed above, the underlying implementation of the sub-components does not
 Example inspecting components with React Devtools using dot notation
 </span>
 
-One way around this is to set the `[displayName`](https://reactjs.org/docs/react-component.html#displayname) on the component to match how it will be used. In this case, the component name remains `NeverCallThisComponentDirectly`, but now has a display name of `Flex.Item`.
+One way around this is to set the [`displayName`](https://reactjs.org/docs/react-component.html#displayname) on the component to match how it will be used. In this case, the component name remains `NeverCallThisComponentDirectly`, but now has a display name of `Flex.Item`.
 
 ![Example of using displayName in a sub-component](./images/display-name-example.png)
 
