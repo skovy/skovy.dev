@@ -41,7 +41,7 @@ const list = {
 };
 
 const evens = {};
-for (let key in list) {
+for (const key in list) {
   if (list[key] % 2 === 0) {
     evens[key] = true;
   } else {
@@ -52,9 +52,22 @@ for (let key in list) {
 console.log(evens);
 ```
 
+This first approach uses a
+[`for...in` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)
+to iterate through all the enumerable properties of the list. It builds a new
+object `evens` with the same keys as `list` but instead each value is a boolean
+indicating whether or not it is even. The resulting `evens` object will look
+like the following.
+
 ```json
 { "one": false, "two": true, "three": false, "four": true }
 ```
+
+Another approach is to use the `Object.keys` method discussed in the [first
+post exploring `keyof`](/typescript-explained-in-javascript-keyof/). This
+will return an array of the keys which can then be iterated through using
+the [Array `forEach` function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach). It works very similar to `map` function above, but it doesn't return
+anything.
 
 ```javascript
 const evens = {};
@@ -66,6 +79,8 @@ Object.keys(list).forEach(key => {
   }
 });
 ```
+
+What could this look like with some types?
 
 ## TypeScript
 
@@ -98,6 +113,11 @@ keys.forEach(key => {
 });
 
 console.log(evens);
+```
+
+```typescript
+type Boolify<Input> = { [Key in keyof Input]?: boolean };
+type Evens = Boolify<List>;
 ```
 
 ## Definition
