@@ -146,6 +146,3 @@ In summary, you can roughly relate TypeScript's `keyof` behavior to JavaScript's
 `Object.keys` behavior. The `keyof` operator is one of the building blocks for more
 complex typings used in conjunction with other concepts such as conditional
 types or mapped types that will be covered in later posts.
-
-If you'd like to get the following posts in this series, sign up for the
-newsletter. 👇

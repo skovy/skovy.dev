@@ -30,7 +30,7 @@ console.log(doubled); // [ 2, 4, 6, 8 ]
 Here, we were able to take a list of numbers and double every value. The `map`
 function will call the `double` function for every item and pass in the value
 from the `list`. The returned value will be the new value in the final `doubled`
-array. This works really well for arrays, but how is something like this achieved
+array. This works well for arrays, but how is something like this achieved
 with objects? There are a few ways.
 
 ```javascript
@@ -79,7 +79,7 @@ Object.keys(list).forEach(key => {
 });
 ```
 
-Now that we know how mapping, or iterating over arrays and objects looks in
+Now that we know how mapping and iterating over arrays and objects looks in
 JavaScript, what could this look like with some types?
 
 ## TypeScript
@@ -102,13 +102,14 @@ const list: List = {
 };
 ```
 
-Taking the last JavaScript example directly from above results in two issues.
+Now, taking the last JavaScript example directly from above results in two issues.
 Both are: `Element implicitly has an 'any' type because expression of type 'string' can't be used to index type ...`.
 
 The first is a result of using `Object.keys`. It returns `string[]` but the
-`list` only allows four strings: `one`, `two`, `three`, `four`. The easiest fix
-is to cast the result. Another option is to [define another method that uses
+`list` only allows four specific strings: `one`, `two`, `three`, `four`. The easiest fix
+is to cast the result. Another option is to [define a method that uses
 `Object.keys` but with stricter typings](https://stackoverflow.com/a/52856805/2690790).
+For now, let's cast it to be an array of only the keys contained within the list.
 
 ```typescript
 const keys = Object.keys(list) as Array<keyof List>;
@@ -123,8 +124,8 @@ keys.forEach(key => {
 ```
 
 The other issue is with `evens`. It's initialized as `{}` which means it's
-inferred typed as an empty object with no keys. How do we type this to say it
-has the same keys as the `list`, but `boolean` instead of `number`?
+inferred typed is an empty object with no keys. How do we type this to say it
+has the same keys as the `list`, but `boolean` values instead of `number`?
 
 This is where mapped types come in. The first step in JavaScript was to use
 `Object.keys` to first get an array of keys. As
@@ -167,8 +168,8 @@ Now the type can be used and all type issues are solved!
 const evens: Evens = {};
 ```
 
-This simple example could also as easily be done by hand. However, the benefits
-of mapped types become more apparent when working with large or complex typings.
+This simple example could also as easily be done by hand without the use of
+mapped types. However, the benefits of mapped types become more apparent when working with large or complex typings.
 Additionally, it keeps the derived type in-sync so if `five` is added to `List`,
 `Evens` will also immediately include it. Finally, in combination with generics,
 they can be reused. For example, what if there were many of these lists?
@@ -194,7 +195,9 @@ type EvensTwo = Boolify<ListTwo>;
 This can be broken down even further. What if it accepted any keys and their value?
 
 ```typescript
-type Record<Keys extends string, Value> = { [Key in Keys]: Value };
+type Record<Keys extends string | number | symbol, Value> = {
+  [Key in Keys]: Value;
+};
 
 type Evens = Record<keyof List, boolean>;
 type EvensTwo = Record<keyof ListTwo, boolean>;
@@ -212,13 +215,12 @@ type Example = Record<"a" | "b" | "c", number>;
 // }
 ```
 
-`Record` and `Partial` along with many others utility types are already included
-in TypeScript so there is no need to define them at all. The
-[full list of utility types can be seen here](https://www.typescriptlang.org/docs/handbook/utility-types.html).
+TypeScript actually already defines `Record` along with many other
+[utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+such as `Partial` for making all the properties optional.
 
-The final result of taking all of this into account could result in the following.
-Since mapped types are fairly flexible, there are a number of ways this could
-be written.
+Mapped types are fairly flexible, so there are a number of ways the types could
+be written. For example, with `Record` and `Partial` it could look like the following.
 
 ```typescript
 interface List {
@@ -250,4 +252,20 @@ keys.forEach(key => {
 
 ## Definition
 
+The [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
+also provides a more formal and succinct definition.
+
+> In a mapped type, the new type transforms each property in the old type in the same way.
+
+The mapped type syntax has three parts:
+
+1. The type variable `Key`, which gets bound to each property in turn.
+1. The string union `keyof List`, which contains the names of properties to iterate over (`"one"`, `"two"`, `"three"`, `"four"`).
+1. The resulting type of the property (`boolean`).
+
 ## Conclusion
+
+In summary, mapped types behave in a conceptually similar way to mapping
+over an array or using a `for..in` statement in JavaScript. They are an
+invaluable tool in the typing tool belt. They help derive complex types from
+other complex types, avoid duplication, and guarantee types will stay in-sync.

@@ -221,6 +221,3 @@ additional functionality that is particularly useful when working with types.
 Similar to the `keyof` operator, I would consider `extends` to be a fundamental
 building block for some of the more complex and powerful features of TypeScript,
 specifically conditional types that will be covered in a future post.
-
-If you'd like to get the following posts in this series, sign up for the
-newsletter. 👇
