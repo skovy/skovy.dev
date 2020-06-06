@@ -12,7 +12,6 @@ tags:
   - "mapped types"
 ---
 
-This is the 3<sup>rd</sup> post in the series "TypeScript explained in JavaScript."
 The previous two posts covered the `keyof` operator and `extends` keyword. This
 is the first post to begin building on top of these concepts to explore more
 complex typings.

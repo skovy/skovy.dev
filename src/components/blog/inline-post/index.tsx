@@ -9,25 +9,7 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { MarkdownRemark } from "../../../generated/graphql";
-
-function ordinalize(i) {
-  const j = i % 10;
-  const k = i % 100;
-
-  if (j == 1 && k != 11) {
-    return i + "st";
-  }
-
-  if (j == 2 && k != 12) {
-    return i + "nd";
-  }
-
-  if (j == 3 && k != 13) {
-    return i + "rd";
-  }
-
-  return i + "th";
-}
+import { ordinalize } from "../../../utils/strings";
 
 const Container = styled(Link)`
   display: flex;
@@ -87,9 +69,9 @@ const Excerpt = styled.p`
   ${scale(-1 / 4)}
 `;
 
-const Metadata = styled.p<{ primary?: boolean }>`
+const Metadata = styled.p<{ secondary?: boolean }>`
   margin: ${rhythm(1 / 4)} 0 0;
-  color: ${props => (props.primary ? colors.primary : colors.muted)};
+  color: ${props => (props.secondary ? colors.secondary : colors.muted)};
   display: flex;
   align-items: center;
   ${scale(-1 / 2)}
@@ -117,7 +99,7 @@ export const BlogInlinePost = (props: Props) => {
       <Content>
         <Title>{frontmatter.title}</Title>
         {series && (
-          <Metadata primary>
+          <Metadata secondary>
             <FontAwesomeIcon icon={faBookmark} className="icon" size="lg" />
             <span>
               {ordinalize(series.order)} post in "{series.name}" series
