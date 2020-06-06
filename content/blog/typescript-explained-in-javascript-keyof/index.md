@@ -1,5 +1,5 @@
 ---
-date: 2020-05-10T10:00:00.000Z
+date: 2020-06-06T08:00:00.000Z
 title: "TypeScript explained in JavaScript: keyof"
 description: "Exploring TypeScript's keyof operator using JavaScript."
 featuredImage: "./images/featured-image.jpg"
@@ -145,4 +145,5 @@ The `keyof` operator (also known as the _index type query operator_) was origina
 In summary, you can roughly relate TypeScript's `keyof` behavior to JavaScript's
 `Object.keys` behavior. The `keyof` operator is one of the building blocks for more
 complex typings used in conjunction with other concepts such as conditional
-types or mapped types that will be covered in later posts.
+types or [mapped types](/typescript-explained-in-javascript-mapped-types/) that
+are be covered in later posts.
