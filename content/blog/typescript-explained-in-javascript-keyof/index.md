@@ -1,5 +1,5 @@
 ---
-date: 2020-06-06T08:00:00.000Z
+date: 2020-05-10T10:00:00.000Z
 title: "TypeScript explained in JavaScript: keyof"
 description: "Exploring TypeScript's keyof operator using JavaScript."
 featuredImage: "./images/featured-image.jpg"

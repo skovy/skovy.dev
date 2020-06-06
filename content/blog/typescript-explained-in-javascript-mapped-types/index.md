@@ -1,5 +1,5 @@
 ---
-date: 2020-05-20T09:00:00.000Z
+date: 2020-06-06T08:00:00.000Z
 title: "Typescript Explained In Javascript: Mapped Types"
 description: "Exploring TypeScript's Mapped Types with JavaScript"
 featuredImage: "./images/featured-image.jpg"
