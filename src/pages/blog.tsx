@@ -53,6 +53,10 @@ export const pageQuery = graphql`
             title
             description
             tags
+            series {
+              name
+              order
+            }
             featuredImage {
               childImageSharp {
                 fluid(maxWidth: 200, maxHeight: 150) {

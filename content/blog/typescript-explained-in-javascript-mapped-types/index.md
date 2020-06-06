@@ -4,12 +4,14 @@ title: "Typescript Explained In Javascript: Mapped Types"
 description: "Exploring TypeScript's Mapped Types with JavaScript"
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Kelsey Knight"
+series:
+  name: 'TypeScript explained in JavaScript'
+  order: 3
 tags:
   - "typescript"
   - "mapped types"
 ---
 
-This is the 3<sup>rd</sup> post in the series "TypeScript explained in JavaScript."
 The previous two posts covered the `keyof` operator and `extends` keyword. This
 is the first post to begin building on top of these concepts to explore more
 complex typings.

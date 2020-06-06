@@ -986,6 +986,8 @@ export enum FileFieldsEnum {
   ChildMarkdownRemarkFrontmatterFeaturedImageChildren = 'childMarkdownRemark___frontmatter___featuredImage___children',
   ChildMarkdownRemarkFrontmatterFeaturedImageCredit = 'childMarkdownRemark___frontmatter___featuredImageCredit',
   ChildMarkdownRemarkFrontmatterTags = 'childMarkdownRemark___frontmatter___tags',
+  ChildMarkdownRemarkFrontmatterSeriesName = 'childMarkdownRemark___frontmatter___series___name',
+  ChildMarkdownRemarkFrontmatterSeriesOrder = 'childMarkdownRemark___frontmatter___series___order',
   ChildMarkdownRemarkFrontmatterLastUpdated = 'childMarkdownRemark___frontmatter___lastUpdated',
   ChildMarkdownRemarkExcerpt = 'childMarkdownRemark___excerpt',
   ChildMarkdownRemarkRawMarkdownBody = 'childMarkdownRemark___rawMarkdownBody',
@@ -994,6 +996,7 @@ export enum FileFieldsEnum {
   ChildMarkdownRemarkFieldsReadingTimeMinutes = 'childMarkdownRemark___fields___readingTime___minutes',
   ChildMarkdownRemarkFieldsReadingTimeTime = 'childMarkdownRemark___fields___readingTime___time',
   ChildMarkdownRemarkFieldsReadingTimeWords = 'childMarkdownRemark___fields___readingTime___words',
+  ChildMarkdownRemarkFieldsSeriesSlug = 'childMarkdownRemark___fields___seriesSlug',
   ChildMarkdownRemarkFieldsSlug = 'childMarkdownRemark___fields___slug',
   ChildMarkdownRemarkHtml = 'childMarkdownRemark___html',
   ChildMarkdownRemarkHtmlAst = 'childMarkdownRemark___htmlAst',
@@ -1580,6 +1583,26 @@ export type GitHub_AuditLogOrder = {
 export enum GitHub_AuditLogOrderField {
   CreatedAt = 'CREATED_AT'
 }
+
+export type GitHub_AutomaticBaseChangeFailedEvent = GitHub_Node & {
+   __typename?: 'GitHub_AutomaticBaseChangeFailedEvent',
+  actor?: Maybe<GitHub_Actor>,
+  createdAt: Scalars['GitHub_DateTime'],
+  id: Scalars['ID'],
+  newBase: Scalars['String'],
+  oldBase: Scalars['String'],
+  pullRequest: GitHub_PullRequest,
+};
+
+export type GitHub_AutomaticBaseChangeSucceededEvent = GitHub_Node & {
+   __typename?: 'GitHub_AutomaticBaseChangeSucceededEvent',
+  actor?: Maybe<GitHub_Actor>,
+  createdAt: Scalars['GitHub_DateTime'],
+  id: Scalars['ID'],
+  newBase: Scalars['String'],
+  oldBase: Scalars['String'],
+  pullRequest: GitHub_PullRequest,
+};
 
 export type GitHub_BaseRefChangedEvent = GitHub_Node & {
    __typename?: 'GitHub_BaseRefChangedEvent',
@@ -3340,6 +3363,7 @@ export type GitHub_EnterpriseOwnerInfo = {
   organizationProjectsSettingOrganizations: GitHub_OrganizationConnection,
   outsideCollaborators: GitHub_EnterpriseOutsideCollaboratorConnection,
   pendingAdminInvitations: GitHub_EnterpriseAdministratorInvitationConnection,
+  pendingCollaboratorInvitations: GitHub_RepositoryInvitationConnection,
   pendingCollaborators: GitHub_EnterprisePendingCollaboratorConnection,
   pendingMemberInvitations: GitHub_EnterprisePendingMemberInvitationConnection,
   repositoryProjectsSetting: GitHub_EnterpriseEnabledDisabledSettingValue,
@@ -3516,6 +3540,16 @@ export type GitHub_EnterpriseOwnerInfoPendingAdminInvitationsArgs = {
   query?: Maybe<Scalars['String']>,
   orderBy?: Maybe<GitHub_EnterpriseAdministratorInvitationOrder>,
   role?: Maybe<GitHub_EnterpriseAdministratorRole>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type GitHub_EnterpriseOwnerInfoPendingCollaboratorInvitationsArgs = {
+  query?: Maybe<Scalars['String']>,
+  orderBy?: Maybe<GitHub_RepositoryInvitationOrder>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
@@ -5347,6 +5381,8 @@ export type GitHub_Organization = GitHub_Node & GitHub_Actor & GitHub_RegistryPa
   descriptionHTML?: Maybe<Scalars['String']>,
   email?: Maybe<Scalars['String']>,
   id: Scalars['ID'],
+  ipAllowListEnabledSetting: GitHub_IpAllowListEnabledSettingValue,
+  ipAllowListEntries: GitHub_IpAllowListEntryConnection,
   isVerified: Scalars['Boolean'],
   itemShowcase: GitHub_ProfileItemShowcase,
   location?: Maybe<Scalars['String']>,
@@ -5379,6 +5415,7 @@ export type GitHub_Organization = GitHub_Node & GitHub_Actor & GitHub_RegistryPa
   teams: GitHub_TeamConnection,
   teamsResourcePath: Scalars['GitHub_URI'],
   teamsUrl: Scalars['GitHub_URI'],
+  twitterUsername?: Maybe<Scalars['String']>,
   updatedAt: Scalars['GitHub_DateTime'],
   url: Scalars['GitHub_URI'],
   viewerCanAdminister: Scalars['Boolean'],
@@ -5408,6 +5445,15 @@ export type GitHub_OrganizationAuditLogArgs = {
 
 export type GitHub_OrganizationAvatarUrlArgs = {
   size?: Maybe<Scalars['Int']>
+};
+
+
+export type GitHub_OrganizationIpAllowListEntriesArgs = {
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>,
+  orderBy?: Maybe<GitHub_IpAllowListEntryOrder>
 };
 
 
@@ -6147,7 +6193,8 @@ export enum GitHub_OrgRemoveMemberAuditEntryReason {
   TwoFactorRequirementNonCompliance = 'TWO_FACTOR_REQUIREMENT_NON_COMPLIANCE',
   SamlExternalIdentityMissing = 'SAML_EXTERNAL_IDENTITY_MISSING',
   SamlSsoEnforcementRequiresExternalIdentity = 'SAML_SSO_ENFORCEMENT_REQUIRES_EXTERNAL_IDENTITY',
-  UserAccountDeleted = 'USER_ACCOUNT_DELETED'
+  UserAccountDeleted = 'USER_ACCOUNT_DELETED',
+  TwoFactorAccountRecovery = 'TWO_FACTOR_ACCOUNT_RECOVERY'
 }
 
 export type GitHub_OrgRemoveOutsideCollaboratorAuditEntry = GitHub_Node & GitHub_AuditEntry & GitHub_OrganizationAuditEntryData & {
@@ -7339,7 +7386,7 @@ export type GitHub_PullRequestTimelineItemEdge = {
   node?: Maybe<GitHub_PullRequestTimelineItem>,
 };
 
-export type GitHub_PullRequestTimelineItems = GitHub_AddedToProjectEvent | GitHub_AssignedEvent | GitHub_BaseRefChangedEvent | GitHub_BaseRefForcePushedEvent | GitHub_ClosedEvent | GitHub_CommentDeletedEvent | GitHub_ConnectedEvent | GitHub_ConvertToDraftEvent | GitHub_ConvertedNoteToIssueEvent | GitHub_CrossReferencedEvent | GitHub_DemilestonedEvent | GitHub_DeployedEvent | GitHub_DeploymentEnvironmentChangedEvent | GitHub_DisconnectedEvent | GitHub_HeadRefDeletedEvent | GitHub_HeadRefForcePushedEvent | GitHub_HeadRefRestoredEvent | GitHub_IssueComment | GitHub_LabeledEvent | GitHub_LockedEvent | GitHub_MarkedAsDuplicateEvent | GitHub_MentionedEvent | GitHub_MergedEvent | GitHub_MilestonedEvent | GitHub_MovedColumnsInProjectEvent | GitHub_PinnedEvent | GitHub_PullRequestCommit | GitHub_PullRequestCommitCommentThread | GitHub_PullRequestReview | GitHub_PullRequestReviewThread | GitHub_PullRequestRevisionMarker | GitHub_ReadyForReviewEvent | GitHub_ReferencedEvent | GitHub_RemovedFromProjectEvent | GitHub_RenamedTitleEvent | GitHub_ReopenedEvent | GitHub_ReviewDismissedEvent | GitHub_ReviewRequestRemovedEvent | GitHub_ReviewRequestedEvent | GitHub_SubscribedEvent | GitHub_TransferredEvent | GitHub_UnassignedEvent | GitHub_UnlabeledEvent | GitHub_UnlockedEvent | GitHub_UnmarkedAsDuplicateEvent | GitHub_UnpinnedEvent | GitHub_UnsubscribedEvent | GitHub_UserBlockedEvent;
+export type GitHub_PullRequestTimelineItems = GitHub_AddedToProjectEvent | GitHub_AssignedEvent | GitHub_AutomaticBaseChangeFailedEvent | GitHub_AutomaticBaseChangeSucceededEvent | GitHub_BaseRefChangedEvent | GitHub_BaseRefForcePushedEvent | GitHub_ClosedEvent | GitHub_CommentDeletedEvent | GitHub_ConnectedEvent | GitHub_ConvertToDraftEvent | GitHub_ConvertedNoteToIssueEvent | GitHub_CrossReferencedEvent | GitHub_DemilestonedEvent | GitHub_DeployedEvent | GitHub_DeploymentEnvironmentChangedEvent | GitHub_DisconnectedEvent | GitHub_HeadRefDeletedEvent | GitHub_HeadRefForcePushedEvent | GitHub_HeadRefRestoredEvent | GitHub_IssueComment | GitHub_LabeledEvent | GitHub_LockedEvent | GitHub_MarkedAsDuplicateEvent | GitHub_MentionedEvent | GitHub_MergedEvent | GitHub_MilestonedEvent | GitHub_MovedColumnsInProjectEvent | GitHub_PinnedEvent | GitHub_PullRequestCommit | GitHub_PullRequestCommitCommentThread | GitHub_PullRequestReview | GitHub_PullRequestReviewThread | GitHub_PullRequestRevisionMarker | GitHub_ReadyForReviewEvent | GitHub_ReferencedEvent | GitHub_RemovedFromProjectEvent | GitHub_RenamedTitleEvent | GitHub_ReopenedEvent | GitHub_ReviewDismissedEvent | GitHub_ReviewRequestRemovedEvent | GitHub_ReviewRequestedEvent | GitHub_SubscribedEvent | GitHub_TransferredEvent | GitHub_UnassignedEvent | GitHub_UnlabeledEvent | GitHub_UnlockedEvent | GitHub_UnmarkedAsDuplicateEvent | GitHub_UnpinnedEvent | GitHub_UnsubscribedEvent | GitHub_UserBlockedEvent;
 
 export type GitHub_PullRequestTimelineItemsConnection = {
    __typename?: 'GitHub_PullRequestTimelineItemsConnection',
@@ -7364,6 +7411,8 @@ export enum GitHub_PullRequestTimelineItemsItemType {
   PullRequestReview = 'PULL_REQUEST_REVIEW',
   PullRequestReviewThread = 'PULL_REQUEST_REVIEW_THREAD',
   PullRequestRevisionMarker = 'PULL_REQUEST_REVISION_MARKER',
+  AutomaticBaseChangeFailedEvent = 'AUTOMATIC_BASE_CHANGE_FAILED_EVENT',
+  AutomaticBaseChangeSucceededEvent = 'AUTOMATIC_BASE_CHANGE_SUCCEEDED_EVENT',
   BaseRefChangedEvent = 'BASE_REF_CHANGED_EVENT',
   BaseRefForcePushedEvent = 'BASE_REF_FORCE_PUSHED_EVENT',
   DeployedEvent = 'DEPLOYED_EVENT',
@@ -9185,11 +9234,26 @@ export type GitHub_RepositoryInfoShortDescriptionHtmlArgs = {
 
 export type GitHub_RepositoryInvitation = GitHub_Node & {
    __typename?: 'GitHub_RepositoryInvitation',
+  email?: Maybe<Scalars['String']>,
   id: Scalars['ID'],
-  invitee: GitHub_User,
+  invitee?: Maybe<GitHub_User>,
   inviter: GitHub_User,
   permission: GitHub_RepositoryPermission,
   repository?: Maybe<GitHub_RepositoryInfo>,
+};
+
+export type GitHub_RepositoryInvitationConnection = {
+   __typename?: 'GitHub_RepositoryInvitationConnection',
+  edges?: Maybe<Array<Maybe<GitHub_RepositoryInvitationEdge>>>,
+  nodes?: Maybe<Array<Maybe<GitHub_RepositoryInvitation>>>,
+  pageInfo: GitHub_PageInfo,
+  totalCount: Scalars['Int'],
+};
+
+export type GitHub_RepositoryInvitationEdge = {
+   __typename?: 'GitHub_RepositoryInvitationEdge',
+  cursor: Scalars['String'],
+  node?: Maybe<GitHub_RepositoryInvitation>,
 };
 
 export type GitHub_RepositoryInvitationOrder = {
@@ -11423,6 +11487,7 @@ export type GitHub_User = GitHub_Node & GitHub_Actor & GitHub_RegistryPackageOwn
   starredRepositories: GitHub_StarredRepositoryConnection,
   status?: Maybe<GitHub_UserStatus>,
   topRepositories: GitHub_RepositoryConnection,
+  twitterUsername?: Maybe<Scalars['String']>,
   updatedAt: Scalars['GitHub_DateTime'],
   url: Scalars['GitHub_URI'],
   viewerCanChangePinnedItems: Scalars['Boolean'],
@@ -14148,6 +14213,7 @@ export type MarkdownRemarkEdge = {
 export type MarkdownRemarkFields = {
    __typename?: 'MarkdownRemarkFields',
   readingTime?: Maybe<MarkdownRemarkFieldsReadingTime>,
+  seriesSlug?: Maybe<Scalars['String']>,
   slug?: Maybe<Scalars['String']>,
 };
 
@@ -14219,6 +14285,8 @@ export enum MarkdownRemarkFieldsEnum {
   FrontmatterFeaturedImageChildMarkdownRemarkChildren = 'frontmatter___featuredImage___childMarkdownRemark___children',
   FrontmatterFeaturedImageCredit = 'frontmatter___featuredImageCredit',
   FrontmatterTags = 'frontmatter___tags',
+  FrontmatterSeriesName = 'frontmatter___series___name',
+  FrontmatterSeriesOrder = 'frontmatter___series___order',
   FrontmatterLastUpdated = 'frontmatter___lastUpdated',
   Excerpt = 'excerpt',
   RawMarkdownBody = 'rawMarkdownBody',
@@ -14227,6 +14295,7 @@ export enum MarkdownRemarkFieldsEnum {
   FieldsReadingTimeMinutes = 'fields___readingTime___minutes',
   FieldsReadingTimeTime = 'fields___readingTime___time',
   FieldsReadingTimeWords = 'fields___readingTime___words',
+  FieldsSeriesSlug = 'fields___seriesSlug',
   FieldsSlug = 'fields___slug',
   Html = 'html',
   HtmlAst = 'htmlAst',
@@ -14328,6 +14397,7 @@ export enum MarkdownRemarkFieldsEnum {
 
 export type MarkdownRemarkFieldsFilterInput = {
   readingTime?: Maybe<MarkdownRemarkFieldsReadingTimeFilterInput>,
+  seriesSlug?: Maybe<StringQueryOperatorInput>,
   slug?: Maybe<StringQueryOperatorInput>,
 };
 
@@ -14373,6 +14443,7 @@ export type MarkdownRemarkFrontmatter = {
   featuredImage?: Maybe<File>,
   featuredImageCredit?: Maybe<Scalars['String']>,
   tags?: Maybe<Array<Maybe<Scalars['String']>>>,
+  series?: Maybe<MarkdownRemarkFrontmatterSeries>,
   lastUpdated?: Maybe<Scalars['Date']>,
 };
 
@@ -14399,7 +14470,19 @@ export type MarkdownRemarkFrontmatterFilterInput = {
   featuredImage?: Maybe<FileFilterInput>,
   featuredImageCredit?: Maybe<StringQueryOperatorInput>,
   tags?: Maybe<StringQueryOperatorInput>,
+  series?: Maybe<MarkdownRemarkFrontmatterSeriesFilterInput>,
   lastUpdated?: Maybe<DateQueryOperatorInput>,
+};
+
+export type MarkdownRemarkFrontmatterSeries = {
+   __typename?: 'MarkdownRemarkFrontmatterSeries',
+  name?: Maybe<Scalars['String']>,
+  order?: Maybe<Scalars['Int']>,
+};
+
+export type MarkdownRemarkFrontmatterSeriesFilterInput = {
+  name?: Maybe<StringQueryOperatorInput>,
+  order?: Maybe<IntQueryOperatorInput>,
 };
 
 export type MarkdownRemarkGroupConnection = {
@@ -15133,6 +15216,7 @@ export type SitePageContext = {
   previousId?: Maybe<Scalars['String']>,
   nextId?: Maybe<Scalars['String']>,
   relatedPostIds?: Maybe<Array<Maybe<Scalars['String']>>>,
+  mostRecentPost?: Maybe<Scalars['Boolean']>,
 };
 
 export type SitePageContextFilterInput = {
@@ -15140,6 +15224,7 @@ export type SitePageContextFilterInput = {
   previousId?: Maybe<StringQueryOperatorInput>,
   nextId?: Maybe<StringQueryOperatorInput>,
   relatedPostIds?: Maybe<StringQueryOperatorInput>,
+  mostRecentPost?: Maybe<BooleanQueryOperatorInput>,
 };
 
 export type SitePageEdge = {
@@ -15245,6 +15330,7 @@ export enum SitePageFieldsEnum {
   ContextPreviousId = 'context___previousId',
   ContextNextId = 'context___nextId',
   ContextRelatedPostIds = 'context___relatedPostIds',
+  ContextMostRecentPost = 'context___mostRecentPost',
   PluginCreatorId = 'pluginCreator___id',
   PluginCreatorParentId = 'pluginCreator___parent___id',
   PluginCreatorParentParentId = 'pluginCreator___parent___parent___id',
@@ -16041,7 +16127,7 @@ export type BlogPostDataFragment = (
     & Pick<MarkdownRemarkFields, 'slug'>
   )>, frontmatter: Maybe<(
     { __typename?: 'MarkdownRemarkFrontmatter' }
-    & Pick<MarkdownRemarkFrontmatter, 'date' | 'title' | 'description'>
+    & Pick<MarkdownRemarkFrontmatter, 'date' | 'title' | 'description' | 'tags'>
     & { featuredImage: Maybe<(
       { __typename?: 'File' }
       & { childImageSharp: Maybe<(
@@ -16228,7 +16314,10 @@ export type Unnamed_7_Query = (
         )>, frontmatter: Maybe<(
           { __typename?: 'MarkdownRemarkFrontmatter' }
           & Pick<MarkdownRemarkFrontmatter, 'title' | 'description' | 'tags'>
-          & { featuredImage: Maybe<(
+          & { series: Maybe<(
+            { __typename?: 'MarkdownRemarkFrontmatterSeries' }
+            & Pick<MarkdownRemarkFrontmatterSeries, 'name' | 'order'>
+          )>, featuredImage: Maybe<(
             { __typename?: 'File' }
             & { childImageSharp: Maybe<(
               { __typename?: 'ImageSharp' }
@@ -16334,7 +16423,7 @@ export type BlogPostBySlugQuery = (
     & Pick<MarkdownRemark, 'id' | 'excerpt' | 'html'>
     & { fields: Maybe<(
       { __typename?: 'MarkdownRemarkFields' }
-      & Pick<MarkdownRemarkFields, 'slug'>
+      & Pick<MarkdownRemarkFields, 'slug' | 'seriesSlug'>
       & { readingTime: Maybe<(
         { __typename?: 'MarkdownRemarkFieldsReadingTime' }
         & Pick<MarkdownRemarkFieldsReadingTime, 'text'>
@@ -16342,7 +16431,10 @@ export type BlogPostBySlugQuery = (
     )>, frontmatter: Maybe<(
       { __typename?: 'MarkdownRemarkFrontmatter' }
       & Pick<MarkdownRemarkFrontmatter, 'title' | 'date' | 'lastUpdated' | 'description' | 'featuredImageCredit' | 'tags'>
-      & { featuredImage: Maybe<(
+      & { series: Maybe<(
+        { __typename?: 'MarkdownRemarkFrontmatterSeries' }
+        & Pick<MarkdownRemarkFrontmatterSeries, 'name' | 'order'>
+      )>, featuredImage: Maybe<(
         { __typename?: 'File' }
         & { childImageSharp: Maybe<(
           { __typename?: 'ImageSharp' }

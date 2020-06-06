@@ -16,6 +16,7 @@ import { colors } from "../config/colors";
 import { fonts } from "../config/fonts";
 import { BlogPost } from "../components/blog/post";
 import { faTag } from "@fortawesome/free-solid-svg-icons";
+import { BlogSeriesList } from "../components/blog/series-list";
 
 const GITHUB_USERNAME = "skovy";
 const GITHUB_REPO_NAME = "skovy.dev";
@@ -224,11 +225,12 @@ class BlogPostTemplate extends React.Component<Props> {
       featuredImageCredit,
       lastUpdated,
       featuredImage,
-      tags
+      tags,
+      series
     } = post.frontmatter;
     const siteTitle = this.props.data.site.siteMetadata.title;
     const { previous, next, relatedPosts } = this.props.data;
-    const { slug, readingTime } = post.fields;
+    const { slug, readingTime, seriesSlug } = post.fields;
     const { mostRecentPost } = this.props.pageContext;
 
     const githubUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog${slug}index.md`;
@@ -265,6 +267,7 @@ class BlogPostTemplate extends React.Component<Props> {
         />
         <ContentContainer>
           <Title>{title}</Title>
+          {series && <BlogSeriesList {...series} seriesSlug={seriesSlug} />}
           <Date>
             {date} &bull; {readingTime.text}
             {lastUpdated && <span> &bull; Last updated on {lastUpdated}</span>}
@@ -384,6 +387,7 @@ export const pageQuery = graphql`
       html
       fields {
         slug
+        seriesSlug
         readingTime {
           text
         }
@@ -395,6 +399,10 @@ export const pageQuery = graphql`
         description
         featuredImageCredit
         tags
+        series {
+          name
+          order
+        }
         featuredImage {
           childImageSharp {
             fluid(maxWidth: 600) {

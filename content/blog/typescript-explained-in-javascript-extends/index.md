@@ -4,13 +4,13 @@ title: "Typescript explained in Javascript: extends"
 description: "Exploring TypeScript's extends keyword using JavaScript."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Oliver Dumoulin"
+series:
+  name: 'TypeScript explained in JavaScript'
+  order: 2
 tags:
   - typescript
   - extends
 ---
-
-This is the 2<sup>nd</sup> post in the series "TypeScript explained in
-JavaScript."
 
 The first post [covered the `keyof` operator](/typescript-explained-in-javascript-keyof/)
 and I would recommend starting there if you haven't. In that post, the `extends`

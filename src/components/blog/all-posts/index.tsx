@@ -1,11 +1,9 @@
 import React from "react";
-import { Link } from "gatsby";
 import styled from "styled-components";
 
 import { MarkdownRemarkEdge } from "../../../generated/graphql";
 import { BlogInlinePost } from "../inline-post";
 import { ContentContainer } from "../../content-container";
-import { SectionHeading } from "../../section-heading";
 import { rhythm } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 
