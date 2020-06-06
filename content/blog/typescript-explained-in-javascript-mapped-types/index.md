@@ -4,6 +4,9 @@ title: "Typescript Explained In Javascript: Mapped Types"
 description: "Exploring TypeScript's Mapped Types with JavaScript"
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Kelsey Knight"
+series:
+  name: 'TypeScript explained in JavaScript'
+  order: 3
 tags:
   - "typescript"
   - "mapped types"

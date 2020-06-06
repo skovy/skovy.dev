@@ -4,6 +4,9 @@ title: "Typescript explained in Javascript: extends"
 description: "Exploring TypeScript's extends keyword using JavaScript."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Oliver Dumoulin"
+series:
+  name: 'TypeScript explained in JavaScript'
+  order: 2
 tags:
   - typescript
   - extends

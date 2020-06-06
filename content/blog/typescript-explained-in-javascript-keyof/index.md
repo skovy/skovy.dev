@@ -4,6 +4,9 @@ title: "TypeScript explained in JavaScript: keyof"
 description: "Exploring TypeScript's keyof operator using JavaScript."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Samantha Lam"
+series:
+  name: 'TypeScript explained in JavaScript'
+  order: 1
 tags:
   - typescript
   - keyof

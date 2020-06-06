@@ -4,10 +4,30 @@ import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { MarkdownRemark } from "../../../generated/graphql";
+
+function ordinalize(i) {
+  const j = i % 10;
+  const k = i % 100;
+
+  if (j == 1 && k != 11) {
+    return i + "st";
+  }
+
+  if (j == 2 && k != 12) {
+    return i + "nd";
+  }
+
+  if (j == 3 && k != 13) {
+    return i + "rd";
+  }
+
+  return i + "th";
+}
 
 const Container = styled(Link)`
   display: flex;
@@ -63,13 +83,13 @@ const Title = styled.h3`
 `;
 
 const Excerpt = styled.p`
-  margin: ${rhythm(1 / 2)} 0;
+  margin: ${rhythm(1 / 2)} 0 0;
   ${scale(-1 / 4)}
 `;
 
-const Tags = styled.p`
-  margin: 0;
-  color: ${colors.muted};
+const Metadata = styled.p<{ primary?: boolean }>`
+  margin: ${rhythm(1 / 4)} 0 0;
+  color: ${props => (props.primary ? colors.primary : colors.muted)};
   display: flex;
   align-items: center;
   ${scale(-1 / 2)}
@@ -86,6 +106,8 @@ interface Props {
 export const BlogInlinePost = (props: Props) => {
   const { frontmatter, excerpt, fields } = props.post;
 
+  const { series } = frontmatter;
+
   return (
     <Container to={fields.slug}>
       <PostImage
@@ -94,11 +116,19 @@ export const BlogInlinePost = (props: Props) => {
       />
       <Content>
         <Title>{frontmatter.title}</Title>
+        {series && (
+          <Metadata primary>
+            <FontAwesomeIcon icon={faBookmark} className="icon" size="lg" />
+            <span>
+              {ordinalize(series.order)} post in "{series.name}" series
+            </span>
+          </Metadata>
+        )}
         <Excerpt>{frontmatter.description || excerpt}</Excerpt>
-        <Tags>
+        <Metadata>
           <FontAwesomeIcon icon={faTag} className="icon" size="lg" />
           <span>{frontmatter.tags.join(", ")}</span>
-        </Tags>
+        </Metadata>
       </Content>
     </Container>
   );
