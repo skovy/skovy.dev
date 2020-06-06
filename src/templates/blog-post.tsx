@@ -230,7 +230,7 @@ class BlogPostTemplate extends React.Component<Props> {
     } = post.frontmatter;
     const siteTitle = this.props.data.site.siteMetadata.title;
     const { previous, next, relatedPosts } = this.props.data;
-    const { slug, readingTime } = post.fields;
+    const { slug, readingTime, seriesSlug } = post.fields;
     const { mostRecentPost } = this.props.pageContext;
 
     const githubUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog${slug}index.md`;
@@ -267,7 +267,7 @@ class BlogPostTemplate extends React.Component<Props> {
         />
         <ContentContainer>
           <Title>{title}</Title>
-          {series && <BlogSeriesList {...series} />}
+          {series && <BlogSeriesList {...series} seriesSlug={seriesSlug} />}
           <Date>
             {date} &bull; {readingTime.text}
             {lastUpdated && <span> &bull; Last updated on {lastUpdated}</span>}
@@ -387,6 +387,7 @@ export const pageQuery = graphql`
       html
       fields {
         slug
+        seriesSlug
         readingTime {
           text
         }

@@ -1,10 +1,13 @@
 const path = require(`path`);
 const { createFilePath } = require(`gatsby-source-filesystem`);
+const { paramCase } = require(`change-case`);
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
 
   const blogPost = path.resolve(`./src/templates/blog-post.tsx`);
+  const seriesTemplate = path.resolve(`./src/templates/series.tsx`);
+
   return graphql(
     `
       {
@@ -20,6 +23,7 @@ exports.createPages = ({ graphql, actions }) => {
               }
               fields {
                 slug
+                seriesSlug
               }
             }
           }
@@ -34,7 +38,13 @@ exports.createPages = ({ graphql, actions }) => {
     // Create blog posts pages.
     const posts = result.data.allMarkdownRemark.edges;
 
+    const series = new Set();
+
     posts.forEach((post, index) => {
+      if (post.node.fields.seriesSlug) {
+        series.add(post.node.fields.seriesSlug);
+      }
+
       const mostRecentPost = index === 0;
       const oldedPost = index === posts.length - 1;
 
@@ -79,14 +89,34 @@ exports.createPages = ({ graphql, actions }) => {
       });
     });
 
+    series.forEach(singleSeries => {
+      createPage({
+        path: singleSeries,
+        component: seriesTemplate,
+        context: {
+          slug: singleSeries
+        }
+      });
+    });
+
     return null;
   });
 };
+
+const seriesSlug = ({ name }) => `/series/${paramCase(name.toLowerCase())}`;
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
 
   if (node.internal.type === `MarkdownRemark`) {
+    const { series } = node.frontmatter;
+
+    createNodeField({
+      name: `seriesSlug`,
+      node,
+      value: series && seriesSlug(series)
+    });
+
     const value = createFilePath({ node, getNode });
     createNodeField({
       name: `slug`,

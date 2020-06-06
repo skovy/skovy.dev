@@ -7,13 +7,19 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { rhythm, scale } from "../../../utils/typography";
 import { colors } from "../../../config/colors";
 import { ordinalize } from "../../../utils/strings";
+import { Link } from "gatsby";
 
-const Container = styled.div`
+const Container = styled(Link)`
   margin: 0 0 ${rhythm(1 / 4)};
-  color: ${colors.secondary};
+  color: ${colors.primary};
   display: flex;
   align-items: center;
+  text-decoration: none;
   ${scale(-1 / 6)}
+
+  &:hover, &:focus {
+    text-decoration: underline;
+  }
 
   .icon {
     margin-right: ${rhythm(1 / 3)};
@@ -22,11 +28,16 @@ const Container = styled.div`
 
 interface Props {
   name?: string;
+  seriesSlug?: string;
   order?: number;
 }
 
-export const BlogSeriesList: React.FC<Props> = ({ name, order }) => (
-  <Container>
+export const BlogSeriesList: React.FC<Props> = ({
+  name,
+  order,
+  seriesSlug
+}) => (
+  <Container to={seriesSlug}>
     <FontAwesomeIcon icon={faBookmark} className="icon" size="lg" />
     {ordinalize(order)} post in "{name}" series
   </Container>
