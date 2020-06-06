@@ -29,7 +29,7 @@ console.log(doubled); // [ 2, 4, 6, 8 ]
 
 Here, we were able to take a list of numbers and double every value. The `map`
 function will call the `double` function for every item and pass in the value
-from the `list`. The returned value will be the new value in the final `doubled`
+from the `list`. The value returned will be the new value in the final `doubled`
 array. This works well for arrays, but how is something like this achieved
 with objects? There are a few ways.
 
@@ -66,7 +66,7 @@ Another approach is to use the `Object.keys` method discussed in the [first
 post exploring `keyof`](/typescript-explained-in-javascript-keyof/). This
 will return an array of the keys which can then be iterated through using
 the [Array `forEach` function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach).
-It works very similar to `map` function above, but it doesn't return anything.
+It works very similar to the `map` function above, but it doesn't return anything.
 
 ```javascript
 const evens = {};
@@ -102,7 +102,7 @@ const list: List = {
 };
 ```
 
-Now, taking the last JavaScript example directly from above results in two issues.
+Now, taking the last JavaScript snippet directly from above results in two issues.
 Both are: `Element implicitly has an 'any' type because expression of type 'string' can't be used to index type ...`.
 
 The first is a result of using `Object.keys`. It returns `string[]` but the
@@ -128,8 +128,8 @@ inferred typed is an empty object with no keys. How do we type this to say it
 has the same keys as the `list`, but `boolean` values instead of `number`?
 
 This is where mapped types come in. The first step in JavaScript was to use
-`Object.keys` to first get an array of keys. As
-[covered in the first post](/typescript-explained-in-javascript-keyof/)
+`Object.keys` to get an array of keys.
+As [covered in the first post](/typescript-explained-in-javascript-keyof/)
 `keyof` is roughly the equivalent operator in the type system. So we now
 have a union of the keys with `keyof List`. The next step in JavaScript was to
 iterate through these values. Unlike JavaScript, there's only one way to do this
@@ -140,8 +140,9 @@ type Evens = { [Key in keyof List]: boolean };
 ```
 
 The outer curly braces are saying this is an object. Within the square brackets
-is the equivalent to `Object.keys(list).forEach(...)`. For each key (`Key`) in the
-union of keys (`keyof List`) it's value is a boolean.
+is the equivalent to `Object.keys(list).forEach(...)`. It's saying that for each
+key (`Key`) in (`in`) the union of keys (`keyof List`) it's value is a boolean
+(`boolean`).
 
 There is one more issue though. To start, `evens` is empty. One way to work
 around this is to say all the keys are optional. This can be achieved by marking
