@@ -209,7 +209,7 @@ As discussed above, the underlying implementation of the sub-components does not
 matter. In the case of `Flex` the `Flex.Item` component implementation itself
 could be named `NeverCallThisComponentDirectly`. This is fine, but the only
 downside is that in [React Devtools](https://github.com/facebook/react-devtools),
-it will be shown as `NeverCallThisComponentDirectly,` which may be very
+it will be shown as `NeverCallThisComponentDirectly`, which may be very
 confusing because it was never called directly.
 
 ![Example inspecting components with React Devtools using dot notation](./images/devtools-inspecting.png)
