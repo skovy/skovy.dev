@@ -16,6 +16,12 @@ interface Props extends PageRendererProps {
   data: PageQuery;
 }
 
+const DESCRIPTIONS = {
+  "TypeScript explained in JavaScript":
+    "A series aimed at exploring new concepts in TypeScript with" +
+    " similar ideas that exist in JavaScript."
+};
+
 const SeriesTemplate: React.FC<Props> = props => {
   const { posts, site } = props.data;
   const siteTitle = site.siteMetadata.title;
@@ -41,7 +47,7 @@ const SeriesTemplate: React.FC<Props> = props => {
 
   return (
     <Layout location={props.location} title={siteTitle}>
-      <SEO title={title} description={title} keywords={tags} />
+      <SEO title={title} description={DESCRIPTIONS[title]} keywords={tags} />
       <ContentContainer>
         <SectionHeading as="h1">{title}</SectionHeading>
         {postsList}
