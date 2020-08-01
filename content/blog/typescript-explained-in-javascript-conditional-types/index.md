@@ -1,5 +1,5 @@
 ---
-date: 2020-06-22T09:00:00.000Z
+date: 2020-08-01T09:00:00.000Z
 title: "Typescript Explained In Javascript: Conditional Types"
 description: "Exploring TypeScript's Conditional Types with JavaScript"
 featuredImage: "./images/featured-image.jpg"
