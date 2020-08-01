@@ -23,14 +23,21 @@ const SeriesTemplate: React.FC<Props> = props => {
 
   // Unique list of tags for SEO keywords
   const tags = [];
-  const postsList = posts.edges.map(({ node: post }, index) => {
-    if (index === 0) {
-      title = `Series: "${post.frontmatter.series.name}"`;
-    }
+  const postsList = posts.edges
+    .sort(
+      (a, b) =>
+        a.node.frontmatter.series.order - b.node.frontmatter.series.order
+    )
+    .map(({ node: post }, index) => {
+      if (index === 0) {
+        title = post.frontmatter.series.name;
+      }
 
-    post.frontmatter.tags.forEach(tag => !tags.includes(tag) && tags.push(tag));
-    return <BlogInlinePost post={post} key={post.fields.slug} />;
-  });
+      post.frontmatter.tags.forEach(
+        tag => !tags.includes(tag) && tags.push(tag)
+      );
+      return <BlogInlinePost post={post} key={post.fields.slug} />;
+    });
 
   return (
     <Layout location={props.location} title={siteTitle}>
