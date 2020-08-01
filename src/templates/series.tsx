@@ -25,7 +25,7 @@ const SeriesTemplate: React.FC<Props> = props => {
   const tags = [];
   const postsList = posts.edges.map(({ node: post }, index) => {
     if (index === 0) {
-      title = `Series: "${post.frontmatter.series.name}"`;
+      title = post.frontmatter.series.name;
     }
 
     post.frontmatter.tags.forEach(tag => !tags.includes(tag) && tags.push(tag));

@@ -112,8 +112,7 @@ const omitByType = <InputArray extends any[], Type extends InputArray[number]>(
 
 Now, the `Type` generic parameter must extend a type of the array contents.
 `InputArray[number]` returns a type (likely a union) that represents all of the
-values in the array. However, this isn't quite correct yet, let's look at an
-example:
+values in the array. However, this isn't quite correct yet:
 
 ```typescript
 // Argument of type '"number"' is not assignable to parameter of type 'number'.
@@ -212,10 +211,10 @@ To recap so far:
 - `Type` is also a generic that represents the type of `type`. However, it
   has a more complex constraint. First, `InputArray[number]` will return a type
   that represents all of the array's values. If the `array` was `[1]` then the
-  type would be `string`, if `[1, "a", true]` then the type would be
+  type would be `number`, if `[1, "a", true]` then the type would be
   `number | string | boolean`. However, we need these types as string literals so
-  we pass this type to the `TypeToString` which uses conditional types to convert
-  that value to `"string"` or `"number" | "string" | "boolean"`, respectively.
+  we pass this type to the `TypeToString` helper which uses conditional types to convert
+  that value to `"number"` or `"number" | "string" | "boolean"`, respectively.
 
 So trying to pass `"object"` will not be allowed (unless the `array` contained
 something like `[1, {}]`).
@@ -303,10 +302,10 @@ Conditional types were [introduced in TypeScript 2.8](https://www.typescriptlang
 
 ## Conclusion
 
-Conditional types can be daunting because they are often combined in complex
-ways. When taking a step back, the syntax for conditional types is already
-a familiar concept in JavaScript.
+Conditional types are often combined in complex ways which can make them 
+overwhelming at first. When taking a step back, the syntax for conditional types 
+is already a familiar concept in JavaScript and behaves in a very similar way.
 
-This example covered one use case, but when combined with other concepts, such 
-as [mapped types](/typescript-explained-in-javascript-mapped-types)
-it can unlock even more possibilities.
+This example covered one use case, but when combined with other concepts, such
+as [mapped types](/typescript-explained-in-javascript-mapped-types) it can 
+unlock even more possibilities.
