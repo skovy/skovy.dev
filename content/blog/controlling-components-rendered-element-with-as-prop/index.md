@@ -12,13 +12,14 @@ tags:
 
 When working on reusable components, such as those in a design system, it
 can be common for component to contain what seems like a single functionality,
-such a Button. It's functionality is generally to perform an action. However,
-if that action opens a modal, it should be a `button` element whereas if that
-action navigates to a new page it should be an `a` (anchor) element.
+such as a `Button` component. It's functionality is generally to perform an
+action. However, if that action opens a dialog, it should be a `button` element
+whereas if that action navigates to a new page it should be an `a` (anchor)
+element.
 
 There are a number of ways this could be handled. In this example, it could be
-inferred if the `href` prop is present. Or, there could be a boolean prop
-such as `isAnchor` or `isButton` to opt-in and default to the other element.
+inferred if an `href` prop is present. Or, there could be a boolean prop
+such as `isAnchor` or `isButton` to opt-in, and default to the other element.
 Either of these could work with this example, but what about another component
 that may need to support three or more element types? Or, what if there isn't
 a prop such as `href` that can imply the element type?
@@ -27,9 +28,9 @@ a prop such as `href` that can imply the element type?
 
 As you can see with only this one example, it's hard to expand any of these
 patterns more generally. This is where the `as` prop pattern can help solve
-all of these issues, and provide a general solution for most components.
+these issues, and provide a general solution for most components.
 
-Continuing with this Button example, how would this look using the `as` prop?
+Continuing with this `Button` example, how would this look using the `as` prop?
 
 ```typescript
 interface ButtonProps {
@@ -46,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({ as: Tag, children }) => (
 ```
 
 Here, a `Button` component is defined with two props: `as` and `children`.
-The `children` prop controls the Button text to display. The `as` prop controls
+The `children` prop controls the `Button` contents to display. The `as` prop controls
 the rendered element, or HTML tag. Now, there is a single component to capture
 an action, but the underlying element can be controlled depending on the use
 case.
@@ -54,7 +55,7 @@ case.
 There are several problems with this example. For example, it doesn't accept
 the proper `onClick` or `href` attributes for `button` and `a` elements.
 
-It may also seem tedious to make the `as` prop required and it could be tempting
+It may also seem tedious to make the `as` prop required, and it could be tempting
 to assign a default value for the `as` prop and make it optional.
 
 ```typescript
@@ -72,27 +73,135 @@ const Button: React.FC<ButtonProps> = ({ as: Tag = "button", children }) => (
 ```
 
 This can work for simple cases, but we'll cover why it can be preferable to make
-it required, even if it can be somewhat redundant.
+it required.
 
 ## Advantages and Disadvantages
 
+### Advantages
+
+The primary advantage of the `as` prop is that it decouples a component's
+visual appearance and functionality from the semantic markup. For example,
+let's say there are unique styles for a "button" and an "anchor" (or a "link").
+The "button" likely has some padding and a background color, whereas the "anchor" probably
+has an underline. However, there are _some_ cases that need to look like an
+"anchor" but are semantically a button element. There needs to be a component to
+handle this use case: a `button` element that looks like an "anchor." What about the
+reverse? An anchor element that looks like a "button"?
+
+Based on these examples, it starts too look like a two by two matrix with the
+appearance ("button" or "anchor" styling) on one axis, and the semantic element
+(`button` or `a`) on the other axis. This results in four combinations and could
+each be treated as their own component: `Button`, `ButtonAnchor`, `Anchor`,
+`AnchorButton`. This naming could be improved, but it's confusing which to use
+in which case? Also, nearly identical functionality and styling are now duplicated
+across these components.
+
+Instead, if all styles were combined as a single prop (eg: `variant`), then the
+proper element can be controlled via the `as` prop on a single `Button` component
+to handle all of these use cases.
+
+```tsx
+// Looks like an "anchor" but is a `button` element
+<Button as="button" variant="link">Click me!</Button>
+
+// Looks like a "button" but is an `a` (anchor) element
+<Button as="a" variant="secondary">Click me!</Button>
+```
+
+Additionally, this can also help guide accessibility. For example, a `Heading`
+component will need to render different typography styles and should also render
+an appropriate heading element (`h1` - `h6`). Often, global styles will be
+applied to each heading element, meaning the heading is chosen for it's visual
+appearance, which may or may not properly align with the page's hierarchy.
+If used incorrectly, this can harm the page's accessibility. Instead, by
+decoupling the visual appearance from the semantic meaning this problem can be
+alleviated.
+
+```tsx
+<Heading as="h1" size="1">Heading Level 1</Heading>
+<Heading as="h2" size="2">Heading Level 2</Heading>
+<Heading as="h2" size="1">Heading Level 2 (but looks like 1)</Heading>
+```
+
+Any visual appearance can now be used with any element. In general, the `as`
+prop and `size` prop will usually align (`h1` as size `1`) but there are
+cases where this is not true. With this API, it's now possible to mix the visual
+appearance with the proper underlying element. It might be tempting to default
+`as` based on `size`. For example, if `size` is `1`, default to `h1`. However,
+by making it required, every usage now requires asking two questions: "what
+should this element be?" and "how should this look?". Each answer maps directly
+to these props. Using heading element styles, or a single prop combines these
+two questions into a single answer even though they are unrelated.
+
 ### Disadvantages
 
-- Decouples visuals/functionality from semantics
-- Requires explicitly thinking about an element, therefore increasing the chances
-  of choosing the correct element and leading to a more semantic/accessible app
-
-### Disadvantages
-
-- Another prop, potentially redundant
+The biggest disadvantage is that it's one more prop, which increases the surface
+area of the API. It can also feel potentially redundant (eg: `<Button as="button"/>`).
+As discussed, this can be preferable to always ask: "what should this element be?"
+Finally, the name `as` may not be clear enough for some. Other names such as
+`element` can be used to achieve the same result. The most important thing is
+consistency across a shared set of components (eg: `Button` and `Heading`).
+I prefer `as`, because it easily translates to a sentence, which I generally
+use as a smoke test. For example, `<Button as="a" />` reads as "render a Button
+as an anchor."
 
 ## Discriminated Props with TypeScript
+
+This section covers how to implement a basic React component with TypeScript
+using the `as` prop pattern. Specifically, when the exact props allowed depend
+on the `as` prop. For example, with the `Button`, `href` is required when and
+only when `as` is `"a"` (an anchor element).
+
+```tsx
+interface ButtonSharedProps {
+  variant?: "primary" | "secondary" | "link";
+}
+
+interface ButtonAsAnchorElementProps extends ButtonSharedProps {
+  as: "a";
+  href: string;
+}
+
+interface ButtonAsButtonElementProps extends ButtonSharedProps {
+  as: "button";
+  onClick(): void;
+}
+
+type ButtonProps = ButtonAsAnchorElementProps | ButtonAsButtonElementProps;
+
+const Button: React.FC<ButtonProps> = props => {
+  const { children, variant = "primary" } = props;
+
+  switch (props.as) {
+    case "a": {
+      const { href } = props;
+
+      return (
+        <a href={href} className={variant}>
+          {children}
+        </a>
+      );
+    }
+    case "button": {
+      const { onClick } = props;
+
+      return (
+        <button onClick={onClick} className={variant}>
+          {children}
+        </button>
+      );
+    }
+    default:
+      return null;
+  }
+};
+```
 
 ## Conclusion
 
 It took me a while to come around to the `as` prop pattern, but in hindsight
 it now seems like an obvious choice. My initial concern was that it exposed
 implementation details that should be only the component's concern. Once
-I started to think about it as a pattern to decouple the defined visual 
+I started to think about it as a pattern to decouple the defined visual
 appearance and functionality from the semantic markup it became much easier to
 reason about.
