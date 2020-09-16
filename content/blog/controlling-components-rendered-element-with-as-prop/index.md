@@ -140,7 +140,7 @@ appearance with the proper underlying element. It might be tempting to default
 by making it required, every usage now requires asking two questions: "what
 should this element be?" and "how should this look?". Each answer maps directly
 to these props. Relying on global heading element styles, or relying on a single
-prop combines these two questions into a single answer. This leads to
+prop combines these two questions into a single answer. This usually leads to
 picking the correct visual appearance, and neglecting the proper semantic element.
 
 ## Disadvantages
@@ -148,12 +148,12 @@ picking the correct visual appearance, and neglecting the proper semantic elemen
 The biggest disadvantage is that it's one more prop, which increases the surface
 area of the API. It can also feel potentially redundant (eg: `<Button as="button"/>`).
 As discussed, this can be preferable to always ask: "what should this element be?"
-Finally, the name `as` may not be clear enough for some. Other names such as
-`element` can be used to achieve the same result. The most important thing is
-consistency across a shared set of components (eg: `Button` and `Heading`).
-I prefer `as`, because it easily translates to a sentence, which I generally
-use as a smoke test. For example, `<Button as="a" />` roughly reads as "render a Button
-as an anchor."
+and require an explicit decision. Finally, the name `as` may not be clear enough 
+for some. Other names such as `element` can be used to achieve the same result. 
+The most important thing is consistency across a shared set of components 
+(eg: `Button` and `Heading`). I prefer `as`, because it easily translates to a 
+sentence, which I generally use as a smoke test for component and prop naming. 
+For example, `<Button as="a" />` roughly reads as "render a Button as an anchor."
 
 ## Discriminated Props with TypeScript
 
@@ -162,24 +162,27 @@ using the `as` prop pattern. Specifically, when the exact props allowed depend
 on the `as` prop. For example, with the `Button`, `href` is required when, and
 only when `as` is `"a"` (an anchor element).
 
-This can be achieved in TypeScript using a [discriminated unions](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
+This can be achieved in TypeScript using a [discriminated union](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
 
 ```tsx
 interface ButtonSharedProps {
   variant?: "primary" | "secondary" | "link";
+  // additional shared props...
 }
 
-interface ButtonAsAnchorElementProps extends ButtonSharedProps {
+interface AnchorElementProps extends ButtonSharedProps {
   as: "a";
   href: string;
+  // additional anchor-specific props...
 }
 
-interface ButtonAsButtonElementProps extends ButtonSharedProps {
+interface ButtonElementProps extends ButtonSharedProps {
   as: "button";
   onClick(): void;
+  // additional button-specific props...
 }
 
-type ButtonProps = ButtonAsAnchorElementProps | ButtonAsButtonElementProps;
+type ButtonProps = AnchorElementProps | ButtonElementProps;
 
 const Button: React.FC<ButtonProps> = props => {
   const { children, variant = "primary" } = props;
@@ -204,18 +207,20 @@ const Button: React.FC<ButtonProps> = props => {
       );
     }
     default:
+      // consider adding an exhaustiveness check 
+      // (see discriminated union docs)
       return null;
   }
 };
 ```
 
-Now the `ButtonProps` is a union of two different types: `ButtonAsAnchorElementProps`
-and `ButtonAsButtonElementProps`. They both have an `as` prop with literal values
+Now the `ButtonProps` is a union of two different types: `AnchorElementProps`
+and `ButtonElementProps`. They both have an `as` prop with literal values
 `"a"` and `"button"`, respectively. The `as` prop can then be used within the
 component to differentiate between the two types and allow TypeScript to
 narrow to the correct type. For example, in the first `case` for `"a"`, TypeScript
-now knows the `href` prop _must_ be present. This allows accepting props
-only valid for specific element types.
+now knows the `href` prop _must_ be present. This allows accepting and requiring
+props only valid for specific element types.
 
 ```tsx
 <Button as="a">Click me!</Button>
@@ -226,10 +231,10 @@ only valid for specific element types.
 ```
 
 Anything that is common, for example the `variant` prop which controls the
-actual visual appearance, can be added to the `ButtonSharedProps` interface.
+visual appearance, can be added to the `ButtonSharedProps` interface.
 
-Now, `Button` can render andy visual appearance, render any valid semantic
-element, and only allow props valid for that specific element.
+Now, `Button` can render any visual appearance, and render any valid semantic
+element, while only allowing props valid for that specific element.
 
 ## Conclusion
 
