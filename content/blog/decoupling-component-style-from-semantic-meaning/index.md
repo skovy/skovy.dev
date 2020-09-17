@@ -1,5 +1,5 @@
 ---
-date: 2020-09-09T17:00:00.000Z
+date: 2020-09-17T08:00:00.000Z
 title: "Decoupling a component's style from it's semantic meaning"
 description: 'An overview using the "as" prop pattern to control a component''s rendered element'
 featuredImage: "./images/featured-image.jpg"
