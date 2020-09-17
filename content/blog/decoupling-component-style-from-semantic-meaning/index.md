@@ -1,7 +1,7 @@
 ---
 date: 2020-09-09T17:00:00.000Z
-title: 'Using an "as" prop to control a component''s rendered element'
-description: "Decoupling a component's visual and functional implementation from it's semantic meaning"
+title: "Decoupling a component's style from it's semantic meaning"
+description: 'An overview using the "as" prop pattern to control a component''s rendered element'
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Jean-Philippe Delberghe"
 tags:
@@ -73,8 +73,8 @@ const Button: React.FC<ButtonProps> = ({ as: Tag = "button", children }) => (
 //  <Button" as="a">Click me!</Button>
 ```
 
-This can work for simple cases, but we'll cover a few reasons why it can be
-preferable to make it required.
+This can work for simple cases, but we'll cover a few reasons _(accessibility
+and type-safety)_ why it can be preferable to make it required.
 
 ## Advantages
 
@@ -148,11 +148,11 @@ picking the correct visual appearance, and neglecting the proper semantic elemen
 The biggest disadvantage is that it's one more prop, which increases the surface
 area of the API. It can also feel potentially redundant (eg: `<Button as="button"/>`).
 As discussed, this can be preferable to always ask: "what should this element be?"
-and require an explicit decision. Finally, the name `as` may not be clear enough 
-for some. Other names such as `element` can be used to achieve the same result. 
-The most important thing is consistency across a shared set of components 
-(eg: `Button` and `Heading`). I prefer `as`, because it easily translates to a 
-sentence, which I generally use as a smoke test for component and prop naming. 
+and require an explicit decision. Finally, the name `as` may not be clear enough
+for some. Other names such as `element` can be used to achieve the same result.
+The most important thing is consistency across a shared set of components
+(eg: `Button` and `Heading`). I prefer `as`, because it easily translates to a
+sentence, which I generally use as a smoke test for component and prop naming.
 For example, `<Button as="a" />` roughly reads as "render a Button as an anchor."
 
 ## Discriminated Props with TypeScript
@@ -162,7 +162,8 @@ using the `as` prop pattern. Specifically, when the exact props allowed depend
 on the `as` prop. For example, with the `Button`, `href` is required when, and
 only when `as` is `"a"` (an anchor element).
 
-This can be achieved in TypeScript using a [discriminated union](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
+This can be achieved in TypeScript using a [discriminated union](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions). The `as`
+prop needs to be required for the following example to work as expected.
 
 ```tsx
 interface ButtonSharedProps {
@@ -207,7 +208,7 @@ const Button: React.FC<ButtonProps> = props => {
       );
     }
     default:
-      // consider adding an exhaustiveness check 
+      // consider adding an exhaustiveness check
       // (see discriminated union docs)
       return null;
   }
