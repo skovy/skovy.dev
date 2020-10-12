@@ -44,8 +44,8 @@ What about cases with multiple imports?
 import { Avatar, Box, Button } from "design-system";
 ```
 
-We might consider a more sophisticated global search and replace with regex. 
-What about cases where there are many components imported and the imports are 
+We might consider a more sophisticated global search and replace using regex. 
+What about cases where there are many things imported and the imports are 
 each on a newline?
 
 ```ts
@@ -57,9 +57,10 @@ import {
 } from "design-system";
 ```
 
-What seemed like a simple rename now has all sorts and we _only covered the 
-imports_, not the actual usages. For example, a global search and replace for 
-`<Box` (opening JSX) would also match something like `<BoxContainer` which shouldn't be renamed.
+What seemed like a simple rename now has all sorts of cases and we _only covered 
+the  imports_, not the actual usages. For example, a global search and replace 
+for `<Box` (opening JSX) would also match something like `<BoxContainer` which 
+shouldn't be renamed.
 
 You can imagine similar problems when renaming props, especially ones with
 common names such as `type`. How would you begin searching for the `type` prop 
@@ -72,7 +73,7 @@ and supported by the system.
 
 Often, the existing patterns can't be updated mechanically as in the previous
 example. Instead, they need to be updated manually. Often, this migration is too
-much work to do all at once so it needs to be migrated over time. However, it can 
+much work to do all at once upfront so it needs to be migrated over time. However, it can 
 be easy to forget when working on some feature to also update the legacy pattern
 to instead use the new component or prop. How can we encourage these patterns to 
 be updated over time?
@@ -81,14 +82,14 @@ be updated over time?
 
 There are a set of tools that can be helpful in making these type of system-wide
 changes with ease and accuracy. Without these tools, these types of changes
-can become a big headache, or the change being skipped entirely. 
+can become a big headache, or get skipped entirely. 
 
 ### TypeScript
 
 The first tool is TypeScript. This one can be tricky, because to really benefit
 from it the whole codebase needs to be TypeScript. 
 
-If that's the case, you can select the component or prop you want to rename use the 
+If that's the case, the component or prop can selected and renamed using the
 [**"Rename Symbol"** option in VSCode](https://code.visualstudio.com/docs/editor/refactoring#_rename-symbol). This renames all usages across files.
 
 ![VSCode: Rename Symbol](./images/vscode-rename-symbol.png)
@@ -103,12 +104,14 @@ Codemods are like a supercharged search and replace because they provide a lot
 more context. A generic search is only matching on a string. However, codemods
 operate on the actual AST (abstract syntax tree) that underlies the source code.
 This means that you can much more accurately operate on a specific type of node, 
-rather than any string that matches.
+rather than any string that matches. For example, it's possible to find opening
+JSX elements with the name `Box`, or opening elements with the name `Box` and
+narrow down to only it's `type` prop.
 
 [jscodeshift](https://github.com/facebook/jscodeshift) is a specific tool for 
-running these codemods on JavaScript and TypeScript. I've written about 
+running these codemods on JavaScript and TypeScript files. If you'd like to see 
+a more in depth example, I've previously written about 
 [creating a custom transform for jscodeshift](/jscodeshift-custom-transform/)
-if you'd like to see a more in depth example.
 
 ### ESLint
 
@@ -135,20 +138,20 @@ styles that need to be resolved when making the update.
 A custom linting rule could be made that looks for any `className` prop with a 
 `card` class name. This rule could be set to warn, so as pieces of code are touched
 the warnings will be surfaced and fixed. This can be more effective than written
-or verbal communication because that can easily forgotten, whereas an inline
-warning is much more contextual. It also provides a running list of
+or verbal communication that can easily forgotten, whereas an inline
+warning is a more contextual reminder. It also provides a running list of
 how many places still need to be migrated. Once all violations have been fixed,
 the rule can be set to error to prevent regressions to previous patterns, or
 entirely removed.
 
-However, you want to be careful of "linting fatigue." Adding too many rules,
+However, you want to be careful of linting fatigue. Adding too many rules,
 triggering false positives or negatives, or being too intrusive can be 
 detrimental. 
 
 ## Conclusion
 
 When evolving a design system there are a number of changes that seem simple,
-but can be challenging due to both the number of uses and the number of unique
+but can be challenging due to both the number of uses and unique
 ways of using it. Hopefully the next time you need to make a system-wide change
 that faces one of these problems, you're better equipped to know which tools are 
 at your disposal.
