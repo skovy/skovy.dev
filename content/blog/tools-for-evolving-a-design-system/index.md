@@ -1,5 +1,5 @@
 ---
-date: 2020-10-10T10:00:00.000Z
+date: 2020-10-14T10:00:00.000Z
 title: "Tools for an evolving Design System"
 description: "Design Systems evolve over time. What are some tools that can help make system-wide changes?"
 featuredImage: "./images/featured-image.jpg"
