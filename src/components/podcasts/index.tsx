@@ -93,9 +93,6 @@ const query = graphql`
           guid
           title
           link
-          itunes {
-            image
-          }
         }
       }
     }

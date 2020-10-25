@@ -56,7 +56,7 @@ export class PodcastsEpisode extends React.Component<Props> {
       <AnimatedCard>
         <Container href={episode.link} target="_blank" rel="noopener">
           <Image
-            src={episode.itunes.image || FALLBACK_IMAGE}
+            src={ FALLBACK_IMAGE}
             alt="podcast logo"
           />
           <Title>{episode.title}</Title>
