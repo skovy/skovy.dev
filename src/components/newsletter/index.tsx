@@ -90,9 +90,12 @@ export const Newsletter = () => {
       <input type="hidden" value="1" name="embed" />
       <Subscribe type="submit" value="Subscribe" />
       <Subtext>
-        Subscribe to get my latest content by email.
-        <br />
-        <em>(infrequent, no spam, unsubscribe whenever)</em>
+        Subscribe to get the latest content and newsletter-exclusive tips by
+        email.{" "}
+        <a href="https://tinyletter.com/skovy/archive" target="_blank">
+          See recent issues
+        </a>
+        .
       </Subtext>
     </Form>
   );
