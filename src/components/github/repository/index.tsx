@@ -1,5 +1,4 @@
 import React from "react";
-import { Link, StaticQuery } from "gatsby";
 import styled from "styled-components";
 import { faCodeBranch, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

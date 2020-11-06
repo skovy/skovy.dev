@@ -29,7 +29,7 @@ export class Talks extends React.Component {
           return (
             <Container id="recent-talks">
               <ContentContainer>
-                <SectionHeading>Recent Talks</SectionHeading>
+                <SectionHeading>Recent Videos</SectionHeading>
                 <Grid>
                   {talks.map(talk => (
                     <TalksVideo talk={talk} key={talk.id} />

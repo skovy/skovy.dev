@@ -25,6 +25,13 @@ Either of these could work with this example, but what about another component
 that may need to support three or more element types? Or, what if there isn't
 a prop such as `href` that can imply the element type?
 
+<div class="notice" role="alert">
+Prefer to watch a video instead of reading? Check out this video below that
+covers the same topic! <span role="img" aria-label="pointing down">👇</span>
+</div>
+
+`youtube: https://www.youtube.com/watch?v=8XcYt3El08Y`
+
 ## The `as` prop
 
 As you can see with only this one example, it's hard to expand any of these
