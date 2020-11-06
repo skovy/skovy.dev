@@ -148,6 +148,31 @@ const Content = styled.div`
     }
   }
 
+  // Custom styles for an "alert" or "notice"
+  .notice {
+    ${fonts.primary}
+    ${fonts.weights.bold}
+    position: relative;
+    overflow: hidden;
+    margin-bottom: ${rhythm(1)};
+    padding: ${rhythm(1)};
+    padding-left: ${rhythm(3 / 2)};
+    border-radius: ${rhythm(1 / 2)};
+    color: ${colors.text};
+    box-shadow: 0px ${rhythm(1 / 4)} ${rhythm(1)} -${rhythm(1 / 4)} rgba(0, 0, 0, 0.3);
+    background-color: ${colors.white};
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: ${rhythm(1 / 2)};
+      background-image: linear-gradient(135deg, #ff96f9 10%, #c32bac 100%);
+    }
+  }
+
   // Custom styles for the design system principles blog post
   &.post-design-system-principles {
     ol {

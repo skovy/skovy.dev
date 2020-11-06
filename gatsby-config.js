@@ -12,7 +12,7 @@ module.exports = {
       twitter: `spencerskovy`,
       github: `skovy`,
       goodreads: `64661635-spencer-miskoviak`,
-      linkedin: `skovy`,
+      youtube: `UCbyBv235FuRg_C6oKf-OeTg`,
       stackOverflow: `2690790`
     },
     otherPodcasts: [
@@ -26,6 +26,11 @@ module.exports = {
       }
     ],
     talks: [
+      {
+        id: "8XcYt3El08Y",
+        title: "Decoupling a component's style from it's semantic meaning",
+        description: "💡 Component design pattern"
+      },
       {
         id: "hDkcBC-vmgM",
         title: "Codemod-ing away 4MB of JavaScript",
@@ -52,6 +57,15 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
+          {
+            resolve: "gatsby-remark-embed-video",
+            options: {
+              width: 800,
+              related: false, 
+              noIframeBorder: true, 
+              containerClass: 'blog-post-youtube-video'
+            }
+          },
           {
             resolve: `gatsby-remark-images`,
             options: {

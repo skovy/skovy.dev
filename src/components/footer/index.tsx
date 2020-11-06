@@ -6,8 +6,8 @@ import {
   faGithub,
   faTwitter,
   faGoodreadsG,
-  faLinkedinIn,
-  faStackOverflow
+  faStackOverflow,
+  faYoutube
 } from "@fortawesome/free-brands-svg-icons";
 
 import { ContentContainer } from "../content-container";
@@ -60,45 +60,35 @@ export const Footer = () => (
             <Newsletter />
             <SocialLinks>
               <SocialLink
-                href={`https://github.com/${
-                  data.site.siteMetadata.social.github
-                }`}
+                href={`https://github.com/${data.site.siteMetadata.social.github}`}
                 aria-label="GitHub"
                 title="GitHub"
               >
                 <FontAwesomeIcon icon={faGithub} size="lg" />
               </SocialLink>
               <SocialLink
-                href={`https://twitter.com/${
-                  data.site.siteMetadata.social.twitter
-                }`}
+                href={`https://twitter.com/${data.site.siteMetadata.social.twitter}`}
                 aria-label="Twitter"
                 title="Twitter"
               >
                 <FontAwesomeIcon icon={faTwitter} size="lg" />
               </SocialLink>
               <SocialLink
-                href={`https://www.goodreads.com/user/show/${
-                  data.site.siteMetadata.social.goodreads
-                }`}
+                href={`https://www.goodreads.com/user/show/${data.site.siteMetadata.social.goodreads}`}
                 aria-label="Goodreads"
                 title="Goodreads"
               >
                 <FontAwesomeIcon icon={faGoodreadsG} size="lg" />
               </SocialLink>
               <SocialLink
-                href={`https://www.linkedin.com/in/${
-                  data.site.siteMetadata.social.linkedin
-                }`}
-                aria-label="Linkedin"
-                title="Linkedin"
+                href={`https://www.youtube.com/channel/${data.site.siteMetadata.social.youtube}`}
+                aria-label="YouTube"
+                title="YouTube"
               >
-                <FontAwesomeIcon icon={faLinkedinIn} size="lg" />
+                <FontAwesomeIcon icon={faYoutube} size="lg" />
               </SocialLink>
               <SocialLink
-                href={`https://stackoverflow.com/users/${
-                  data.site.siteMetadata.social.stackOverflow
-                }`}
+                href={`https://stackoverflow.com/users/${data.site.siteMetadata.social.stackOverflow}`}
                 aria-label="Stack Overflow"
                 title="Stack Overflow"
               >
@@ -120,8 +110,8 @@ const footerQuery = graphql`
           twitter
           github
           goodreads
-          linkedin
           stackOverflow
+          youtube
         }
       }
     }
