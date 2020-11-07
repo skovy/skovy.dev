@@ -1,5 +1,6 @@
 ---
 date: 2019-02-10T20:06:52.859Z
+lastUpdated: 2020-11-07T08:00:00.000Z
 title: "Generating TypeScript definitions for CSS Modules using SASS"
 description: "Tooling and approaches for integrating CSS Modules, SASS, and TypeScript to add additional type-safety when importing the styles."
 featuredImage: "./images/featured-image.jpg"
@@ -11,23 +12,56 @@ tags:
   - sass
 ---
 
-CSS Modules can be [a great tool for maintaining styles](/writing-maintainable-styles-and-components-with-css-modules) in a large codebase. It works much like vanilla CSS with the primary difference being all class names are local by default. This works well in modern component-based architectures where a single style module can live alongside the component that relies on those styles.
+CSS Modules can be [a great tool for maintaining styles](/writing-maintainable-styles-and-components-with-css-modules)
+in a large codebase. It works much like vanilla CSS with the primary difference
+being all class names are local by default. This works well in modern
+component-based architectures where a single style module can live alongside the
+component that relies on those styles.
 
-Since a CSS Module is vanilla CSS by default, it doesn’t introduce a steep learning curve. But in a large codebase, it’s not desirable to repeatedly define specific values (such as color hexes), especially if using a [design system](/migrating-a-design-system-to-a-dedicated-repository). There are [approaches specific to CSS Modules for adding support for variables](https://github.com/css-modules/css-modules/blob/master/docs/values-variables.md), but SASS is a reliable technology to add support not only for variables but many other useful features.
+Since a CSS Module is vanilla CSS by default, it doesn't introduce a steep
+learning curve. But in a large codebase, it's not desirable to repeatedly define
+specific values (such as color hexes), especially if using a
+[design system](/design-system-principles). There are
+[approaches specific to CSS Modules for adding support for variables](https://github.com/css-modules/css-modules/blob/master/docs/values-variables.md),
+but SASS is a reliable technology to add support not only for variables but many
+other useful features.
 
-Beyond styling an application, TypeScript can be a great tool for maintaining a large codebase in general. Providing type definitions for functions or components can [make the APIs more discoverable](/using-component-dot-notation-with-typescript-to-create-a-set-of-components) to newcomers and dissuade improper usage.
+Beyond styling an application, TypeScript can be a great tool for maintaining a
+large codebase in general. Providing type definitions for functions or components
+can [make the APIs more discoverable](/using-component-dot-notation-with-typescript-to-create-a-set-of-components)
+to newcomers or help prevent improper usage.
 
-CSS Modules and TypeScript can each be used on their own. But what about integrating CSS Modules, SASS and TypeScript to add type-safety around the usage of the styles?
+CSS Modules and TypeScript can each be used on their own. What about
+integrating CSS Modules, SASS and TypeScript to add type-safety around the usage
+of the styles?
 
-## 🛠 Existing Tooling
+## Tooling
 
-There are great articles and tools that already exist in the world of CSS Modules and TypeScript.
+There are many tools that exist in the world of CSS Modules and TypeScript.
+Before reaching for additional tooling, it's worth evaluating
+what's possible with only TypeScript.
 
-This [post is a great overview](https://medium.com/@sapegin/css-modules-with-typescript-and-webpack-6b221ebe5f10) for using both CSS Modules and TypeScript with webpack. The easiest way is to *not* integrate the two together at all by using `require` instead of `import`. The styles object will be typed as `any` offering no type-safety.
+The easiest way is to not integrate the two together. By using `require` instead
+of `import` the styles object will be typed as `any` offering no type-safety.
+This is ideal for moving quickly but doesn't leverage TypeScript at all.
 
-To add full type-safety requires defining `.d.ts` (type definition) files for the corresponding styles. This *can* be done by manually creating this file and defining all of the corresponding class names. It’s tedious, duplicative work and error prone which defeats the purpose of type-safety.
+```typescript
+const styles = require("./styles.css");
+```
 
-A middle ground approach is to define a module definition that applies to all style imports. It won’t catch invalid class names or provide the type-ahead in supported editors but it is an improvement on `any`. For example, a file named `css-modules.d.ts` would achieve this:
+Adding full type-safety requires defining `.d.ts` (type definition) files for
+the corresponding styles. This can be done by manually creating these files and
+defining all of the corresponding class names. It's tedious, duplicates work,
+and is error prone which defeats the purpose of type-safety. This is
+where additional tooling can bring an advantage.
+
+Instead of defining every individual class name, there is an intermediate solution
+that provides some type-safety. This is done by defining a module definition
+that applies to all style imports. It won't catch invalid class names or provide
+the typeahead but it is an improvement over `any`.
+
+For example, a file named `css-modules.d.ts` would achieve this with the
+following definition:
 
 ```typescript
 declare module "*.scss" {
@@ -36,47 +70,65 @@ declare module "*.scss" {
 }
 ```
 
-But what about having full type-safety without manually providing the types?
+It prevents invalid usages such as `styles.customClass.somethingElse` since
+`customClass` is a `string` but it doesn't validate if `customClass` actually
+exists.
 
-### typings-for-css-modules-loader
+What about adding full type-safety with additional tooling?
 
-[typings-for-css-modules-loader](https://github.com/Jimdo/typings-for-css-modules-loader) is a drop-in replacement for `css-loader` (necessary for CSS Modules) to automatically generate the type definitions for your CSS Modules in webpack. Since it’s a drop-in, it should also support SASS!
+### `typings-for-css-modules-loader`
 
-But what if you’re not using webpack?
+[typings-for-css-modules-loader](https://github.com/Jimdo/typings-for-css-modules-loader),
+is a drop-in replacement for `css-loader` (necessary for CSS Modules) to
+automatically generate the type definitions for your CSS Modules in webpack.
+This means it can be used with any CSS preprocessor such as SASS.
 
-### typed-css-modules
+This [post is a good overview](https://medium.com/@sapegin/css-modules-with-typescript-and-webpack-6b221ebe5f10) to generate type definitions
+using both CSS Modules and TypeScript with webpack.
 
-[typed-css-modules](https://github.com/Quramy/typed-css-modules) is a command-line interface (CLI) for generating type definitions for CSS Modules. After installing the package, it can be run outside of webpack. This is useful if you’re not using webpack, experimenting with adding type definitions to see what it would look like, or want to run it in one-off situations.
+This specific package has since been deprecated, but there are now several
+maintained forks and alternatives available:
 
-But what if you’re using SASS?
+- [TeamSupercell/typings-for-css-modules-loader](https://github.com/TeamSupercell/typings-for-css-modules-loader)
+- [dropbox/typed-css-modules-webpack-plugin](https://github.com/dropbox/typed-css-modules-webpack-plugin)
+- [Megaputer/dts-css-modules-loader](https://github.com/Megaputer/dts-css-modules-loader)
 
-## 🎁 typed-scss-modules
+What if you're not using webpack?
 
-As the name suggests, [typed-scss-modules](https://github.com/skovy/typed-scss-modules) is heavily inspired by `typed-css-modules`. It’s a CLI that generates type definitions focused on supporting CSS Modules written using SASS.
+### `typed-css-modules`
+
+[typed-css-modules](https://github.com/Quramy/typed-css-modules) is a command-line interface (CLI) for generating type definitions for CSS Modules. After installing the package, it can be run outside of webpack. This is useful if you're not using webpack, experimenting with adding type definitions to see what it would look like, or want to run it in one-off situations.
+
+But what if you're using SASS?
+
+### `typed-scss-modules`
+
+The [typed-scss-modules](https://github.com/skovy/typed-scss-modules) package is
+heavily inspired by `typed-css-modules`. It's a CLI that generates type
+definitions focused on supporting CSS Modules written using SASS.
 
 ![Example of writing a SASS CSS Module while generating the corresponding type definitions.](./images/typed-scss-modules-output.gif)
 <span class="image-caption">
 Example of writing a SASS CSS Module while generating the corresponding type definitions.
 </span>
 
-### Getting started
+#### Getting started
 
 Install the package as a development dependency since the type definitions should only need to be generated in development:
 
 ```
-yarn add -D typed-scss-modules 
+yarn add -D typed-scss-modules
 ```
 
-Now, the types can be generated by providing the directory (*or glob pattern*):
+Now, the types can be generated by providing the directory (_or glob pattern_):
 
 ```
 yarn tsm src/
 ```
 
+#### Listing differences
 
-### Listing differences
-
-This option is inspired by Prettier’s [list-different](https://prettier.io/docs/en/cli.html#list-different) option which is particularly useful in Continuous Integration to ensure all proposed code changes adhere to the proper formatting. Similarly, in this case, if a type definition doesn’t match what would be automatically generated, the command will fail and list the files that are invalid.
+This option is inspired by Prettier's [list-different](https://prettier.io/docs/en/cli.html#list-different) option which is particularly useful in Continuous Integration to ensure all proposed code changes adhere to the proper formatting. Similarly, in this case, if a type definition doesn't match what would be automatically generated, the command will fail and list the files that are invalid.
 
 ```
 yarn tsm src/ --listDifferent
@@ -86,8 +138,13 @@ Listing the differences is only one of many options. See [the `README` for a ful
 
 ## 📚 Summary
 
-There is a spectrum for how CSS Modules can be integrated with TypeScript. Depending on the specific use case, existing codebase, and other technologies being used there are various tools that can be used that fit the different needs.
+There is a spectrum for how CSS Modules can be integrated with TypeScript, ranging
+from not at all, to perfect type-safety. Depending on the specific use case,
+existing codebase, and other technologies being used there are many tools that
+can be used that fit the different needs.
 
-If you’re specifically using CSS Modules, SASS, and TypeScript and want to see what generating type definitions might look like I encourage you to give [typed-scss-modules](https://github.com/skovy/typed-scss-modules) a try!
-
-*For more content on topics like this, React, TypeScript, JavaScript, or Design Systems check out the [Rubber Ducking](http://www.rubberducking.fm/) podcast.*
+<div class="notice">
+Check out the <a href="http://www.rubberducking.fm">Rubber Ducking podcast</a> for
+more content on topics like this, React, TypeScript, JavaScript, or Design
+Systems.
+</div>
