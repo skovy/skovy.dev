@@ -1,7 +1,7 @@
 ---
 date: 2019-10-09T00:11:00.000Z
 title: "Creating a custom transform for jscodeshift"
-description: "Using a jscodeshift transform to update automatically Font Awesome imports to enable tree shaking."
+description: "Using a jscodeshift transform to automatically update Font Awesome imports to enable tree shaking."
 featuredImage: "./images/featured-image.jpg"
 featuredImageCredit: "Photo by Sam Loyd"
 tags:
@@ -70,7 +70,7 @@ implicit string approach there were thousands of icons referenced this way.
 One option was to globally search for references of this component, manually convert
 `"coffee"` to `faCoffee`, add the import, deal with de-duplicating imports,
 handling icons with the same name being imported from multiple icon packages, and
-a number of other scenarios. This would likely take days and inevitably result 
+a number of other scenarios. This would likely take days and inevitably result
 in some error (maybe switching one icon for another).
 
 Since this was a very repetitive problem with a well defined set of rules,
@@ -179,7 +179,7 @@ because it may be helpful to reference their documentation as well.
 
 [`recast`](https://github.com/benjamn/recast) is used for transforming the code
 from raw text into something that can be worked with programmatically. This
-tree structure that represents the parsed code is commonly referred to as an 
+tree structure that represents the parsed code is commonly referred to as an
 [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
 
 This package itself depends on [`ast-types`](https://github.com/benjamn/ast-types)
@@ -259,7 +259,7 @@ understand the AST that represents a piece of code.
 ![Example of AST explorer](./images/ast-explorer-example.png)
 
 This screenshot is an example of what the above code would look like if pasted
-into the AST explorer. This is how we know to narrow down to only the 
+into the AST explorer. This is how we know to narrow down to only the
 `JSXAttribute` nodes.
 
 Looking closer at the AST, we specifically want to filter to nodes that have
@@ -276,8 +276,8 @@ function. The function provided to `replaceWith` is executed for every node and 
 replaced with the functions return value. This function creates a `JSXExpression`
 node to replace the `StringLiteral`.
 
-You might notice `const { node } = nodePath;`. This is necessary because each 
-node is also wrapped in a [`NodePath`](https://github.com/benjamn/ast-types#nodepath). 
+You might notice `const { node } = nodePath;`. This is necessary because each
+node is also wrapped in a [`NodePath`](https://github.com/benjamn/ast-types#nodepath).
 This isn't reflected in the AST explorer but an important thing to be aware of
 when traversing the AST.
 
@@ -304,7 +304,7 @@ const Component = () => {
 ```
 
 This will now convert a given input file with any `FontAwesomeIcon` components
-and a string `icon` value to a JSX expression. However, this is now producing 
+and a string `icon` value to a JSX expression. However, this is now producing
 invalid code because `faMinusCircle` is not defined.
 
 ## Adding an import
@@ -357,15 +357,15 @@ const transform: Transform = (file, api, options) => {
 export default transform;
 ```
 
-To start, `FIRST_IMPORT` is defined as a reference to the first import in the 
+To start, `FIRST_IMPORT` is defined as a reference to the first import in the
 file. This isn't the most robust approach but it's sufficient for this example
 (and most other cases). Now, there's a place to insert the import. A new
-import node can be added with the 
-[`insertAfter`](https://github.com/facebook/jscodeshift/blob/d63aa8486c2099a65b071e7c86e9dccdb8577d80/src/collections/Node.js#L161-L173) 
+import node can be added with the
+[`insertAfter`](https://github.com/facebook/jscodeshift/blob/d63aa8486c2099a65b071e7c86e9dccdb8577d80/src/collections/Node.js#L161-L173)
 function.
 
-The import is constructed to import the icon definition specifier that was 
-generated from the `"@fortawesome/free-solid-svg-icons"` package. 
+The import is constructed to import the icon definition specifier that was
+generated from the `"@fortawesome/free-solid-svg-icons"` package.
 
 **Input:**
 
@@ -390,7 +390,7 @@ const Component = () => {
 };
 ```
 
-All the basic scenarios for solid icons are now handled. However, there are 
+All the basic scenarios for solid icons are now handled. However, there are
 other icon packages and these can be used with an array syntax. For example,
 `icon={['far', 'circle']}` will use the regular circle icon (instead of solid).
 
@@ -552,14 +552,14 @@ const Component = () => {
 
 The transform can now handle most usages of the `FontAwesomeIcon` with either
 the string or array reference for multiple font packages. However, this process
-of working through the different cases could go on for a while. After 
+of working through the different cases could go on for a while. After
 understanding the underlying packages, documentation and tools like the AST
 explorer most of these problems can be solved by rearranging these fundamental
 pieces.
 
 ## Additional considerations
 
-In some scenarios, the above examples and transform may be sufficient. However, 
+In some scenarios, the above examples and transform may be sufficient. However,
 I was surprised by the variety of usages and edge cases in a larger codebase.
 
 First, it's likely the `FontAwesomeIcon` is wrapped by another component
@@ -572,33 +572,39 @@ provided and replace the hard-coded usages in the above transforms.
 One more slightly complex case for the component name are components that are
 referenced via [dot notation](/using-component-dot-notation-with-typescript-to-create-a-set-of-components).
 For example, `<Dot.Notation icon="user" />`. This requires a bit more complex
-AST traversal but 
+AST traversal but
 [can also be handled](https://github.com/skovy/font-awesome-codemod/blob/a7676bea53e1f0b30025373a7ae1398acc6b48fb/transforms/implicit-icons-to-explicit-imports.ts#L101-L105).
 
 Another edge case is that Font Awesome offers both free and pro fonts. The
-`PACKAGES` constant and the transform need to also 
-[account for this](https://github.com/skovy/font-awesome-codemod/blob/a7676bea53e1f0b30025373a7ae1398acc6b48fb/transforms/implicit-icons-to-explicit-imports.ts#L29-L41). 
+`PACKAGES` constant and the transform need to also
+[account for this](https://github.com/skovy/font-awesome-codemod/blob/a7676bea53e1f0b30025373a7ae1398acc6b48fb/transforms/implicit-icons-to-explicit-imports.ts#L29-L41).
 This was again done with a command line option, `--type`.
 
-Finally, one of the more complex cases was handling the various scenarios for 
-imports. 
+Finally, one of the more complex cases was handling the various scenarios for
+imports.
 
 1. If the same icon was imported from different packages, it had to be aliased
-to avoid a naming collision (eg: `faUser as faUserFar`).
+   to avoid a naming collision (eg: `faUser as faUserFar`).
 1. If multiple icons were imported from the same package, a single import should
-be used for all icons. This requires first checking for an existing import
-from a package before creating a new one.
+   be used for all icons. This requires first checking for an existing import
+   from a package before creating a new one.
 1. If the same icon was imported from the same package, it should only be imported
-once. This requires checking if the icon was already imported from the same package.
+   once. This requires checking if the icon was already imported from the same package.
 
 All of these can be solved and are fully handled by the full transform.
 The completed source code for [this example is available here](https://github.com/skovy/font-awesome-codemod).
 
 ## Conclusion
 
-Although this was a specific example for working with Font Awesome, the 
+Although this was a specific example for working with Font Awesome, the
 flexibility and capabilities of jscodeshift make it a great tool to keep in mind
 for the next time you may need to do a large refactoring.
 It's particularly useful making well-defined, "mechanical" changes in a large
 codebase. Codemods not only allow you to keep your sanity, but also reduce the risk
 of small mistakes.
+
+<div class="notice" role="alert">
+Looking for a quick recap? Check out this lightning talk from React Conf 2019! <span role="img" aria-label="lightning bolt">⚡</span>
+</div>
+
+`youtube: https://www.youtube.com/watch?v=hDkcBC-vmgM`
