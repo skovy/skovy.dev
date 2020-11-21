@@ -84,31 +84,26 @@ interface Props {
   index: number;
 }
 
-export class GitHubRepository extends React.Component<Props> {
-  render() {
-    const { repository, index } = this.props;
-
-    return (
-      <AnimatedCard>
-        <Container
-          index={index}
-          href={repository.homepageUrl}
-          target="_blank"
-          rel="noopener"
-        >
-          <Name>{repository.name}</Name>
-          <div>
-            <Description>{repository.description}</Description>
-            <Stars>
-              <FontAwesomeIcon icon={faStar} />{" "}
-              {repository.stargazers.totalCount}
-            </Stars>
-            <Forks>
-              <FontAwesomeIcon icon={faCodeBranch} /> {repository.forkCount}
-            </Forks>
-          </div>
-        </Container>
-      </AnimatedCard>
-    );
-  }
-}
+export const GitHubRepository: React.FC<Props> = ({ repository, index }) => {
+  return (
+    <AnimatedCard>
+      <Container
+        index={index}
+        href={repository.homepageUrl}
+        target="_blank"
+        rel="noopener"
+      >
+        <Name>{repository.name}</Name>
+        <div>
+          <Description>{repository.description}</Description>
+          <Stars>
+            <FontAwesomeIcon icon={faStar} /> {repository.stargazers.totalCount}
+          </Stars>
+          <Forks>
+            <FontAwesomeIcon icon={faCodeBranch} /> {repository.forkCount}
+          </Forks>
+        </div>
+      </Container>
+    </AnimatedCard>
+  );
+};

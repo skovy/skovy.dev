@@ -1,14 +1,12 @@
 import React from "react";
 import { StaticQuery, graphql } from "gatsby";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { rhythm } from "../../../utils/typography";
 import { GitHubRepository } from "../repository";
 import { ContentContainer } from "../../content-container";
 import { SectionHeading } from "../../section-heading";
-import { colors } from "../../../config/colors";
+import { ViewMore } from "../../view-more";
 
 const Container = styled.div`
   padding: ${rhythm(3)} 0;
@@ -23,13 +21,6 @@ const Grid = styled.div`
   @media screen and (max-width: ${rhythm(24)}) {
     grid-template-columns: 1fr;
   }
-`;
-
-const AllProjects = styled.a`
-  display: block;
-  margin-top: ${rhythm(1)};
-  color: ${colors.text};
-  text-decoration: none;
 `;
 
 export class GitHubProjects extends React.Component {
@@ -52,13 +43,13 @@ export class GitHubProjects extends React.Component {
                   )
                 )}
               </Grid>
-              <AllProjects
+              <ViewMore
                 href="https://github.com/skovy"
                 target="_blank"
                 rel="noopener"
               >
-                See all projects <FontAwesomeIcon icon={faArrowRight} />
-              </AllProjects>
+                See all projects
+              </ViewMore>
             </ContentContainer>
           </Container>
         )}

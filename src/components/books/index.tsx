@@ -1,16 +1,14 @@
 import React from "react";
 import { StaticQuery, graphql } from "gatsby";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { rhythm } from "../../utils/typography";
 import { ContentContainer } from "../content-container";
 import { SectionHeading } from "../section-heading";
+import { ViewMore } from "../view-more"
 import { Query } from "../../generated/graphql";
 import { Review } from "./review";
 import { getReviewsByShelf, sortReviewsByReadAtDesc, filterOutReviewsWithNoBookPhoto } from "./util";
-import { colors } from "../../config/colors";
 
 const Container = styled.div`
   background-image: linear-gradient(135deg, #08aeea 0%, #2af598 100%);
@@ -30,13 +28,6 @@ const Grid = styled.div`
   @media screen and (max-width: ${rhythm(16)}) {
     grid-template-columns: repeat(3, 1fr);
   }
-`;
-
-const AllReads = styled.a`
-  display: block;
-  margin-top: ${rhythm(1)};
-  color: ${colors.text};
-  text-decoration: none;
 `;
 
 export class Books extends React.Component {
@@ -63,9 +54,9 @@ export class Books extends React.Component {
                     <Review review={review} key={review.id} />
                   ))}
                 </Grid>
-                <AllReads href="/recently-read">
-                  See all reads <FontAwesomeIcon icon={faArrowRight} />
-                </AllReads>
+                <ViewMore to="/recently-read">
+                  See all reads 
+                </ViewMore>
               </ContentContainer>
             </Container>
           );

@@ -1,15 +1,12 @@
 import React from "react";
-import { Link } from "gatsby";
 import styled from "styled-components";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { MarkdownRemarkEdge } from "../../../generated/graphql";
 import { BlogPost } from "../post";
 import { ContentContainer } from "../../content-container";
 import { SectionHeading } from "../../section-heading";
+import { ViewMore } from "../../view-more";
 import { rhythm } from "../../../utils/typography";
-import { colors } from "../../../config/colors";
 
 const Container = styled.div`
   background-image: linear-gradient(135deg, #fccf31 10%, #f55555 100%);
@@ -25,13 +22,6 @@ const Grid = styled.div`
   @media screen and (max-width: ${rhythm(24)}) {
     grid-template-columns: 1fr;
   }
-`;
-
-const AllPosts = styled(Link)`
-  display: block;
-  margin-top: ${rhythm(1)};
-  color: ${colors.text};
-  text-decoration: none;
 `;
 
 interface Props {
@@ -51,9 +41,9 @@ export class BlogRecentPosts extends React.Component<Props> {
               <BlogPost post={post} key={post.fields.slug} />
             ))}
           </Grid>
-          <AllPosts to="/blog">
-            See all posts <FontAwesomeIcon icon={faArrowRight} />
-          </AllPosts>
+          <ViewMore to="/blog">
+            See all posts
+          </ViewMore>
         </ContentContainer>
       </Container>
     );

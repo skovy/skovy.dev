@@ -1,14 +1,12 @@
 import React from "react";
 import { StaticQuery, graphql } from "gatsby";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { PodcastsEpisode } from "./episode";
 import { rhythm } from "../../utils/typography";
 import { ContentContainer } from "../content-container";
 import { SectionHeading } from "../section-heading";
-import { colors } from "../../config/colors";
+import { ViewMore } from "../view-more";
 import { Query } from "../../generated/graphql";
 
 const TOTAL_EPISODES = 4;
@@ -27,13 +25,6 @@ const Grid = styled.div`
   @media screen and (max-width: ${rhythm(24)}) {
     grid-template-columns: 1fr;
   }
-`;
-
-const AllPodcasts = styled.a`
-  display: block;
-  margin-top: ${rhythm(1)};
-  color: ${colors.white};
-  text-decoration: none;
 `;
 
 export class Podcasts extends React.Component {
@@ -57,13 +48,14 @@ export class Podcasts extends React.Component {
                     <PodcastsEpisode episode={episode} key={episode.guid} />
                   ))}
                 </Grid>
-                <AllPodcasts
+                <ViewMore
                   href="http://www.rubberducking.fm"
                   target="_blank"
                   rel="noopener"
+                  color="white"
                 >
-                  See all episodes <FontAwesomeIcon icon={faArrowRight} />
-                </AllPodcasts>
+                  See all episodes
+                </ViewMore>
               </ContentContainer>
             </Container>
           );
