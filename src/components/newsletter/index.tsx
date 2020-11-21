@@ -19,6 +19,10 @@ const Subtext = styled.p`
   ${scale(-1 / 2)}
 `;
 
+const RecentIssues = styled.a`
+  color: ${colors.primary};
+`;
+
 const EmailInput = styled.input`
   display: block;
   width: 100%;
@@ -92,9 +96,12 @@ export const Newsletter = () => {
       <Subtext>
         Subscribe to get the latest content and newsletter-exclusive tips by
         email.{" "}
-        <a href="https://tinyletter.com/skovy/archive" target="_blank">
+        <RecentIssues
+          href="https://tinyletter.com/skovy/archive"
+          target="_blank"
+        >
           See recent issues
-        </a>
+        </RecentIssues>
         .
       </Subtext>
     </Form>
