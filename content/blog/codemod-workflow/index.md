@@ -514,3 +514,5 @@ This was a walk-through of my general workflow for auditing
 and transforming code. What works best for you might be
 a bit different, but hopefully this provides some useful
 tools and approaches for the next time you're working with code.
+
+All of [this code can be found on GitHub](https://github.com/skovy/typescript-codemod-examples).
