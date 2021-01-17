@@ -39,26 +39,29 @@ You might be wondering how code audits are related and why
 it's included in a post about codemods. Code audits were a
 concept that I never considered before I started working with
 codemods. They both start off in the same way: find a specific
-piece of code. They differ only in output: a transform changes
-the code, while an audit aggregates information about the code
-usage. Often, I'll do a code audit to understand the current
+piece of code. They differ only in output: an audit aggregates
+information about the code usage, while a transform changes
+the code. Often, I'll do a code audit to understand the current
 state of the code in aggregate before making any changes, because
 it surfaces important information and often influences how I
 approach making changes to the code. Fortunately, this also means
-most of the code can be reused between the two.
+most of the code can be reused between the two since they both
+target the same piece of code.
 
 ### Auditing versus Transforming
 
-For code audits, I reach for [`@babel/parser`](https://babeljs.io/docs/en/babel-parser)
+For code audits, I start with [`@babel/parser`](https://babeljs.io/docs/en/babel-parser)
 and [`@babel/traverse`](https://babeljs.io/docs/en/babel-traverse).
 This approach requires combining a few packages, but this means it's
-more flexible. It works particularly well for keeping track of things _across_ files.
+more flexible. It works particularly well for keeping track of things
+_across_ files.
 
 For code transforms, I reach for [`jscodeshift`](https://github.com/facebook/jscodeshift).
 This is an all-in-one tool and doesn't require pulling in additional
 packages but means it's specialized only for transforming code, and
 not as flexible for other tasks like code audits. Depending on the
-exact configuration, it will actually use `@babel/parser` under-the-hood.
+[exact configuration](https://github.com/facebook/jscodeshift#parser),
+it may actually use `@babel/parser` under-the-hood.
 
 ### Understanding the Abstract Syntax Tree
 
@@ -110,8 +113,7 @@ intact.
 }
 ```
 
-In a visual representation, that would produce a tree
-structure roughly like the following.
+In a more visual representation, that would produce the following tree structure.
 
 ![Example Abstract Syntax Tree](./images/basic-ast.png)
 
@@ -121,15 +123,15 @@ declared variables have a name (identifier) and a value (in this case,
 a numeric value).
 
 The exact tree structure may differ depending on the parser,
-but the important part is understanding that this is essentially
-all there is to an abstract syntax tree. While the exact names
+but the important part is understanding that this is the
+abstract syntax tree we'll be working with. While the exact names
 and structure might seem complex, it's not important
 to memorize these since the AST for any code snippet can be quickly
 explored using [astexplorer.net](https://astexplorer.net).
 
 This tool is invaluable to understand the AST for a given piece
 of code. One mistake I commonly make is forgetting to change the
-parser, make sure this aligns with the parser you're using
+parser in AST Explorer, make sure this aligns with the parser you're using
 otherwise you can end up with different trees.
 
 ### Writing the code
@@ -187,21 +189,21 @@ export const coffee = {
 This is then used in a few files, to make a few cups of coffee. ☕
 
 ```js
-// firstCup.js
+// src/firstCup.js
 import { coffee } from "./coffee";
 
 export const firstCup = coffee.brew("💧", "💩");
 ```
 
 ```js
-// secondCup.js
+// src/secondCup.js
 import { coffee } from "./coffee";
 
 export const secondCup = coffee.brew("🌊", "💩");
 ```
 
 ```js
-// thirdCup.js
+// src/thirdCup.js
 import { coffee } from "./coffee";
 
 export const thirdCup = coffee.brew("🚿", "💩");
@@ -222,24 +224,23 @@ export const coffee = {
 };
 ```
 
-Before choosing which `water` to allow, lets understand how it's used today.
-If most usages already use the same one it makes the
-most sense to use that one. If it's all over the board,
-then any one of them can be used.
+Before choosing which `water` argument to allow, lets understand how
+it's used today. If most usages already use the same water argument,
+it makes the most sense to use that one. Otherwise, any can be chosen.
 
 ### Code Audit
 
 To start auditing the code, let's install the babel packages
-along with several others.
+along with a few others to help with reading files and executing the code.
 
-- `@babel/parser` - parse a string of code into an AST
-- `@babel/traverse` _(and types)_ - helps traverse the AST and find specific nodes
-- `glob` _(and types)_ - easily find the files using glob patterns
-- `ts-node` - replacement for node capable of handling TypeScript files
-- `typescript` - required for TypeScript support
+- [`@babel/parser`](https://babeljs.io/docs/en/babel-parser) - parse a string of code into an AST
+- [`@babel/traverse`](https://babeljs.io/docs/en/babel-traverse) _([and types](https://www.npmjs.com/package/@types/babel__traverse))_ - helps traverse the AST and find specific nodes
+- [`glob`](https://www.npmjs.com/package/glob) _([and types](https://www.npmjs.com/package/@types/glob))_ - easily find the files using glob patterns
+- [`ts-node`](https://www.npmjs.com/package/ts-node) - replacement for node capable of handling TypeScript files
+- [`typescript`](https://www.npmjs.com/package/typescript) - required for TypeScript support
 
-This list doesn't include `fs` because it's provided
-by `node`. Now we can create a file to audit the code.
+This list doesn't include [`fs`](https://nodejs.org/api/fs.html) because it's provided
+by `node`. Now we can put together a script to read our code and find a specific piece.
 
 ```typescript
 // audit.ts
@@ -248,16 +249,19 @@ import traverse from "@babel/traverse";
 import * as fs from "fs";
 import * as glob from "glob";
 
-// Find all files at any directory level starting in this directory,
-// except anything that is in `node_modules`.
-const files = glob.sync("./**/*.js", { ignore: "./node_modules/**" });
+// Find all files relevant files.
+const files = glob.sync("./src/*.js");
 
 files.forEach(file => {
   const contents = fs.readFileSync(file).toString();
 
   const ast = parse(contents, {
     sourceType: "module",
-    plugins: []
+    plugins: [
+      // Note: depending on the code being parsed, you
+      // may need to add plugins such as `jsx`
+      // https://babeljs.io/docs/en/babel-parser#plugins
+    ]
   });
 
   traverse(ast, {
@@ -266,28 +270,30 @@ files.forEach(file => {
 });
 ```
 
-This template will find all files matching a glob pattern.
+This script template will find all files matching the
+specified glob pattern (all `.js` files in the `src` directory).
 For each of those files that is found, it then reads
 that file's contents. The contents is still a string,
 so the next step is to `parse` it and generate an
 abstract syntax tree. Finally, we're ready to `traverse`
-that tree. Now, the only problem is to figure out how
-to find the specific piece of code we care about.
+that tree. 
 
-This is where [astexplorer.net](https://astexplorer.net)
+The next step is to figure out how to traverse the tree to
+find the specific piece of code we care about. This is 
+where [astexplorer.net](https://astexplorer.net)
 comes into play. First, checking that the parser is
 correct.
 
 ![AST Explorer Parser Option](./images/ast-explorer-parser.png)
 
-Then, pasting in a code snippet that we care about.
+Then, pasting in a sample code snippet that we're looking for.
 
 ```
 coffee.brew("💧", "💩")
 ```
 
-Note that removing as much of the irrelevant code
-(eg: the `export` and `const` variable deceleration) as possible
+Note that removing as much of the irrelevant code as possible
+(eg: the `export` and `const` variable deceleration) 
 can help simplify understanding the AST. Again, with some
 of the properties removed for readability, this code produces
 the following JSON representing the AST.
@@ -332,8 +338,8 @@ for based on this AST:
 
 There are a number of ways this can be done with `traverse`, but my
 general approach is to take the type of the highest node in the
-tree that is specific to the code I care about. In this case,
-that's `MemberExpression` and use that as the entrypoint.
+tree that is specific to the code I care about  and use that as 
+the entrypoint. In this case, that's `CallExpression`.
 
 ```ts
 // audit.ts
@@ -352,7 +358,7 @@ as the `parent` node that can be helpful to traverse up the tree
 if needed.
 
 So now we have the `CallExpression` node, but the above
-description had a bunch of other constraints, so let's
+description had several other constraints, so let's
 apply all of those.
 
 ```ts
@@ -371,9 +377,9 @@ traverse(ast, {
 });
 ```
 
-Great, we've now found exactly what we care about,
+Great, this finds exactly what we care about,
 which parameters are being passed to `coffee.brew`.
-For this example, we could actually completely stop here.
+For this example, we could completely stop here.
 However, once this reaches hundreds of files, there are
 likely two problems to emerge. First, `node.callee.type`
 could be something other than a `MemberExpression`,
@@ -405,7 +411,10 @@ traverse(ast, {
 });
 ```
 
-Fixing these type errors results in a much more robust script.
+Fixing these type errors also results in a much more robust script
+because each node's type is verified before any properties are accessed.
+This prevents unexpected runtime error such as trying to read a property
+of `undefined`.
 
 ```typescript
 traverse(ast, {
@@ -427,7 +436,7 @@ traverse(ast, {
 
 Second, the arguments are being logged to the console.
 This is going to be very noisy and almost impossible to
-determine the most used. For this, I commonly create a global
+determine the most used. For this, we can create a global
 object and increment counters for different values. In this
 case, since we care about two parameter values, an array
 with two corresponding objects can be added with logic
@@ -446,9 +455,8 @@ const args = [
   {} // tracks second argument
 ];
 
-// Find all files at any directory level starting in this directory,
-// except anything that is in `node_modules`.
-const files = glob.sync("./**/*.js", { ignore: "./node_modules/**" });
+// Find all files relevant files.
+const files = glob.sync("./src/*.js");
 
 files.forEach(file => {
   const contents = fs.readFileSync(file).toString();
@@ -487,10 +495,28 @@ files.forEach(file => {
 console.log(args);
 ```
 
-Running this complete script now logs the following.
+Running this (`yarn ts-node ./audit.ts`) complete script now logs the following.
 
 ```json
 [{ "💧": 1, "🌊": 1, "🚿": 1 }, { "💩": 3 }]
+```
+
+With this output, we can now say how the existing code
+was used. There were three invocations of `coffee.brew`,
+with three different water arguments, always the
+same coffee grounds argument. Let's pick `"💧"` as
+the only permitted option and update the original
+function.
+
+```js
+// src/coffee.js
+export const coffee = {
+  brew: (water, grounds) => {
+    if (water === "💧" && grounds) {
+      return "☕";
+    }
+  },
+};
 ```
 
 ### Code Transform
@@ -501,7 +527,120 @@ quickest fix is to manually update the two files. For the
 purposes of this example, lets imagine this is actually
 across hundreds of files. Not only will it take a long time,
 it can be challenging to keep it all in your head, and the
-chances of making a mistake increase.
+chances of making a mistake increases with each file. Instead,
+we can create a codemod because it can be ran across any
+number of files and make the changes reliably.
+
+To get started, only one new dependency needs to be added.
+
+- [`jscodeshift`](https://github.com/facebook/jscodeshift) _([and types](https://www.npmjs.com/package/@types/jscodeshift))_ - toolkit for running codemods
+
+Now, we can create a file named `transform.ts` to contain
+our codemod, or transformation with the basics.
+
+```ts
+// transform.ts
+import { Transform } from "jscodeshift";
+
+const transform: Transform = (file, api) => {
+  // Alias the jscodeshift API for ease of use.
+  const j = api.jscodeshift;
+
+  // Convert the entire file source into a collection of nodes paths.
+  const root = j(file.source);
+
+  return root.toSource();
+};
+
+export default transform;
+```
+
+This sets up a jscodeshift transform as the default export. It's
+also importing the `Transform` type so that all the parameters and
+therefore the internals are properly typed. The parameters are defined
+and passed in by jscodeshift. This transform creates an alias for the
+jscodeshift API (`j`) since it can be referenced many times depending on the
+complexity of the transform. Then, it's taking the file source string
+and converting it into an AST with a reference to it's `root`. Finally,
+it's converting the AST back into a source string which will get written
+back to the file. Right now, this will be identical to what already exists 
+in the files. To make the transformation, the AST can be mutated before 
+it's converted back to a source string.
+
+```ts
+// transform.ts
+import { Transform } from "jscodeshift";
+
+const transform: Transform = (file, api) => {
+  // Alias the jscodeshift API for ease of use.
+  const j = api.jscodeshift;
+
+  // Convert the entire file source into a collection of nodes paths.
+  const root = j(file.source);
+
+  root.find(j.CallExpression).filter(path => {
+    const { node } = path;
+
+    if (
+      node.callee.type === "MemberExpression" &&
+      node.callee.object.type === "Identifier" &&
+      node.callee.object.name === "coffee" &&
+      node.callee.property.type === "Identifier" &&
+      node.callee.property.name === "brew"
+    ) {
+      // ...
+    }
+  });
+
+  return root.toSource();
+};
+
+export default transform;
+```
+
+```ts
+// transform.ts
+import { Transform } from "jscodeshift";
+
+const transform: Transform = (file, api) => {
+  // Alias the jscodeshift API for ease of use.
+  const j = api.jscodeshift;
+
+  // Convert the entire file source into a collection of nodes paths.
+  const root = j(file.source);
+
+  root
+    .find(j.CallExpression)
+    .filter(path => {
+      const { node } = path;
+
+      if (
+        node.callee.type === "MemberExpression" &&
+        node.callee.object.type === "Identifier" &&
+        node.callee.object.name === "coffee" &&
+        node.callee.property.type === "Identifier" &&
+        node.callee.property.name === "brew"
+      ) {
+        const [waterArg] = node.arguments;
+        return waterArg.type === "Literal" && waterArg.value !== "💧";
+      }
+    })
+    .replaceWith(path => {
+      const { node } = path;
+
+      const [waterArg] = node.arguments;
+      if (waterArg.type === "Literal") {
+        waterArg.value = "💧";
+      }
+
+      return node;
+    });
+
+  return root.toSource();
+};
+
+export default transform;
+```
 
 <div class="notice" role="alert">
 Looking for an in-depth, real-world codemod transform? Check out this post about
