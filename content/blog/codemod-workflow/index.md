@@ -1,5 +1,5 @@
 ---
-date: 2020-11-30T10:00:00.000Z
+date: 2021-01-18T10:00:00.000Z
 title: "My Workflow for Codemods"
 description: "A walk-through of my workflow for creating custom codemods"
 featuredImage: "./images/featured-image.jpg"
@@ -276,10 +276,10 @@ For each of those files that is found, it then reads
 that file's contents. The contents is still a string,
 so the next step is to `parse` it and generate an
 abstract syntax tree. Finally, we're ready to `traverse`
-that tree. 
+that tree.
 
 The next step is to figure out how to traverse the tree to
-find the specific piece of code we care about. This is 
+find the specific piece of code we care about. This is
 where [astexplorer.net](https://astexplorer.net)
 comes into play. First, checking that the parser is
 correct.
@@ -293,7 +293,7 @@ coffee.brew("💧", "💩")
 ```
 
 Note that removing as much of the irrelevant code as possible
-(eg: the `export` and `const` variable deceleration) 
+(eg: the `export` and `const` variable deceleration)
 can help simplify understanding the AST. Again, with some
 of the properties removed for readability, this code produces
 the following JSON representing the AST.
@@ -338,7 +338,7 @@ for based on this AST:
 
 There are a number of ways this can be done with `traverse`, but my
 general approach is to take the type of the highest node in the
-tree that is specific to the code I care about  and use that as 
+tree that is specific to the code I care about and use that as
 the entrypoint. In this case, that's `CallExpression`.
 
 ```ts
@@ -515,7 +515,7 @@ export const coffee = {
     if (water === "💧" && grounds) {
       return "☕";
     }
-  },
+  }
 };
 ```
 
@@ -558,24 +558,33 @@ export default transform;
 This sets up a jscodeshift transform as the default export. It's
 also importing the `Transform` type so that all the parameters and
 therefore the internals are properly typed. The parameters are defined
-and passed in by jscodeshift. This transform creates an alias for the
-jscodeshift API (`j`) since it can be referenced many times depending on the
-complexity of the transform. Then, it's taking the file source string
-and converting it into an AST with a reference to it's `root`. Finally,
-it's converting the AST back into a source string which will get written
-back to the file. Right now, this will be identical to what already exists 
-in the files. To make the transformation, the AST can be mutated before 
-it's converted back to a source string.
+and passed in by jscodeshift.
+
+The first thing this transform does is create an alias for the
+jscodeshift API (`j`). Depending on the complexity of the transform,
+it can be used often. Then, it converts the file's source string into an AST
+and has a reference to it's `root`. Finally, it's converting the AST back
+into a source string which will get written back to the file.
+
+The transform can then be ran: `jscodeshift -t ./transform.ts --parser babylon ./src`.
+Right now, this will be identical to what already exists in each file
+since no changes are being made in the transform. Note that the `parser`
+is explicitly set to `babylon`. The default is `babel` which uses an
+[`estree` plugin](https://github.com/facebook/jscodeshift/blob/48f5d6d6e5e769639b958f1a955c83c68157a5fa/parser/babel5Compat.js#L24) which
+results in a [slightly different AST](https://babeljs.io/docs/en/babel-parser#output).
+
+To make the transformation, the AST can be mutated before
+it's converted back to a source string. To start, we
+need to find the specific node we care about.
+Fortunately, much of this logic is identical to the audit
+script, but with a slightly different API.
 
 ```ts
 // transform.ts
 import { Transform } from "jscodeshift";
 
 const transform: Transform = (file, api) => {
-  // Alias the jscodeshift API for ease of use.
   const j = api.jscodeshift;
-
-  // Convert the entire file source into a collection of nodes paths.
   const root = j(file.source);
 
   root.find(j.CallExpression).filter(path => {
@@ -588,7 +597,8 @@ const transform: Transform = (file, api) => {
       node.callee.property.type === "Identifier" &&
       node.callee.property.name === "brew"
     ) {
-      // ...
+      const [waterArg] = node.arguments;
+      return waterArg.type === "StringLiteral" && waterArg.value !== "💧";
     }
   });
 
@@ -598,15 +608,18 @@ const transform: Transform = (file, api) => {
 export default transform;
 ```
 
+There are several different ways this can be achieved with `jscodeshift`.
+The approach taken here is to find all `CallExpression` nodes, then filter
+based on their properties. This is finding all invocations of `coffee.brew`
+where the first argument _isn't_ `"💧"`. Now we have a collection of
+nodes that need to be transformed.
+
 ```ts
 // transform.ts
 import { Transform } from "jscodeshift";
 
 const transform: Transform = (file, api) => {
-  // Alias the jscodeshift API for ease of use.
   const j = api.jscodeshift;
-
-  // Convert the entire file source into a collection of nodes paths.
   const root = j(file.source);
 
   root
@@ -622,14 +635,14 @@ const transform: Transform = (file, api) => {
         node.callee.property.name === "brew"
       ) {
         const [waterArg] = node.arguments;
-        return waterArg.type === "Literal" && waterArg.value !== "💧";
+        return waterArg.type === "StringLiteral" && waterArg.value !== "💧";
       }
     })
     .replaceWith(path => {
       const { node } = path;
 
       const [waterArg] = node.arguments;
-      if (waterArg.type === "Literal") {
+      if (waterArg.type === "StringLiteral") {
         waterArg.value = "💧";
       }
 
@@ -642,6 +655,16 @@ const transform: Transform = (file, api) => {
 export default transform;
 ```
 
+This can be achieved with `replaceWith`. This is invoked on each node
+in this collection, so the first argument's `value` can be mutated
+and then returned as the new node. Alternatively, an entirely new
+node could have been created using [builders](https://github.com/facebook/jscodeshift#builders).
+
+This is only a simplified example, but `jscodeshift` provides
+many other helpers (eg: `findJSXElements(name)`) and optimizations,
+such as parallelizing the transformation to perform them faster which
+can provide a noticeable difference in larger codebases.
+
 <div class="notice" role="alert">
 Looking for an in-depth, real-world codemod transform? Check out this post about
 <a href="/jscodeshift-custom-transform">transforming Font Awesome components</a>.
@@ -649,9 +672,13 @@ Looking for an in-depth, real-world codemod transform? Check out this post about
 
 ## Conclusion
 
-This was a walk-through of my general workflow for auditing
-and transforming code. What works best for you might be
-a bit different, but hopefully this provides some useful
-tools and approaches for the next time you're working with code.
+In summary, my codemod workflow is:
 
-All of [this code can be found on GitHub](https://github.com/skovy/typescript-codemod-examples).
+1. **Problem**: some problem arises that requires a large refactoring.
+1. **Perform a code audit**: understand the current state of the code.
+1. **Determine the new code structure**: based on the needs and concrete
+   usage data from the audit, decide on the way the code should be structure.
+1. **Perform a codemod**: transform the existing code to comply with the new structure.
+1. **Bonus**: using the same AST logic, [add a custom ESLint rule](https://eslint.org/docs/developer-guide/working-with-rules) to prevent future misuses.
+
+All code can be [found on GitHub](https://github.com/skovy/typescript-codemod-examples).
