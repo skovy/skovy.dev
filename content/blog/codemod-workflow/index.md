@@ -1,5 +1,5 @@
 ---
-date: 2021-01-18T10:00:00.000Z
+date: 2021-01-19T10:00:00.000Z
 title: "My Workflow for Codemods"
 description: "A walk-through of my workflow for creating custom codemods"
 featuredImage: "./images/featured-image.jpg"
