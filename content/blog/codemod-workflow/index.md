@@ -136,8 +136,7 @@ otherwise you can end up with different trees.
 
 ### Writing the code
 
-Now we've picked the right parser, and have a high level understanding of
-the AST for the code snippet we care about. It's time to actually
+After understanding the relevant AST for the code snippet, it's time to
 write the code. As seen, the AST names and structure can be complex.
 As a result, it's easy to make a typo when working with properties
 and node names, or forget to check that the node is the correct type.
@@ -159,21 +158,20 @@ since many properties only exist on specific types of nodes. Including
 these checks can be easy to overlook. This may not be an issue in
 smaller codebases, but becomes a real issue in larger codebases.
 
-Fortunately, both approaches have type definitions available:
+Fortunately, both tools have type definitions available:
 
 - [`@types/babel__traverse`](https://www.npmjs.com/package/@types/babel__traverse) - when working with `@babel/traverse`
 - [`@types/jscodeshift`](https://www.npmjs.com/package/@types/jscodeshift) - when working with `jscodeshift`
 
-Both these packages provide type definitions which can help avoid
-these problems. First, it will catch any typos when working
-with nodes. Second, it will validate that the node is only the type
-you expect and will raise a type error otherwise.
+First, the types can help catch any typos when working with nodes.
+Second, they will validate that the node is only the type you expect and
+will raise a type error otherwise.
 
 ## Example
 
 Now that the steps have been outlined, what does this look like
-in practice? Let's start by defining a simple `coffee` object with
-a property to `brew` coffee.
+in practice? Let's start by defining a simple "codebase" that contains
+a `coffee` object with a property to `brew` coffee.
 
 ```js
 // coffee.js
@@ -235,12 +233,13 @@ along with a few others to help with reading files and executing the code.
 
 - [`@babel/parser`](https://babeljs.io/docs/en/babel-parser) - parse a string of code into an AST
 - [`@babel/traverse`](https://babeljs.io/docs/en/babel-traverse) _([and types](https://www.npmjs.com/package/@types/babel__traverse))_ - helps traverse the AST and find specific nodes
-- [`glob`](https://www.npmjs.com/package/glob) _([and types](https://www.npmjs.com/package/@types/glob))_ - easily find the files using glob patterns
+- [`glob`](https://www.npmjs.com/package/glob) _([and types](https://www.npmjs.com/package/@types/glob))_ - find the files to audit using glob patterns
 - [`ts-node`](https://www.npmjs.com/package/ts-node) - replacement for node capable of handling TypeScript files
 - [`typescript`](https://www.npmjs.com/package/typescript) - required for TypeScript support
+- [`fs`](https://nodejs.org/api/fs.html) - read file contents
 
-This list doesn't include [`fs`](https://nodejs.org/api/fs.html) because it's provided
-by `node`. Now we can put together a script to read our code and find a specific piece.
+These packages can be combined to create a script to find, read,
+and parse files to traverse their AST.
 
 ```typescript
 // audit.ts
@@ -259,7 +258,8 @@ files.forEach(file => {
     sourceType: "module",
     plugins: [
       // Note: depending on the code being parsed, you
-      // may need to add plugins such as `jsx`
+      // may need to add plugins such as `jsx` or others
+      // to support specific syntax. Docs:
       // https://babeljs.io/docs/en/babel-parser#plugins
     ]
   });
@@ -350,14 +350,14 @@ traverse(ast, {
 });
 ```
 
-As the AST is being traverse, any `CallExpression` nodes will be
-passed to this function. It actually passes a `path` which has
+As the AST is being traversed, any `CallExpression` nodes will be
+passed to this function. It passes a `path` which has
 a `node` property that corresponds to the node in the AST.
 The `path` is a wrapper with some other metadata, such
 as the `parent` node that can be helpful to traverse up the tree
 if needed.
 
-So now we have the `CallExpression` node, but the above
+This will target any `CallExpression` node, but the above
 description had several other constraints, so let's
 apply all of those.
 
@@ -377,18 +377,19 @@ traverse(ast, {
 });
 ```
 
-Great, this finds exactly what we care about,
+Great, this finds exactly what we care about:
 which parameters are being passed to `coffee.brew`.
-For this example, we could completely stop here.
+For this example, we could stop here.
 However, once this reaches hundreds of files, there are
 likely two problems to emerge. First, `node.callee.type`
 could be something other than a `MemberExpression`,
 which means `node.callee.object.name` or `node.callee.property.name`
 may not always exist. That means this could throw a runtime
-error. Fortunately, this file was written in TypeScript and
-the corresponding type definitions were installed. This
-means that several type errors are actually being
-thrown with the current solution.
+error.
+
+Since this file was written in TypeScript and the corresponding
+type definitions were installed. This means that several type
+are being thrown with the current solution.
 
 ```typescript
 traverse(ast, {
@@ -519,17 +520,20 @@ export const coffee = {
 };
 ```
 
-### Code Transform
-
 Now there's a problem, two out of the three usages will
 no longer properly brew coffee. For this example, the
 quickest fix is to manually update the two files. For the
-purposes of this example, lets imagine this is actually
-across hundreds of files. Not only will it take a long time,
+purposes of this example, lets imagine this is used
+across many more files. Not only will it take a long time,
 it can be challenging to keep it all in your head, and the
-chances of making a mistake increases with each file. Instead,
-we can create a codemod because it can be ran across any
-number of files and make the changes reliably.
+chances of making a mistake increases with each file.
+
+### Code Transform
+
+Instead, a codemod, or transform can be applied to the existing
+code. It automates the process so it can be applied to any number
+of files. Assuming the logic is accurate, it's also more reliable
+than repeatedly making the same manual changes.
 
 To get started, only one new dependency needs to be added.
 
@@ -677,7 +681,7 @@ In summary, my codemod workflow is:
 1. **Problem**: some problem arises that requires a large refactoring.
 1. **Perform a code audit**: understand the current state of the code.
 1. **Determine the new code structure**: based on the needs and concrete
-   usage data from the audit, decide on the way the code should be structure.
+   usage data from the audit, decide on the way the code should be structured.
 1. **Perform a codemod**: transform the existing code to comply with the new structure.
 1. **Bonus**: using the same AST logic, [add a custom ESLint rule](https://eslint.org/docs/developer-guide/working-with-rules) to prevent future misuses.
 
