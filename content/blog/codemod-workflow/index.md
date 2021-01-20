@@ -13,7 +13,7 @@ tags:
 Since originally writing about
 [creating a custom transform with jscodeshift](/jscodeshift-custom-transform),
 I've had the opportunity to write many more. In the process, I've settled
-into a standard workflow for creating codemods when approaching new problems.
+into a standard workflow for creating codemods while approaching new problems.
 
 On the surface, codemods seem daunting, particularly dealing with
 the abstract syntax tree. But with the right tools and workflow,
