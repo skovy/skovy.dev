@@ -111,7 +111,7 @@ narrow down to only it's `type` prop.
 [jscodeshift](https://github.com/facebook/jscodeshift) is a specific tool for 
 running these codemods on JavaScript and TypeScript files. If you'd like to see 
 a more in depth example, I've previously written about 
-[creating a custom transform for jscodeshift](/jscodeshift-custom-transform/)
+[creating a custom transform for jscodeshift](/jscodeshift-custom-transform/).
 
 ### ESLint
 
