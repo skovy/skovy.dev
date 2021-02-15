@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: skovy.dev
+Token: 0ec57d9b2ddd4ce3c5784eec1a491fa3688c9822a64ce95a056eab38f2f33301
