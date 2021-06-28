@@ -43,7 +43,7 @@
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "npm": "^6.9.0",
-    "prismjs": "^1.15.0",
+    "prismjs": "^1.24.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-helmet": "^5.2.0",
