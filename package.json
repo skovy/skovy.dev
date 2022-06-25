@@ -61,7 +61,7 @@
     "@graphql-codegen/typescript-operations": "^1.8.3",
     "@graphql-codegen/typescript-react-apollo": "^1.8.3",
     "hygen": "^5.0.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "prettier": "^1.16.4"
   },
   "license": "MIT",
